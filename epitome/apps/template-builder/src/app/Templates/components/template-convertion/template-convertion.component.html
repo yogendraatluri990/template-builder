@@ -1,0 +1,116 @@
+<h2 mat-dialog-title>
+  Convert Into Template
+  <mat-icon aria-hidden="false" (click)="onClose()" class="close-btn">
+    {{icons.close}}
+  </mat-icon>
+</h2>
+<div mat-dialog-content>
+  <mat-vertical-stepper linear>
+    <mat-step [stepControl]="convertionForm">
+      <form [formGroup]="convertionForm" novalidate>
+        <ng-template matStepLabel>
+          <span class="mat-stepper-label"> Find the application </span>
+        </ng-template>
+        <div class="form-container">
+          <mat-form-field appearance="outline" class="convertion-form">
+            <mat-label> AppCode </mat-label>
+            <input
+              type="text"
+              matInput
+              formControlName="appCode"
+              class="dashboard-input"
+              required
+            />
+            <mat-error *ngIf="convertionForm.get('appCode').errors?.required">
+              App Code is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-container">
+          <button
+            type="button"
+            mat-raised-button
+            color="default"
+            matStepperNext
+            class="btns"
+            (click)="findAppCode(convertionForm.get('appCode').value)"
+          >
+            Find
+          </button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="convertionForm">
+      <ng-template matStepLabel>
+        <span class="mat-stepper-label">
+          Convert Application into a template
+        </span>
+      </ng-template>
+      <div class="form-container">
+        <h4 class="dialog-text">
+          <ng-container *ngIf="templateAppInfo$|async as t">
+          {{ t.IsValidToConvertIntoTemplate ? convertionForm.get('appCode').value : 'The appcode provided can not be converted into a template' }}
+          </ng-container>
+        </h4>
+      </div>
+      <div class="form-container">
+        <button
+          type="button"
+          mat-raised-button
+          color="default"
+          matStepperPrevious
+          class="btns"
+        >
+          Back
+        </button>
+        <ng-container *ngIf="templateAppInfo$|async as t">        
+        <button
+          mat-raised-button
+          matStepperNext
+          class="btns btn-primary"
+          [ngClass]= "{disabled: !t.IsValidToConvertIntoTemplate}"
+          (click)="onConvert(convertionForm.get('appCode').value)"
+        >
+          convert
+        </button>
+        </ng-container>
+      </div>
+    </mat-step>
+    <ng-container *ngIf="templateAppInfo$| async as t">
+    <ng-container *ngIf="t.IsValidToConvertIntoTemplate">
+    <mat-step>
+      <ng-template matStepLabel>
+        <span class="mat-stepper-label">Converted</span>
+      </ng-template>
+      <div class="form-container">
+        <assort-progress-spinner
+          *ngIf="!templateConvertion$ | async"
+        ></assort-progress-spinner>
+        <h4 *ngIf="templateConvertion$ | async as t">
+          {{ t.Message }}
+        </h4>
+      </div>
+      <div class="form-container">
+        <button
+          type="button"
+          mat-raised-button
+          color="default"
+          matStepperPrevious
+          class="btns"
+        >
+          Back
+        </button>
+        <button
+          mat-raised-button
+          matStepperNext
+          class="btns btn-primary"
+          (click)="onClose()"
+        >
+          Done
+        </button>
+      </div>
+    </mat-step>
+    </ng-container>
+    </ng-container>
+  </mat-vertical-stepper>
+</div>

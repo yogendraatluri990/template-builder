@@ -1,0 +1,86 @@
+<ng-container *ngIf="currentTemplate$ | async as t">
+  <div class="container">
+    <form [formGroup]="designForm" novalidate>
+      <div class="design-container mat-elevation-z8">
+        <h2 class="container-title">Style-Sheet</h2>
+        <div class="form-container">
+          <nav class="side-nav mat-elevation-z8">
+            <span>
+              <mat-icon
+                [color]="'default'"
+                class="preview"
+                [ngClass]="{ disabled: !designForm.valid }"
+                matTooltip="Template Preview"
+                matTooltipPosition="right"
+                (click)="preview()"
+              >
+                {{ icons.preview }}
+              </mat-icon>
+            </span>
+            <span>
+              <mat-icon
+                [color]="'default'"
+                aria-hidden="false"
+                aria-label="Example library_add"
+                matTooltip="Add Design Tag"
+                matTooltipPosition="right"
+                (click)="addTemplate()"
+                [ngClass]="{ disabled: !addDesignTagFlg }"
+              >
+                {{ icons.library_add }}
+              </mat-icon>
+            </span>
+          </nav>
+          <mat-form-field
+            appearance="outline"
+            class="text-area-form white-border-form-field"
+          >
+            <mat-label> Custom StyleSheet </mat-label>
+            <textarea
+              matInput
+              formControlName="templateCSS"
+              class="text-area dashboard-input"
+            ></textarea>
+            <mat-error *ngIf="designForm.get('templateCSS').errors?.isInValid">
+              <h5>Please provide a valid css style sheet</h5>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-container ninety-container">
+          <button
+            type="button"
+            mat-raised-button
+            (click)="save()"
+            class="btns btn-u btn-primary"
+            [ngClass]="{ disabled: !designForm.valid }"
+          >
+            save
+          </button>
+          <button
+            type="button"
+            mat-raised-button
+            color="default"
+            (click)="cancel()"
+            class="btns"
+          >
+            cancel
+          </button>
+        </div>
+      </div>
+      <div class="design-container mat-elevation-z8">
+        <h2 class="container-title">design tags</h2>
+        <div class="form-container">
+          <tb-tags
+            [isStyle]="
+              designForm.valid && designForm.get('templateCSS').value.length > 0
+            "
+            [parentForm]="designForm"
+            [appCode]="t.appCode"
+            [templateName]="t.templateName"
+            [templateId]="t.templateId"
+          ></tb-tags>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-container>

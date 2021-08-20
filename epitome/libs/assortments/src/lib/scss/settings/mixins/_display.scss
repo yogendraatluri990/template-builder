@@ -1,0 +1,46 @@
+@mixin flex(
+  $flex_direction,
+  $align_items: center,
+  $place_content: center,
+  $flex_grow: 1
+) {
+  display: flex;
+  flex-direction: $flex_direction;
+  align-items: $align_items;
+  place-content: $place_content;
+  flex-grow: $flex_grow;
+}
+
+@mixin float($float_direction) {
+  float: $float_direction;
+}
+
+@mixin boxShadow($shadow) {
+  -webkit-box-shadow: $shadow;
+  -moz-box-shadow: $shadow;
+  box-shadow: $shadow;
+}
+@mixin boxShadow_3($shadows) {
+  -webkit-box-shadow: $shadows;
+  -moz-box-shadow: $shadows;
+  box-shadow: $shadows;
+}
+
+@mixin transForm($translate) {
+  transform: $translate;
+  -ms-transform: $translate;
+  -o-transform: $translate;
+  -moz-transform: $translate;
+}
+
+@mixin back_ground_color($bg_color) {
+  background-color: $bg_color;
+}
+
+@mixin back_ground_gradient($gradient_value) {
+  background: -webkit-linear-gradient($gradient_value);
+  background: -moz-linear-gradient($gradient_value);
+  background: -o-linear-gradient($gradient_value);
+  background: -ms-linear-gradient($gradient_value);
+  background: linear-gradient($gradient_value);
+}

@@ -1,0 +1,25 @@
+@import '_global';
+
+.form-content {
+  margin: 10px auto;
+}
+
+
+.design-actions {
+  @include float(right);
+}
+.disabled {
+    @extend .is-disabled;
+}
+
+::ng-deep {
+  mat-form-field {
+    &.design-mat-form {
+      @extend .w-100;
+      @extend .white-out-line-form;
+    }    
+  }
+  .mat-dialog-container {
+    @extend .dialog-dark;
+  }
+}

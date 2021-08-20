@@ -1,0 +1,35 @@
+@import '_global';
+
+.dialog-text {
+  @extend .default-font-color;
+  text-transform: capitalize;
+}
+.btns {
+  @extend .btns;
+}
+.disabled {
+  @extend .is-disabled;
+}
+::ng-deep {
+  .mat-dialog-container {
+   @extend .dialog-dark;
+  }
+  .mat-stepper-horizontal,
+  .mat-stepper-vertical {
+    background: transparent;
+    .mat-step-header {
+      &:hover {
+        background-color: $color-blue-2f3646;
+      }
+    }
+    .mat-step-label.mat-step-label-active {
+      @extend .default-font-color;
+      text-transform: capitalize;
+    }
+  }
+  mat-form-field {
+    &.convertion-form {
+      @extend .white-out-line-form;
+    }
+  }
+}

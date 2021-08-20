@@ -1,0 +1,43 @@
+@import '_global';
+
+h1,
+h2 {
+  &.title {
+    text-transform: capitalize;
+  }
+}
+
+::ng-deep {
+  .mat-dialog-container {
+    @extend .dialog-dark;
+  }
+  mat-form-field {
+    &.tag-form-field {
+      @extend .w-100;
+      @extend .white-out-line-form;
+      mat-label {
+        text-transform: capitalize;
+      }
+      mat-error {
+          &.mat-tag-error {
+              text-transform: capitalize;
+          }
+      }
+    }
+  }
+  mat-select {
+      &.mat-dark-select-panel {
+        .mat-select-value {
+            color: $color-white-hsla;
+        }
+      }
+  }
+  .mat-select-panel {
+    background: $color-blue-2f3646;    
+    mat-option {
+      .mat-option-text {
+        color: $color-white-hsla;
+      }
+    }
+  }
+}

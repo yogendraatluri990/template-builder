@@ -1,0 +1,92 @@
+[
+  {
+    "name": "White - 00",
+    "section": "Background Colors",
+    "color": "#fff"
+  },
+  {
+    "name": "White - f1",
+    "section": "Background Colors",
+    "color": "#f1f1f1"
+  },
+  {
+    "name": "gray - 888",
+    "section": "Background Colors",
+    "color": "#888"
+  },
+  {
+    "name": "gray - 555",
+    "section": "Background Colors",
+    "color": "#555"
+  },
+  {
+    "name": "red - 980000",
+    "section": "color",
+    "color": "#980000"
+  },
+  {
+    "name": "red - ff0033",
+    "section": "Background Colors",
+    "color": "#ff0033"
+  },
+  {
+    "name": "black - 000000",
+    "section": "color",
+    "color": "#000000"
+  },
+  {
+    "name": "blue - 2f3646",
+    "section": "Background Colors",
+    "color": "#2f3646"
+  },
+  {
+    "name": "blue - 2e3547",
+    "section": "Background Colors",
+    "color": "#2e3547"
+  },
+  {
+    "name": "blue - 303548",
+    "section": "Background Colors",
+    "color": "#303548"
+  },
+  {
+    "name": "dark blue - 212433",
+    "section": "Background Colors",
+    "color": "#212433"
+  },
+  {
+    "name": "accent-green - 69f0ae",
+    "section": "Background Colors",
+    "color": "#69f0ae"
+  },
+  {
+    "name": "accent-gray- 607d8b",
+    "section": "Background Colors",
+    "color": "#607d8b"
+  },
+  {
+    "name": "error-red- f44336",
+    "section": "font-color",
+    "color": "#f44336"
+  }, {
+    "name": "white-hsla",
+    "section": "color",
+    "color": "hsla(0, 0%, 100%, 0.7)"
+  }, {
+    "name": "may-green",
+    "section":"Background Colors",
+    "color": "#41A950"
+  }, {
+    "name": "fiord",
+    "section": "Background Colors",
+    "color": "#414b62"
+  }, {
+    "name": "rgb-gray",
+    "section": "color",
+    "color":"rgb(255 255 255 / 26%)"
+  }, {
+    "name": "dim-red",
+    "section": "Background Color",
+    "color": "#a30727"
+  }
+]

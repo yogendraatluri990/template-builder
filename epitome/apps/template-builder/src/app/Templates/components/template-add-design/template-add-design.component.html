@@ -1,0 +1,80 @@
+<form [formGroup]="designForm" novalidate>
+  <h2 mat-dialog-title>
+    Add Design Template
+
+    <mat-icon aria-hidden="false" (click)="close()" class="close-btn">
+      {{icons.close}}
+    </mat-icon>
+  </h2>
+  <div mat-dialog-content>
+    <div class="form-content">
+      <div class="form-container">
+        <mat-form-field appearance="outline" class="design-mat-form">
+          <mat-label>            
+              design name            
+          </mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="Name"
+            class="dashboard-input"
+          />
+          <mat-error *ngIf="designForm.get('Name').errors?.required">
+            Please provide a design name.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-container">
+        <mat-form-field appearance="outline" class="design-mat-form">
+          <mat-label> template name </mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="templateName"
+            class="dashboard-input"
+          />
+          <mat-error *ngIf="designForm.get('templateName').errors?.required">
+            Please provide the template name.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-container">
+        <mat-form-field appearance="outline" class="design-mat-form">
+          <mat-label> color code </mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="DesignColor"
+            class="dashboard-input"
+          />
+          <mat-error *ngIf="designForm.get('DesignColor').errors?.required">
+            Please provide a hex code for color
+          </mat-error>
+          <mat-error *ngIf="designForm.get('DesignColor').errors?.isInValid">
+            Please provide a valid hex-code value
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-actions class="design-actions">
+    <button
+      type="button"
+      mat-raised-button
+      (click)="close()"
+      color="default"
+      class="btns"
+    >
+      cancel
+    </button>
+    <button
+      type="button"
+      mat-raised-button
+      (click)="save(designForm.value)"
+      class="btn-primary btns"
+      [ngClass]="{ disabled: !designForm.valid }"
+    >
+      save
+    </button>
+  </div>
+</form>

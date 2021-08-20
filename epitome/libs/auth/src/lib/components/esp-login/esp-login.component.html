@@ -1,0 +1,87 @@
+<div class="login-container">
+  <form
+    [formGroup]="loginForm"
+    (submit)="loginWithCredentials('/dashboard/templates/template-list')"
+    novalidate
+  >
+  <div class="form-container">
+    <mat-form-field appearance="outline">
+      <mat-label> ASI Number </mat-label>
+      <input
+        type="text"
+        matInput
+        formControlName="asi_number"
+        maxlength="6"
+        class="login-input"
+        required
+      />
+      <mat-error *ngIf="loginForm.get('asi_number').errors?.required">
+        <strong> ASI Number is required </strong>
+      </mat-error>
+    </mat-form-field>
+  </div>
+    <div class="form-container">
+      <mat-form-field appearance="outline">
+        <mat-label> UserName </mat-label>
+        <input
+          type="text"
+          matInput
+          formControlName="UserName"
+          class="login-input"
+          required
+        />
+        <mat-error *ngIf="loginForm.get('UserName').errors?.required">
+          <strong> User name is required </strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-container">
+      <mat-form-field appearance="outline">
+        <mat-label> Password </mat-label>
+        <input
+          [type]="hidePassword ? 'password' : 'text'"
+          class="mat-password-input login-input"
+          matInput
+          formControlName="Password"
+          class="login-input"
+          required
+        />
+        <button
+          type="button"
+          mat-icon-button
+          matSuffix
+          (click)="hidePassword = !hidePassword"
+          [attr.aria-label]="'Hide Password'"
+          [attr.aria-pressed]="hidePassword"
+        >
+          <mat-icon>{{
+            hidePassword ? 'visibility_off' : 'visibility'
+          }}</mat-icon>
+        </button>
+        <mat-error *ngIf="loginForm.get('Password').errors?.required">
+          <strong> Password is required </strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-container">
+      <div class="form-sub-container">
+        <mat-checkbox
+          class="float-left"
+          formControlName="rememberMe"
+          color="primary"
+          >Remember Me</mat-checkbox
+        >
+        </div>
+    </div>
+    <div class="form-btn-container">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!loginForm.valid"
+      >
+        Login
+      </button>
+    </div>
+  </form>
+</div>

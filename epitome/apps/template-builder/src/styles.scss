@@ -1,0 +1,88 @@
+/* You can add global styles to this file, and also import other style files */
+@import '_global';
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  background: url('../../../libs/assortments/src/lib/assets/images/backgrounds/dark-material-bg.jpg');
+  background-size: cover;
+}
+.mat-divider {
+  border-top-color: $color-white-hsla;
+}
+::ng-deep {
+  .mat-button-disabled {
+    @extend .btn-disabled;
+  }
+}
+.form-container {
+  mat-form-field {
+    width: 80%;
+    .mat-input-element {
+      &.login-input {
+        color: $color-black-000000;
+      }
+      &.mat-password-input {
+        width: 90%;
+      }
+      &.dashboard-input {
+        color: $color-white-hsla;
+      }
+    }    
+  }
+  .form-sub-container {
+    width: 80%;
+    margin: auto;
+    height: 40px;
+    .float-left {
+      @include float(left);
+    }
+    .float-right {
+      @include float(right);
+    }
+  }
+}
+.form-btn-container {
+  @extend .form-container;
+  height: 60px;
+  button {
+    width: 80%;
+    margin: 5px auto;
+  }
+}
+.error-message {
+  background-color: $color-red-ff0033;
+  color: $color-white-00;
+  text-align: center;
+  text-transform: capitalize;
+}
+.success-message {
+  background-color: $color-may-green;
+  color: $color-white-00;
+  text-align: center;
+  text-transform: capitalize;
+}
+.drop-zone {
+  border: 2px dotted $color-white-hsla;
+  border-radius: 5px;
+  height: 100px;
+  margin: auto;
+}
+.drop__content {
+  text-transform: capitalize;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 20px auto;
+  text-align: center;
+  height: 60px;  
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+

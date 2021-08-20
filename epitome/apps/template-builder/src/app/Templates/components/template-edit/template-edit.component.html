@@ -1,0 +1,419 @@
+<form [formGroup]="editForm" novalidate>
+  <h1 mat-dialog-title class="title">
+    edit Template
+    <mat-icon aria-hidden="false" (click)="close()" class="close-btn">
+      {{ icons.close }}
+    </mat-icon>
+  </h1>
+  <div mat-dialog-content>
+    <ng-container *ngIf="template$ | async as t">
+      <div class="flex-setup-container">
+        <div class="flex-setup-child">
+          <h3 class="section-labels">basic info</h3>
+          <div class="form-container">
+            <mat-form-field appearance="outline" class="edit-form-field">
+              <mat-label> application name </mat-label>
+              <input
+                type="text"
+                matInput
+                formControlName="name"
+                class="dashboard-input"
+              />
+            </mat-form-field>
+          </div>
+          <div class="form-container">
+            <mat-form-field appearance="outline" class="edit-form-field">
+              <mat-label> design template </mat-label>
+              <mat-select
+                formControlName="designTemplateId"
+                class="mat-dark-select-panel"
+              >
+                <mat-option
+                  *ngFor="let d of t.Templates; let i = index"
+                  [value]="d.TemplateId"
+                >
+                  {{ d.TemplateName }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="form-container">
+            <mat-form-field appearance="outline" class="edit-form-field">
+              <mat-label> industry </mat-label>
+              <mat-select
+                formControlName="industry"
+                class="mat-dark-select-panel"
+              >
+                <ng-container *ngIf="t['MarketGroupDetails']">
+                  <mat-option
+                    *ngFor="
+                      let d of t.MarketGroupDetails.OrderedData;
+                      let dataIndex = index
+                    "
+                    [value]="d.Value"
+                  >
+                    {{ d.Text }}
+                  </mat-option>
+                </ng-container>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="form-container">
+            <mat-form-field appearance="outline" class="edit-form-field">
+              <mat-label> relationship role </mat-label>
+              <mat-select
+                formControlName="relationShipRole"
+                class="mat-dark-select-panel"
+              >
+                <ng-container *ngIf="t['RelationshipRoles']">
+                  <mat-option
+                    *ngFor="let r of t.RelationshipRoles; let roleIndex = index"
+                    [value]="r"
+                  >
+                    {{ r }}
+                  </mat-option>
+                </ng-container>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="flex-setup-child">
+          <h3 class="section-labels title-left-right-margin">
+            Application Setup
+          </h3>
+          <div class="flex-container">
+            <div class="form-left-right-container flex-child-2">
+              <mat-form-field appearance="outline" class="edit-form-field">
+                <mat-label> Title </mat-label>
+                <textarea
+                  matInput
+                  class="dashboard-input"
+                  formControlName="title"
+                ></textarea>
+              </mat-form-field>
+            </div>
+            <div class="form-left-right-container flex-child-2">
+              <mat-form-field appearance="outline" class="edit-form-field">
+                <mat-label> Description </mat-label>
+                <textarea
+                  matInput
+                  class="dashboard-input"
+                  formControlName="description"
+                ></textarea>
+              </mat-form-field>
+            </div>
+            <div class="form-container flex-child-2">
+              <mat-checkbox formControlName="active" color="primary"
+                >active</mat-checkbox
+              >
+            </div>
+            <div class="form-container flex-child-2">
+              <mat-checkbox color="primary" formControlName="visibilty_flg"
+                >visibility</mat-checkbox
+              >
+            </div>
+            <h3 class="section-labels title-left-right-margin">Logo Setup</h3>
+            <div
+              formGroupName="preferences"
+              class="flex-container logo-setup-container"
+            >
+              <div class="form-left-right-container flex-child-2">
+                <mat-form-field appearance="outline" class="edit-form-field">
+                  <mat-label> Logo Width </mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    class="dashboard-input"
+                    formControlName="LogoWidth"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-left-right-container flex-child-2">
+                <mat-form-field appearance="outline" class="edit-form-field">
+                  <mat-label> Height </mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    class="dashboard-input"
+                    formControlName="LogoHeight"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+            <div
+              class="full-width-container title-left-right-margin"
+              formGroupName="preferences"
+            >
+              <mat-form-field appearance="outline" class="edit-form-field">
+                <mat-label> global schedules </mat-label>
+                <mat-select
+                  formControlName="globalSchedularId"
+                  class="mat-dark-select-panel"
+                >
+                  <ng-container *ngIf="t['POTDScheduleDetails']">
+                    <mat-option
+                      *ngFor="
+                        let p of t.POTDScheduleDetails.POTDScheduleList
+                          | keyvalue;
+                        let scheduleIndex = index
+                      "
+                      [value]="p.key"
+                    >
+                      {{ p.value }}
+                    </mat-option>
+                  </ng-container>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex-setup-child"
+          *ngIf="
+            editForm.get('relationShipRole').value.toLowerCase() === 'slave'
+          "
+        >
+          <div class="form-cotainer">
+            <mat-form-field appearance="outline" class="edit-form-field">
+              <mat-label>related master app</mat-label>
+              <mat-select
+                formControlName="masterId"
+                class="mat-dark-select-panel"
+              >
+                <mat-option
+                  *ngFor="let o of t.RelationshipInfo.OrdereredData"
+                  [value]="o.Application_ID"
+                >
+                  {{ o.ApplicationTitle }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="form-container">
+        <mat-divider></mat-divider>
+        <h3 class="section-labels">Instance Setup</h3>
+      </div>
+      <div formGroupName="preferences" class="flex-container">
+        <div class="form-container flex-child-7">
+          <mat-form-field appearance="outline" class="edit-form-field">
+            <mat-label> Intro </mat-label>
+            <input
+              type="text"
+              matInput
+              class="dashboard-input"
+              formControlName="IntroInstance"
+            />
+          </mat-form-field>
+        </div>
+        <div class="form-container flex-child-7">
+          <mat-form-field appearance="outline" class="edit-form-field">
+            <mat-label> About Us </mat-label>
+            <input
+              matInput
+              class="dashboard-input"
+              formControlName="AboutUsInstance"
+            />
+          </mat-form-field>
+        </div>
+        <div class="form-container flex-child-7">
+          <mat-form-field appearance="outline" class="edit-form-field">
+            <mat-label> product collection </mat-label>
+            <input
+              type="text"
+              matInput
+              class="dashboard-input"
+              formControlName="FPSInstanceId"
+            />
+          </mat-form-field>
+        </div>
+        <div class="form-container flex-child-7">
+          <mat-form-field appearance="outline" class="edit-form-field">
+            <mat-label> Video </mat-label>
+            <input
+              type="text"
+              matInput
+              class="dashboard-input"
+              formControlName="VideoInstance"
+            />
+          </mat-form-field>
+        </div>
+        <div class="form-container flex-child-7">
+          <mat-form-field appearance="outline" class="edit-form-field">
+            <mat-label> Editorial Feed </mat-label>
+            <input
+              type="text"
+              matInput
+              class="dashboard-input"
+              formControlName="EditorialFeed"
+            />
+          </mat-form-field>
+        </div>
+        <div class="form-container flex-child-7">
+          <mat-form-field appearance="outline" class="edit-form-field">
+            <mat-label> News Letter </mat-label>
+            <input
+              type="text"
+              matInput
+              class="dashboard-input"
+              formControlName="NewsLetter"
+            />
+          </mat-form-field>
+        </div>
+        <div class="form-container flex-child-7">
+          <mat-form-field appearance="outline" class="edit-form-field">
+            <mat-label> Social Feed </mat-label>
+            <input
+              type="text"
+              matInput
+              class="dashboard-input"
+              formControlName="SocialNetworkFeed"
+            />
+          </mat-form-field>
+        </div>
+        <div class="populate-container">          
+          <div
+            class="form-container p-message-container"
+            *ngIf="moduleInstance$ | async as module"
+          >
+          <mat-icon aria-hidden="false" (click)="resetPopulate($event)" class="close-populate-btn">
+            {{ icons.close }}
+          </mat-icon>
+            <ng-container *ngIf="module.instances.length > 0">
+              <p *ngFor="let m of module.instances; let i = index">
+                {{
+                  'More than 1 instance found for' +
+                    ' ' +
+                    codes[m.ModuleCode] +
+                    ' ' +
+                    '(' +
+                    m.ModuleCode +
+                    ')'
+                }}
+                <br />
+                <span *ngFor="let z of m.Zones; let zIndex = index">
+                  {{
+                    'Zone:' +
+                      ' ' +
+                      z.ZoneId +
+                      ' ' +
+                      'Is Pervasive:' +
+                      ' ' +
+                      z.IsPervasive +
+                      ' ' +
+                      'InstanceId:' +
+                      ' '
+                  }}
+                  <strong>{{ z.InstanceId }}</strong>
+                  <br />
+                </span>
+              </p>
+            </ng-container>
+            <ng-container *ngIf="module.nonInstances.length > 0">
+              <p *ngFor="let m of module.nonInstances; let i=index;">
+                {{'No Instance found for'+' '+m.ModuleName}}<strong>{{'('+m.ModuleCode+')'}}</strong>                
+              </p>
+            </ng-container>
+          </div>
+          <div class="form-container btn-container p-btn-container">
+            <button
+              type="button"
+              mat-raised-button
+              color="default"
+              class="btns-right"
+              (click)="
+                populate(
+                  this.editForm.get('preferences').value,
+                  this.editForm.get('masterId').value
+                )
+              "
+            >
+              Try To Populate
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="form-container">
+        <mat-divider></mat-divider>
+        <h3 class="section-labels">Page Setup</h3>
+      </div>
+      <div formGroupName="preferences" class="flex-container">
+        <div class="form-container flex-child-3">
+          <mat-form-field appearance="outline" class="edit-form-field">
+            <mat-label> Custom Page List </mat-label>
+            <input
+              type="text"
+              matInput
+              class="dashboard-input"
+              formControlName="CustomPages"
+            />
+          </mat-form-field>
+        </div>
+        <div class="form-container flex-child-3">
+          <mat-form-field appearance="outline" class="edit-form-field">
+            <mat-label> News Page Name </mat-label>
+            <input
+              type="text"
+              matInput
+              class="dashboard-input"
+              formControlName="NewsPage"
+            />
+          </mat-form-field>
+        </div>
+        <div class="form-container flex-child-3">
+          <mat-form-field appearance="outline" class="edit-form-field">
+            <mat-label> Main Zone Id </mat-label>
+            <mat-select
+              formControlName="mainZoneId"
+              class="mat-dark-select-panel"
+            >
+              <ng-container *ngIf="t.Preferences['zones']">
+                <mat-option
+                  *ngFor="
+                    let zone of t.Preferences.zones;
+                    let zoneIndex = index
+                  "
+                  [value]="zone.Indexer.ZoneId"
+                >
+                  {{ zone.Indexer.ZoneId }}
+                </mat-option>
+              </ng-container>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div>
+          <button
+            type="button"
+            mat-raised-button
+            class="btns-left"
+            color="default"
+            (click)="addNewTemplate()"
+          >
+            add new template
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  <div mat-dialog-actions>
+    <button
+      type="button"
+      mat-raised-button
+      mat-dialog-close
+      class="btns-right"
+      color="default"
+      (click)="close()"
+    >
+      Cancel
+    </button>
+    <button
+      type="button"
+      mat-raised-button
+      class="btns-right btn-u btn-primary"
+      (click)="save(editForm.value)"
+    >
+      Save
+    </button>
+  </div>
+</form>

@@ -1,0 +1,151 @@
+@import '_global';
+.hello {
+  color: #fff;
+}
+h1,
+h2 {
+  &.title {
+    text-transform: capitalize;
+  }
+}
+.disabled {
+  @extend .is-disabled;
+}
+.section-labels {
+  margin: 5px;
+  text-transform: capitalize;
+}
+.btn-container {
+  height: 50px;
+  @extend .w-100;
+}
+.btns {
+  text-transform: capitalize;
+  margin: auto 10px;
+}
+
+.left-margin {
+  margin: auto 5px;
+}
+.form-left-right-container {
+  margin: 0 10px;
+}
+.title-left-right-margin {
+  margin: 5px 10px;
+}
+.full-width-container {
+  @extend .w-100;
+}
+.logo-setup-container {
+  @extend .w-100;
+}
+div {
+  &.mat-dialog-content {
+    overflow: auto;
+    max-height: calc(100vh - 190px);
+  }
+  &.flex-setup-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    .flex-setup-child {
+      @extend .w-50;
+    }
+  }
+  &.flex-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    .flex-child-7 {
+      width: calc(14.28% - 20px);
+    }
+    .flex-child-3 {
+      width: calc(33.3333% - 20px);
+    }
+    .flex-child-2 {
+      width: calc(50% - 20px);
+    }
+  }
+}
+div {
+  &.populate-container {
+    @extend .w-100;
+    .p-message-container {
+      .close-populate-btn {
+        @extend .close-btn;
+        padding: 10px;
+      }
+      @extend .w-90;
+      @include float(left);
+      background-color: $color-dim-red;
+      min-height: 50px;
+      border-radius: 5px;
+      p {
+        color: $color-white-00;
+        text-align: justify;
+        text-transform: capitalize;
+        padding: 10px;
+      }
+    }
+    .p-btn-container {
+      @extend .w-10;
+      @include float(right);
+      display: flex;
+    }
+  }
+}
+::ng-deep {
+  mat-form-field {
+    &.edit-form-field {
+      @extend .w-100;
+      @extend .white-out-line-form;
+      mat-label {
+        text-transform: capitalize;
+      }
+      .mat-form-field-disabled {
+        @extend .is-disabled;
+      }
+    }
+  }
+  .mat-select-panel {
+    background: $color-blue-2f3646;
+    mat-option {
+      .mat-option-text {
+        color: $color-white-hsla;
+      }
+    }
+  }
+  .mat-dialog-container {
+    @extend .dialog-dark;
+  }
+  mat-checkbox {
+    text-transform: capitalize;
+  }
+  .mat-dialog-actions {
+    @include float(right);
+  }
+  .mat-checkbox-frame {
+    border-color: $color-white-hsla;
+  }
+}
+
+// styling scroll bar
+::-webkit-scrollbar {
+  width: 10px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: $color-white-f1;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: $color-gray-888;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: $color-gray-555;
+}

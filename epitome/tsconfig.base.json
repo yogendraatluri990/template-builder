@@ -1,0 +1,30 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2017", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@material": ["apps/template-builder/src/app/material/*"],
+      "@assortments": ["libs/assortments/src/index.ts"],
+      "@assortments/assets/*": ["libs/assortments/src/lib/assets/*"],
+      "@router": ["libs/router/src/index.ts"],
+      "@router/*": ["libs/router/src/lib/*"],
+      "@auth": ["libs/auth/src/index.ts"],
+      "@auth/*": ["libs/auth/src/lib/*"],
+      "@error-handler": ["libs/error-handler/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

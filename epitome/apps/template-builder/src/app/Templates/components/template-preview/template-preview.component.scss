@@ -1,0 +1,24 @@
+@import '_global';
+
+h1, h2 {
+    &.title {
+      text-transform: capitalize;
+    }
+  }
+
+  ::ng-deep {
+    .mat-dialog-container {
+        @extend .dialog-dark;
+      }
+      mat-form-field {
+          &.preview-form-field {
+              @extend .w-100;
+              @extend .white-out-line-form; 
+              textarea.mat-input-element {
+                &.text-area {
+                  min-height: 300px;
+                }
+              }
+          }
+      }
+  }

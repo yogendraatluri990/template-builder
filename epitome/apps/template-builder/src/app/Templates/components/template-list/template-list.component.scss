@@ -1,0 +1,122 @@
+@import '_global';
+
+.flex-title-container {
+  display: flex;
+  align-items: stretch;
+  max-width: 90%;
+  margin: 10px auto;
+  .page-title {
+    color: $color-white-00;
+    text-transform: capitalize;
+    text-align: center;
+  }
+}
+
+.content-container {
+  max-width: 90%;
+  @extend .w-100;
+  display: flex;
+  margin: 10px auto;
+  .form-container {
+    margin: auto 10px;
+    @extend .w-20;
+  }
+
+  mat-label {
+    @extend .mat-legacy-label;
+  }
+  mat-icon {
+    @extend .default-font-color;
+  }
+  .btn-container {
+    @extend .w-80;
+    .text-btn {
+      text-transform: capitalize;
+      @include float(right);
+    }
+  }
+}
+.action-btns {
+  margin: 5px;
+  text-transform: capitalize;
+  &.design-btn {
+    background: $color-blue-2f3646;
+    @extend .default-font-color;
+  }
+}
+
+/*
+   MAT-TABLE STYLING
+*/
+/* Structure */
+.mat-elevation-z8 {
+  @include boxShadow_3($shadows-blue-dark-3);
+}
+
+.example-table-container {
+  @extend .w-90;
+  margin: 0 auto;
+}
+.paginator-container {
+  position: relative;
+  @extend .w-90;
+  margin: 0 auto;
+}
+table {
+  @extend .w-100;
+  table-layout: fixed;
+  &.mat-table {
+    background: $color-darkblue-212433;
+  }
+  .mat-header-cell {
+    font-size: 1em;
+  }
+  .mat-cell,
+  .mat-footer-cell,
+  .mat-header-cell {
+    @extend .default-font-color;
+  }
+}
+
+.example-loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.example-rate-limit-reached {
+  color: #980000;
+  max-width: 360px;
+  text-align: center;
+}
+
+/* Column Widths */
+.mat-column-number,
+.mat-column-state {
+  max-width: 64px;
+}
+
+.mat-column-created {
+  max-width: 124px;
+}
+mat-paginator {
+  background: $color-darkblue-212433;
+  @extend .default-font-color;
+}
+::ng-deep {
+  @extend .white-legacy-form;
+  .mat-select-value {
+    @extend .default-font-color;
+    text-align: center;
+  }
+  .mat-select-arrow {
+    @extend .default-font-color;
+  }
+}

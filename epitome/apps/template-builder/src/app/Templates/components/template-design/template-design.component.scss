@@ -1,0 +1,70 @@
+@import '_global';
+
+.mat-elevation-z8 {
+  @include boxShadow_3($shadows-blue-dark-3);
+}
+.container {
+  @extend .w-90;
+  height: auto;
+  margin: 0 auto;
+  overflow-y: hidden;
+}
+
+.side-nav {
+  @extend .side-nav;
+  @include back_ground_color($color-fiord);
+  border-radius: 5px;
+  margin: auto 6px;
+  top: 35%;
+  transform: translateY(-35%);
+  position: absolute;
+  max-width: 30px;
+  span {
+    align-items: center;
+    margin: 5px;
+    cursor: pointer;
+    color: $color-white-hsla;
+  }
+}
+.disabled {
+  @extend .is-disabled;
+}
+.design-container {
+  margin: 10px;
+  max-width: calc(50% - 26px);
+  @extend .w-100;
+  min-height: 735px;
+  @include float(left);
+  background: $color-darkblue-212433;
+  border-radius: 4px;
+  .container-title {
+    @extend .default-font-color;
+    text-transform: capitalize;
+    margin: 5px auto;
+    text-align: center;
+  }
+}
+::ng-deep {
+  mat-form-field {
+    &.text-area-form {
+      margin: 0 5%;
+      @extend .w-90;
+      @extend .white-out-line-form;      
+      textarea.mat-input-element {
+        &.text-area {
+          min-height: 550px;
+        }
+      }
+    }
+  } 
+}
+.ninety-container {
+  @extend .w-90;
+  .btns {
+   @extend .btns;
+    @include float(right);
+  }
+  .btn-u {
+    @include float(right);
+  }
+}

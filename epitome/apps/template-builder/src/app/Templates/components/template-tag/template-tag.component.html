@@ -1,0 +1,324 @@
+<form [formGroup]="tagForm" novalidate>
+  <div class="tag-container" [ngClass]="{ disabled: !isStyle }">
+    <div [@dataLoad]="!(designSchemes$ | async) ? 'origin' : 'destination'">
+      <ngx-file-drop
+        dropZoneLabel="Drop files here"
+        (onFileDrop)="onColorSchemeDrop($event)"
+        [dropZoneClassName]="'drop-zone'"
+        [contentClassName]="'drop__content'"
+      >
+        <ng-template ngx-file-drop-content-tmp>
+          <div class="file-drop-space">
+            you can either drag and drop or import the color scheme file.
+          </div>
+          <div class="file-drop-space">
+            <input
+              type="file"
+              #fileImport
+              value=""
+              class="input-file"
+              (change)="onFileImport($event.target.files, $event)"
+              accept=".json, .txt"
+            />
+            <button
+              type="button"
+              mat-raised-button
+              color="default"
+              class="btn-i"
+              (click)="fileImport.click()"
+            >
+              import
+            </button>
+          </div>
+        </ng-template>
+      </ngx-file-drop>
+    </div>
+    <div class="tag-panel-container">
+      <ng-container *ngIf="designSchemes$ | async as tag">
+        <div
+          *ngIf="tag.ColorScheme.length > 0"
+          class="animate__animated animate__fadeInUp animate__delay-1s"
+        >
+          <div>
+            <button
+              type="button"
+              mat-raised-button
+              color="default"
+              class="btn-r"
+              (click)="addDesign()"
+              [ngClass]="{ disabled: tag.ColorScheme.length >= 9 }"
+            >
+              Add Design
+            </button>
+          </div>
+          <table
+            mat-table
+            [dataSource]="tag.ColorScheme"
+            multiTemplateDataRows
+            class="mat-elevation-z8"
+          >
+            <ng-container matColumnDef="designName">
+              <th mat-header-cell *matHeaderCellDef class="w-20">
+                <h5 class="column-headers">Design Name</h5>
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                style="color: hsla(0, 0%, 100%, 0.7)"
+              >
+                {{ row.Name }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="tags">
+              <th mat-header-cell *matHeaderCellDef class="w-10">
+                <h5 class="column-headers">tag</h5>
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                [style.color]="row.DesignColor"
+                style="font-weight: bold"
+              >
+                {{ row.DesignColor }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="css">
+              <th mat-header-cell *matHeaderCellDef class="w-40">
+                <h5 class="column-headers">css</h5>
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                style="color: hsla(0, 0%, 100%, 0.7)"
+              >
+                <span class="text-wrapper">
+                  {{ row.CSS }}
+                </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="image">
+              <th mat-header-cell *matHeaderCellDef class="w-20">
+                <h5 class="column-headers">image</h5>
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                style="color: hsla(0, 0%, 100%, 0.7)"
+              >
+                <div class="image-drop-container">
+                  <ngx-file-drop
+                    dropZoneLabel="Drop files here"
+                    (onFileDrop)="onImageDropped($event, row)"
+                    [dropZoneClassName]="'drop-zone'"
+                    [contentClassName]="'drop__content'"
+                  >
+                    <ng-template ngx-file-drop-content-tmp>
+                      <div *ngIf="row.MediaPath && row.MediaPath.length > 0">
+                        <img
+                          [src]="row.MediaPath"
+                          class=""
+                          width="85"
+                          height="85"
+                        />
+                      </div>
+                      <div
+                        class="file-drop-space"
+                        *ngIf="!(row.MediaPath && row.MediaPath.length > 0)"
+                      >
+                        upload image
+                      </div>
+
+                      <div
+                        class="file-drop-space"
+                        *ngIf="!(row.MediaPath && row.MediaPath.length > 0)"
+                      >
+                        <input
+                          type="file"
+                          #fileImport
+                          value=""
+                          class="input-file"
+                          (change)="onImageImport($event.target.files, row)"
+                          accept=".jpeg, .png"
+                        />
+                        <button
+                          type="button"
+                          mat-raised-button
+                          color="default"
+                          class="btn-i"
+                          (click)="fileImport.click()"
+                        >
+                          import
+                        </button>
+                      </div>
+                    </ng-template>
+                  </ngx-file-drop>
+                </div>
+              </td>
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef class="w-5">
+                  <h5 class="column-headers">actions</h5>
+                </th>
+                <td
+                  mat-cell
+                  *matCellDef="let row"
+                  style="color: hsla(0, 0%, 100%, 0.7); cursor: pointer"
+                  (click)="$event.stopPropagation()"
+                >
+                  <mat-icon
+                    aria-hidden="false"
+                    (click)="
+                      delete(row, tagForm.value, $event);
+                      $event.stopPropagation()
+                    "
+                    class="close-btn"
+                  >
+                    {{ icons.close }}
+                  </mat-icon>
+                </td>
+              </ng-container>
+            </ng-container>
+            <!-----------------------Expanded area --------------------------------->
+            <ng-container matColumnDef="expandedDetail">
+              <td
+                mat-cell
+                *matCellDef="let element"
+                [attr.colspan]="columnsToDisplay.length"
+              >
+                <div
+                  class="example-element-detail"
+                  [@detailExpand]="
+                    element === color_scheme ? 'expanded' : 'collapsed'
+                  "
+                >
+                  <div class="expanded-container">
+                    <h5>
+                      <span
+                        contenteditable="true"
+                        (keydown.shift.enter)="$event.target.blur()"
+                        (keydow.enter)="$event.target.blur()"
+                        spellcheck="false"
+                        inlineEditor
+                        [designName]="element.Name"
+                        [designId]="element.Id"
+                        (updatedValue)="designNameChange($event)"
+                        >{{ element.Name }}</span
+                      >
+                    </h5>
+                  </div>
+                  <div class="expanded-tag-container">
+                    <ng-container formArrayName="ColorScheme">
+                      <ng-container
+                        *ngFor="
+                          let color of tagForm.get('ColorScheme')['controls'];
+                          let colorIndex = index
+                        "
+                        [formGroupName]="colorIndex"
+                      >
+                        <ng-container
+                          *ngIf="color !== undefined && color !== null"
+                        >
+                          <ng-container formArrayName="DesignTags">
+                            <ng-container
+                              *ngIf="color.get('Name').value === element.Name"
+                            >
+                              <div
+                                class="tag-form-container"
+                                *ngFor="
+                                  let t of color.get('DesignTags')['controls'];
+                                  let tagIndex = index
+                                "
+                                [formGroupName]="tagIndex"
+                              >
+                                <mat-form-field
+                                  appearance="outline"
+                                  class="tag-form-field"
+                                >
+                                  <mat-label>
+                                    {{ t.get('Name').value }}
+                                  </mat-label>
+                                  <input
+                                    matInput
+                                    type="text"
+                                    formControlName="Value"
+                                    class="dashboard-input"
+                                    required
+                                  />
+                                  <mat-error
+                                    *ngIf="t.get('Value').errors?.required"
+                                    >{{
+                                      t.get('Name').value +
+                                        ' ' +
+                                        'color is required'
+                                    }}</mat-error
+                                  >
+                                  <mat-error
+                                    *ngIf="t.get('Value').errors?.isInValid"
+                                    >please provide a valid hex code</mat-error
+                                  >
+                                </mat-form-field>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                  <div class="expanded-contianer btn-wraper-container">
+                    <button
+                      type="button"
+                      mat-raised-button
+                      class="btn-primary btn-l"
+                      (click)="save(element, tagForm.value)"
+                    >
+                      save
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+            <tr
+              mat-header-row
+              *matHeaderRowDef="columnsToDisplay; sticky: true"
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="let element; columns: columnsToDisplay"
+              class="example-element-row"
+              [class.example-expanded-row]="color_scheme === element"
+              (click)="color_scheme = color_scheme === element ? null : element"
+            ></tr>
+            >
+            <tr
+              mat-row
+              *matRowDef="let row; columns: ['expandedDetail']"
+              class="example-detail-row"
+            ></tr>
+          </table>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <footer style="height: 40px">
+    <section>
+      <p style="visibility: hidden; height: 10px">
+        Template-Builder is tool which will help us to convert an existing
+        un-published site into a template. The template-builder is rewrite of an
+        existing template-convertion application which was return asp.net few
+        years ago. And it became a legacy application and have a lot styling
+        issues. Since it was written a while back. There is a lot of technical
+        debt. The new template-builder is written angular-11 and
+        angular-material with a mono-repo folder structure supported by nx-nrwl
+        team. I named this mono-repo as 'Epitome'. Which means 'a person or
+        thing that is a prefect example of a particular quality or type'.
+        Epitome mono-repo consists of libraries and applications.
+        Template-Builder application is a part of this mono-repo ecosystem,
+        which consumes sharable libraries that are available in the ecosystem. I
+        have customized the template-builder application into using a
+        dark-blue-theme. Dark theming is a new trend in the web-designing world.
+        Dark themes enhance user friendly experience. Dark mode is became more
+        popular in 2020. it reduces the effect on user eyes. Author :-
+        'Yogendra.Atluri'
+      </p>
+    </section>
+  </footer>
+</form>

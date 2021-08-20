@@ -1,0 +1,47 @@
+@import '_global';
+
+.mat-elevation-z8 {
+  @include boxShadow_3($shadows-blue-dark-3);
+}
+.side-nav {
+  @extend .side-nav; 
+  @extend .mat-elevation-z8;
+  @include back_ground_color($color-darkblue-212433);
+  @include transForm(translateY(-50%));  
+  div {
+    align-items: center;
+    margin: 5px;
+  }
+  .log-out {
+    @extend div;
+    cursor: pointer;
+  }
+  .label-text {
+    text-align: center;
+    text-transform: capitalize;
+    font-size: small;
+    padding: 2px;
+    @extend .default-font-color;
+  }
+}
+.avatar {
+  vertical-align: middle;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  padding: 5px;
+  margin: auto;
+}
+
+.user-name {
+  text-align: center;
+  height: 10px;
+  text-transform: capitalize;
+  @extend .default-font-color;
+}
+mat-icon {
+  margin: 0 15px;
+}
+.active {
+  background: $color-blue-2f3646;
+}
