@@ -36,7 +36,9 @@ export class TemplateDesignComponent implements OnInit {
   public designForm: FormGroup = this.getDesignForm();
   public currentTemplate$ = this._activatedRoute.queryParams;
   public addDesignTagFlg = true;
-  public get icons(): typeof icons { return icons};
+  public get icons(): typeof icons {
+    return icons;
+  }
   /**
    *
    * @param {FormBuilder} _formBuilder
@@ -45,6 +47,9 @@ export class TemplateDesignComponent implements OnInit {
    * @param {MatDialog} _matDialog
    */
 
+  //----------------------------------------------------------------------------------------------------------------------------
+  //@Constructor
+  //------------------------------------------------------------------------------------------------------------------------------
   constructor(
     private _formBuilder: FormBuilder,
     private _router: Router,
@@ -52,26 +57,19 @@ export class TemplateDesignComponent implements OnInit {
     private _matDialog: MatDialog
   ) {}
 
+  //-----------------------------------------------------------------------------------------------------------------------------
+  //@Life Cycle Hooks
+  //-------------------------------------------------------------------------------------------------------------------------------
+
   ngOnInit(): void {
     // tslint:disable-next-line: deprecation
     this._activatedRoute.queryParams.subscribe();
-  }
-  
-  // ---------------------------------------------------
-  // @Private Methods
-  // ---------------------------------------------------
-  private afterDialogClosed(result) {
-    console.log(result);
-  }
-
-  private errorHandler(error) {
-    console.log(error);
   }
 
   // ---------------------------------------------------
   // @Public Methods
   // ---------------------------------------------------
-  public preview() {
+  preview() {
     const dialogRef: MatDialogRef<TemplatePreviewComponent> = this._matDialog.open(
       TemplatePreviewComponent,
       {
@@ -86,9 +84,9 @@ export class TemplateDesignComponent implements OnInit {
     dialogRef.afterClosed().subscribe({
       next: this.afterDialogClosed.bind(this),
       error: this.errorHandler.bind(this),
-    })
+    });
   }
-  public addTemplate() {
+  addTemplate() {
     const dialogRef: MatDialogRef<TemplateAddTagComponent> = this._matDialog.open(
       TemplateAddTagComponent,
       {
@@ -100,18 +98,29 @@ export class TemplateDesignComponent implements OnInit {
       }
     );
   }
-  public getDesignForm(): FormGroup {
+  getDesignForm(): FormGroup {
     return this._formBuilder.group({
       templateId: ['', []],
       templateName: ['', []],
       templateCSS: ['', [validateStyle.bind(this), Validators.required]],
     });
   }
-  public save() {
+  save() {
     console.log('I am still clicking');
   }
-  public cancel() {
+  cancel() {
     this._router.navigate(['/dashboard/templates/template-list']);
+  }
+
+  // ---------------------------------------------------
+  // @Private Methods
+  // ---------------------------------------------------
+  private afterDialogClosed(result) {
+    console.log(result);
+  }
+
+  private errorHandler(error) {
+    console.log(error);
   }
 }
 
@@ -121,8 +130,6 @@ const routes: Routes = [
     component: TemplateDesignComponent,
   },
 ];
-
-
 
 // ---------------------------------------------------------------------------------------------------
 // @NgModule

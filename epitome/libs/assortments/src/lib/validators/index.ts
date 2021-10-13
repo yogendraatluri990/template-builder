@@ -1,2 +1,1 @@
-export * from './style';
-export * from './hex';
+export * from './validators';

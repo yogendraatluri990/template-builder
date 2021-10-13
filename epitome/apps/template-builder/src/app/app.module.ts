@@ -30,8 +30,8 @@ import { AppComponent } from './app.component';
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,      
-    ReactiveFormsModule,    
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
     ...Material_Modules,
     NgxsModule.forRoot([], {
       developmentMode: !environment.production,
@@ -39,7 +39,9 @@ import { AppComponent } from './app.component';
     NgxsFormPluginModule.forRoot(),
     NgxsRouterPluginModule.forRoot(),
     NgxsDispatchPluginModule.forRoot(),
-    NgxsLoggerPluginModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot({
+      disabled: true
+    }),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     AssortmentsModule.forRoot(),
     AuthModule.forRoot(),
@@ -48,7 +50,7 @@ import { AppComponent } from './app.component';
   providers: [{provide: ENIVORNMENT_CONFIG, useValue: environment},{
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
-    multi: true    
+    multi: true
   }],
   bootstrap: [AppComponent],
 })

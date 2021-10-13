@@ -48,6 +48,8 @@ export class TemplateEditComponent implements OnInit, OnDestroy {
   public template$ = this._facade.template$.pipe(
     tap((response: EditTemplate) => {
       if (response) {
+        console.log('current edit template', response);
+        console.log()
         this.editForm.reset({ ..._util.mapper(response), applicationId: this.data.currentApplicationId });
         response.hasOwnProperty('MarketGroupDetails')
           ? this.editForm.get('industry').enable()

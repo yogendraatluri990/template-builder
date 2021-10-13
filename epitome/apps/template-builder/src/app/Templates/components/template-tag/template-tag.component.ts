@@ -254,8 +254,8 @@ export class TemplateTagComponent implements OnInit, OnDestroy {
       _util.parsingColorScheme(
         color_scheme,
         tagForm.ColorScheme,
-        parseInt(color_scheme.Id, 0) === this.inlineObj.key
-          ? this.inlineObj.currentValue
+        parseInt(color_scheme.Id, 0) === this.inlineObj?.key
+          ? this.inlineObj?.currentValue
           : null
       )
     );

@@ -155,6 +155,12 @@ tr.example-element-row:not(.example-expanded-row):hover {
     align-items: center;
     display: flex;
     flex-wrap: wrap;
+
+    .tag-form-container {
+      margin: 5px;
+      padding: 5px;
+      width: calc((100% / 2) - 20px);
+    }
   }
   .btn-wraper-container {
     @extend .w-20;
@@ -183,9 +189,7 @@ tr.example-element-row:not(.example-expanded-row):hover {
 .example-element-description-attribution {
   opacity: 0.5;
 }
-.tag-form-container {
-  margin: 5px;
-}
+
 
 [contenteditable='true']:focus {
   display: flex;

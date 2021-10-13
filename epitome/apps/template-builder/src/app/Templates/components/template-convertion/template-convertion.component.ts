@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, NgModule } from '@angular/core';
+import { Component, Inject, NgModule } from '@angular/core';
 import {
   FormGroup,
   Validators,
@@ -24,7 +24,7 @@ import {TemplateState} from '../../store';
   templateUrl: './template-convertion.component.html',
   styleUrls: ['./template-convertion.component.scss'],
 })
-export class TemplateConvertionComponent implements OnInit {
+export class TemplateConvertionComponent{
   public convertionForm: FormGroup = this.getForm();
   public get icons(): typeof icons {return icons };
   public templateAppInfo$ = this._facade.templateAppInfo$.pipe(tap((response) => {
@@ -41,6 +41,9 @@ export class TemplateConvertionComponent implements OnInit {
    * @param {DashboardFacade} _dashboardFacade
    */
 
+  //----------------------------------------------------------------------------------------------------------------------------
+  //@Constructor
+  //------------------------------------------------------------------------------------------------------------------------------
   constructor(
     private _matDialogRef: MatDialogRef<TemplateConvertionComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -48,30 +51,33 @@ export class TemplateConvertionComponent implements OnInit {
     private _facade: TemplateFacade
   ) {}
 
-  ngOnInit(): void {}
 
-  // ----------------------------------------------------------------
-  // @Private Methods
-  // ----------------------------------------------------------------
+
+
 
   // ----------------------------------------------------------------
   // @ Public Methods
   // ----------------------------------------------------------------
-  public getForm(): FormGroup {
+  getForm(): FormGroup {
     return this._formBuilder.group({
       appCode: ['', [Validators.required]],
       validTemplate: [false, [Validators.required]]
     });
   }
-  public onClose() {
+  onClose() {
     this._matDialogRef.close();
   }
-  public findAppCode(appCode: string) {
+  findAppCode(appCode: string) {
     this._facade.getAppInfo(appCode);
   }
-  public onConvert(appCode: string) {
+  onConvert(appCode: string) {
     if (appCode) this._facade.convertToTemplate(appCode);
   }
+
+    // ----------------------------------------------------------------
+  // @Private Methods
+  // ----------------------------------------------------------------
+
 }
 
 @NgModule({

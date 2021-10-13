@@ -40,8 +40,7 @@ export class Media {
   ): Array<T> {
     const mediaCollection: Array<T> = [];
     if (MediaPathFlg) {
-      if (typeof mediaObject !== undefined && mediaObject) {
-        mediaObject.forEach((v, k) => {
+        mediaObject?.forEach((v, k) => {
           if (v['UseCustomMedia'] === true || v['IsCustomImage'] === 'Y') {
             v['MediaPath'] = `${smartLinkUrl}+${MediaPath}.json`;
             mediaCollection.push(v);
@@ -78,7 +77,6 @@ export class Media {
             }
           }
         });
-      }
       return mediaCollection;
     } else {
       return mediaObject;

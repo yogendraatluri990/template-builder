@@ -9,7 +9,7 @@ import {
 } from '../types';
 
 import { AuthServiceConfigMock } from '../mocks';
-import { exception } from 'console';
+
 
 const mockLoginCredentials = {
   asi_number: 'test',
@@ -45,7 +45,6 @@ describe('AuthService', () => {
       const res = http.expectOne(
         `${AuthServiceConfigMock.Url}${AuthServiceConfigMock.tokenPath}`
       );
-      console.log('response request', res);
       res.flush('Post');
       expect(res.request.method).toBe('POST');
     }));

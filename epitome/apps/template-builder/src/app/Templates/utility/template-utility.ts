@@ -19,16 +19,13 @@ export class TemplateUtility {
   public static mapper(template: EditTemplate): TemplateForm {
     /** Edit Template Mapper */
     if (template) {
+      console.log(template?.Templates?.find((v) => v.TemplateId === template?.SelectedTemplate?.Template_ID)?.TemplateId);
       return {
         name: template.FormattedName,
         description: template.Description,
         active: template.Active,
-        designTemplateId:
-          template.Templates[
-            template.Templates.findIndex(
-              (v) => v.TemplateId === template.SelectedTemplate.Template_ID
-            )
-          ].TemplateId,
+        designTemplateId: template?.Templates?.find((v) => v.TemplateId === template?.SelectedTemplate?.Template_ID)?.TemplateId,
+
         industry: 'Default',
         preferences: {
           IntroInstance: template.Preferences.IntroInstance,
@@ -48,18 +45,18 @@ export class TemplateUtility {
         },
         title: template.Title,
         relationShipRole:
-          template.Relationship_FLG.toUpperCase() === 'M'
+          template.Relationship_FLG?.toUpperCase() === 'M'
             ? 'Master'
-            : template.Relationship_FLG.toUpperCase() === 'S'
+            : template.Relationship_FLG?.toUpperCase() === 'S'
             ? 'Slave'
             : 'Undefined',
         masterId:
-          template.Relationship_FLG.toUpperCase() === 'S'
-            ? template.RelationshipInfo
-              ? template.RelationshipInfo.SelectedRlationshipInfo.Application_ID
+          template.Relationship_FLG?.toUpperCase() === 'S'
+            ? template?.RelationshipInfo
+              ? template.RelationshipInfo?.SelectedRlationshipInfo?.Application_ID
               : 0
             : 0,
-        visibilty_flg: template.SelectedTemplate.Visibility_Flg === '1',
+        visibilty_flg: template.SelectedTemplate?.Visibility_Flg === '1',
       };
     }
   }
