@@ -1,0 +1,54 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": true,
+  "editor.formatOnSave": true,
+
+  "[html]": {
+    "editor.formatOnSave": true
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[scss]": {
+    "editor.formatOnSave": true
+  },
+  "[typescript]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    },
+    "editor.formatOnSave": true
+  },
+
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.preferences.quoteStyle": "single",
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "es5",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "ng2ComponentGenerator.config": {
+    "global": {
+      "quotes": "single", // or "double",
+      "generateFolder": true // or false
+    },
+    "files": {
+      "component": {
+        "create": true,
+        "extension": "ts",
+        "template": "${workspaceRoot}/templates/component.template"
+      },
+      "css": {
+        "create": true,
+        "extension": "scss"
+      },
+      "html": {
+        "create": true,
+        "extension": "html"
+      },
+      "module": {
+        "create": false
+      }
+    }
+  },
+  "autoBarrel.ignoreFilePathContainingAnyOf": ".spec,.test,state.ts",
+  "autoBarrel.disableRecursiveBarrelling": true
+}

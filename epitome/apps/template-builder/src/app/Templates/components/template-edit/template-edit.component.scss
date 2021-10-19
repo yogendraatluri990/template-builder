@@ -88,9 +88,10 @@ div {
       }
     }
     .p-btn-container {
-      @extend .w-10;
-      @include float(right);
+      @extend .w-100;
       display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
     }
   }
 }
