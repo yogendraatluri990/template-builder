@@ -1,14 +1,14 @@
-@import "_global";
+@import '_global';
 
 .logo {
-    @extend .esp-logo;
-     img {
-       max-width: 100%;
-       height: auto;
-       vertical-align: top;
-     }
-   }
-   .title {
-     @extend .esp-title;
-     text-align: center;
-   }
+  @extend .esp-logo;
+  img {
+    max-width: 100%;
+    height: auto;
+    vertical-align: top;
+  }
+}
+.title {
+  @extend .esp-title;
+  text-align: center;
+}

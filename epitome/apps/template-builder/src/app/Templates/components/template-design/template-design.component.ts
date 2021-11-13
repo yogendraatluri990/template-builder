@@ -70,16 +70,14 @@ export class TemplateDesignComponent implements OnInit {
   // @Public Methods
   // ---------------------------------------------------
   preview() {
-    const dialogRef: MatDialogRef<TemplatePreviewComponent> = this._matDialog.open(
-      TemplatePreviewComponent,
-      {
+    const dialogRef: MatDialogRef<TemplatePreviewComponent> =
+      this._matDialog.open(TemplatePreviewComponent, {
         width: '400px',
         disableClose: true,
         position: {
           top: '10%',
         },
-      }
-    );
+      });
     // tslint:disable-next-line: deprecation
     dialogRef.afterClosed().subscribe({
       next: this.afterDialogClosed.bind(this),
@@ -87,16 +85,14 @@ export class TemplateDesignComponent implements OnInit {
     });
   }
   addTemplate() {
-    const dialogRef: MatDialogRef<TemplateAddTagComponent> = this._matDialog.open(
-      TemplateAddTagComponent,
-      {
+    const dialogRef: MatDialogRef<TemplateAddTagComponent> =
+      this._matDialog.open(TemplateAddTagComponent, {
         width: '400px',
         disableClose: true,
         position: {
           top: '10%',
         },
-      }
-    );
+      });
   }
   getDesignForm(): FormGroup {
     return this._formBuilder.group({

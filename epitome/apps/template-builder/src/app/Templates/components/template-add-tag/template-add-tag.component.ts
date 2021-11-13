@@ -30,7 +30,7 @@ import { TemplateUtility as _templateUtil } from '../../utility';
       <h2 mat-dialog-title class="title">
         add new design tag
         <mat-icon aria-hidden="false" (click)="close()" class="close-btn">
-          {{icons.close}}
+          {{ icons.close }}
         </mat-icon>
       </h2>
       <div mat-dialog-content>
@@ -86,7 +86,8 @@ import { TemplateUtility as _templateUtil } from '../../utility';
             </mat-error>
             <mat-error
               *ngIf="tagForm.get('defaultValue').errors?.isInValid"
-              class="mat-tag-error">
+              class="mat-tag-error"
+            >
               please provide a valid hex code
             </mat-error>
           </mat-form-field>
@@ -106,7 +107,7 @@ import { TemplateUtility as _templateUtil } from '../../utility';
           type="button"
           mat-raised-button
           class="btns-right btn-primary"
-          (click)="save(tagForm.value)"          
+          (click)="save(tagForm.value)"
         >
           save
         </button>

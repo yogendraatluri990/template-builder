@@ -13,11 +13,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 // --------------------------------------------------------------
 // @importing local page modules
-import { MessengerModule} from './pages';
+import { MessengerModule } from './pages';
 import { InlineEditorDirective } from './directives';
-
-
-
 
 @NgModule({
   imports: [
@@ -31,7 +28,7 @@ import { InlineEditorDirective } from './directives';
     MatSnackBarModule,
     ReactiveFormsModule,
   ],
-  exports: [    
+  exports: [
     InlineEditorDirective,
     CommonModule,
     ReactiveFormsModule,
@@ -39,7 +36,7 @@ import { InlineEditorDirective } from './directives';
     HttpClientModule,
     MessengerModule,
   ],
-  declarations: [InlineEditorDirective],  
+  declarations: [InlineEditorDirective],
 })
 export class AssortmentsModule {
   public static forRoot(): ModuleWithProviders<AssortmentsModule> {

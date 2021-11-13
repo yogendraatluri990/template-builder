@@ -49,19 +49,19 @@
     &.text-area-form {
       margin: 0 5%;
       @extend .w-90;
-      @extend .white-out-line-form;      
+      @extend .white-out-line-form;
       textarea.mat-input-element {
         &.text-area {
           min-height: 550px;
         }
       }
     }
-  } 
+  }
 }
 .ninety-container {
   @extend .w-90;
   .btns {
-   @extend .btns;
+    @extend .btns;
     @include float(right);
   }
   .btn-u {

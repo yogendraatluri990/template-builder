@@ -1,15 +1,15 @@
-@import "_global";
+@import '_global';
 .dashboard-container {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    @extend .w-100;
-    background-color: transparent;
-    height: 100vh;
-.side-nav-container {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  @extend .w-100;
+  background-color: transparent;
+  height: 100vh;
+  .side-nav-container {
     flex-grow: 1;
-}
-.child-route-container {
+  }
+  .child-route-container {
     flex-grow: 15;
-}
+  }
 }

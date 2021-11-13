@@ -1,6 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import {HttpClientTestingModule} from '@angular/common/http/testing'
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { TemplateFacade } from '../../facades';
@@ -17,7 +17,7 @@ describe('TemplatesComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TemplateListComponent],
-      imports: [        
+      imports: [
         BrowserAnimationsModule,
         HttpClientTestingModule,
         TemplateListComponentModule,

@@ -1,33 +1,35 @@
-import { Component, OnInit, Inject, OnDestroy, NgModule } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { Component, Inject, NgModule, OnDestroy, OnInit } from '@angular/core';
 import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import {
+  MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA,
-  MatDialog,
 } from '@angular/material/dialog';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { tap, map } from 'rxjs/operators';
-import { NgxsModule } from '@ngxs/store';
-import { NgxsFormPluginModule } from '@ngxs/form-plugin';
-
 // importing material modules
-import { Material_Modules, icons } from '@assortments';
+import { icons, Material_Modules } from '@assortments';
+import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { NgxsModule } from '@ngxs/store';
+import { tap } from 'rxjs/operators';
+import { instanceControllerNames, instanceNames } from '../../constants';
 // @importing facades
 import { TemplateFacade } from '../../facades';
-import {
-  EditTemplate,
-  TemplateForm,
-  Preferences,
-  ModuleInstance,
-  InstanceDuplicate,
-} from '../../types';
-import { instanceNames, instanceControllerNames } from '../../constants';
-
-// @importing utility class
-import { TemplateUtility as _util } from '../../utility';
 // @importing store
 import { TemplateState } from '../../store';
+import {
+  EditTemplate,
+  InstanceDuplicate,
+  Preferences,
+  TemplateForm,
+} from '../../types';
+// @importing utility class
+import { TemplateUtility as _util } from '../../utility';
 
 @Component({
   selector: 'tb-edit',
@@ -49,8 +51,11 @@ export class TemplateEditComponent implements OnInit, OnDestroy {
     tap((response: EditTemplate) => {
       if (response) {
         console.log('current edit template', response);
-        console.log()
-        this.editForm.reset({ ..._util.mapper(response), applicationId: this.data.currentApplicationId });
+        console.log();
+        this.editForm.reset({
+          ..._util.mapper(response),
+          applicationId: this.data.currentApplicationId,
+        });
         response.hasOwnProperty('MarketGroupDetails')
           ? this.editForm.get('industry').enable()
           : this.editForm.get('industry').disable();
@@ -119,7 +124,7 @@ export class TemplateEditComponent implements OnInit, OnDestroy {
     });
   }
   private populateMapper(controllerName: string): void {
-    this.editForm.get('preferences').get(controllerName.trim()).reset('');
+    this.editForm.get('preferences').get(controllerName?.trim())?.reset('');
   }
   // --------------------------------------------------------------------
   // Public Methods

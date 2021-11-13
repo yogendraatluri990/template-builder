@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { RestClient } from './rest-client.service';
-
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Images } from '../types';
+import { RestClient } from './rest-client.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,5 +15,5 @@ export abstract class ImageService<T> extends RestClient implements Images<T> {
   constructor(protected _http: HttpClient) {
     super(_http);
   }
-  abstract uploadImage(formData: FormData): Promise<T>;
+  abstract uploadImage(formData: FormData): Observable<T>;
 }

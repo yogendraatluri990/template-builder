@@ -13,7 +13,7 @@ import { throwError } from 'rxjs';
 import { DashboardService } from '../../../services';
 
 // @importing models
-import { DashboardStateModel} from '../models/model';
+import { DashboardStateModel } from '../models/model';
 
 // @importing actions
 import { Dashboard } from '../actions/actions';
@@ -56,7 +56,7 @@ export class DashboardState implements NgxsOnInit {
       ctx.patchState({
         user: userInfo,
       });
-    //   ctx.dispatch(new Accounts.StoreUserAccount(userInfo));
+      //   ctx.dispatch(new Accounts.StoreUserAccount(userInfo));
     } catch (error) {
       throwError(error);
     }

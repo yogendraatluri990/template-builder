@@ -1,4 +1,4 @@
 export const AuthServiceConfigMock = {
-  Url:'test',
-  tokenPath:'test',
-}
+  Url: 'test',
+  tokenPath: 'test',
+};

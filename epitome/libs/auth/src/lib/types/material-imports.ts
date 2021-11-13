@@ -19,26 +19,25 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatExpansionModule } from '@angular/material/expansion';
 
-
 export const Material_Modules = [
-    MatButtonModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatTableModule,
-    MatProgressSpinnerModule,
-    MatInputModule,
-    MatPaginatorModule,
-    MatIconModule,
-    MatCheckboxModule,
-    MatSidenavModule,
-    MatRadioModule,
-    MatToolbarModule,
-    MatMenuModule,
-    MatListModule,
-    MatCardModule,
-    MatTooltipModule,
-    MatDividerModule,
-    MatSelectModule,
-    MatStepperModule,
-    MatExpansionModule
-]
+  MatButtonModule,
+  MatDialogModule,
+  MatFormFieldModule,
+  MatTableModule,
+  MatProgressSpinnerModule,
+  MatInputModule,
+  MatPaginatorModule,
+  MatIconModule,
+  MatCheckboxModule,
+  MatSidenavModule,
+  MatRadioModule,
+  MatToolbarModule,
+  MatMenuModule,
+  MatListModule,
+  MatCardModule,
+  MatTooltipModule,
+  MatDividerModule,
+  MatSelectModule,
+  MatStepperModule,
+  MatExpansionModule,
+];

@@ -53,7 +53,7 @@ export class AuthInterceptor implements HttpInterceptor {
       } else if (this._reqStartWith(req, this._smartLinkConfig)) {
         return this._smartLinkRequest(req, next);
       } else {
-       return next.handle(req)
+        return next.handle(req);
       }
     }
   }
@@ -72,8 +72,8 @@ export class AuthInterceptor implements HttpInterceptor {
 
   _smartLinkRequest(req: HttpRequest<any>, next: HttpHandler) {
     if (!req.url.endsWith('.json')) {
-      if(!(req.url.indexOf('.json') > -1)) {
-      req = req.clone({ url: `${req.url}.json` });
+      if (!(req.url.indexOf('.json') > -1)) {
+        req = req.clone({ url: `${req.url}.json` });
       }
     }
     return this._jwtRequest(req, next);

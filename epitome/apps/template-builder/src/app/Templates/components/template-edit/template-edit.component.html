@@ -272,23 +272,27 @@
             />
           </mat-form-field>
         </div>
-        <div class="populate-container">          
+        <div class="populate-container">
           <div
             class="form-container p-message-container"
             *ngIf="moduleInstance$ | async as module"
           >
-          <mat-icon aria-hidden="false" (click)="resetPopulate($event)" class="close-populate-btn">
-            {{ icons.close }}
-          </mat-icon>
+            <mat-icon
+              aria-hidden="false"
+              (click)="resetPopulate($event)"
+              class="close-populate-btn"
+            >
+              {{ icons.close }}
+            </mat-icon>
             <ng-container *ngIf="module.instances.length > 0">
               <p *ngFor="let m of module.instances; let i = index">
                 {{
                   'More than 1 instance found for' +
                     ' ' +
-                    codes[m.ModuleCode] +
+                    codes[m?.ModuleCode] +
                     ' ' +
                     '(' +
-                    m.ModuleCode +
+                    m?.ModuleCode +
                     ')'
                 }}
                 <br />
@@ -311,8 +315,9 @@
               </p>
             </ng-container>
             <ng-container *ngIf="module.nonInstances.length > 0">
-              <p *ngFor="let m of module.nonInstances; let i=index;">
-                {{'No Instance found for'+' '+m.ModuleName}}<strong>{{'('+m.ModuleCode+')'}}</strong>                
+              <p *ngFor="let m of module.nonInstances; let i = index">
+                {{ 'No Instance found for' + ' ' + m.ModuleName
+                }}<strong>{{ '(' + m.ModuleCode + ')' }}</strong>
               </p>
             </ng-container>
           </div>

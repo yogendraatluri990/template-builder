@@ -40,43 +40,40 @@ export class Media {
   ): Array<T> {
     const mediaCollection: Array<T> = [];
     if (MediaPathFlg) {
-        mediaObject?.forEach((v, k) => {
-          if (v['UseCustomMedia'] === true || v['IsCustomImage'] === 'Y') {
-            v['MediaPath'] = `${smartLinkUrl}+${MediaPath}.json`;
+      mediaObject?.forEach((v, k) => {
+        if (v['UseCustomMedia'] === true || v['IsCustomImage'] === 'Y') {
+          v['MediaPath'] = `${smartLinkUrl}+${MediaPath}.json`;
+          mediaCollection.push(v);
+        } else {
+          let media_path: string;
+          const mediaResponsePath: string = v.hasOwnProperty('MediaId')
+            ? v['MediaId'].toString()
+            : '';
+          if (mediaResponsePath.length > 4) {
+            media_path = mediaResponsePath.substring(
+              0,
+              mediaResponsePath.length - 4
+            );
+            media_path = media_path + '0000';
+            if (!(v['MediaId'].toString().indexOf('12345') > -1))
+              v[
+                'MediaPath'
+              ] = `${cdn_Path}${media_path}/${mediaResponsePath}/${mediaName}`;
             mediaCollection.push(v);
           } else {
-            let media_path: string;
-            const mediaResponsePath: string = v.hasOwnProperty('MediaId')
-              ? v['MediaId'].toString()
-              : '';
-            if (mediaResponsePath.length > 4) {
-              media_path = mediaResponsePath.substring(
-                0,
-                mediaResponsePath.length - 4
-              );
-              media_path = media_path + '0000';
-              if (!(v['MediaId'].toString().indexOf('12345') > -1))
+            if (mediaResponsePath.length > 0 && mediaResponsePath.length < 4) {
+              media_path = '10000';
+              if (!(v['MediaId'].indexOf('12345') > -1))
                 v[
                   'MediaPath'
-                ] = `${cdn_Path}${media_path}/${mediaResponsePath}/${mediaName}`;
+                ] = `${cdn_Path}${media_path}/${mediaResponsePath}.jpg`;
               mediaCollection.push(v);
             } else {
-              if (
-                mediaResponsePath.length > 0 &&
-                mediaResponsePath.length < 4
-              ) {
-                media_path = '10000';
-                if (!(v['MediaId'].indexOf('12345') > -1))
-                  v[
-                    'MediaPath'
-                  ] = `${cdn_Path}${media_path}/${mediaResponsePath}.jpg`;
-                mediaCollection.push(v);
-              } else {
-                console.log('not possible');
-              }
+              console.log('not possible');
             }
           }
-        });
+        }
+      });
       return mediaCollection;
     } else {
       return mediaObject;

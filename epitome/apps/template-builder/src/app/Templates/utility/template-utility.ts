@@ -1,15 +1,17 @@
 import {
-  TemplateForm,
-  EditTemplate,
+  designSchemeConstants,
+  ModuleInstanceCode as _instanceCodes,
+} from '../constants';
+import {
   ColorScheme,
-  ImageFile,
   DesignScheme,
-  Tag,
+  EditTemplate,
+  ImageFile,
+  InstanceDuplicate,
   ModuleInstance,
-  ModuleZones,
-  Preferences
+  Tag,
+  TemplateForm,
 } from '../types';
-import { designSchemeConstants } from '../constants';
 
 export class TemplateUtility {
   // -----------------------
@@ -19,12 +21,18 @@ export class TemplateUtility {
   public static mapper(template: EditTemplate): TemplateForm {
     /** Edit Template Mapper */
     if (template) {
-      console.log(template?.Templates?.find((v) => v.TemplateId === template?.SelectedTemplate?.Template_ID)?.TemplateId);
+      console.log(
+        template?.Templates?.find(
+          (v) => v.TemplateId === template?.SelectedTemplate?.Template_ID
+        )?.TemplateId
+      );
       return {
         name: template.FormattedName,
         description: template.Description,
         active: template.Active,
-        designTemplateId: template?.Templates?.find((v) => v.TemplateId === template?.SelectedTemplate?.Template_ID)?.TemplateId,
+        designTemplateId: template?.Templates?.find(
+          (v) => v.TemplateId === template?.SelectedTemplate?.Template_ID
+        )?.TemplateId,
 
         industry: 'Default',
         preferences: {
@@ -53,7 +61,8 @@ export class TemplateUtility {
         masterId:
           template.Relationship_FLG?.toUpperCase() === 'S'
             ? template?.RelationshipInfo
-              ? template.RelationshipInfo?.SelectedRlationshipInfo?.Application_ID
+              ? template.RelationshipInfo?.SelectedRlationshipInfo
+                  ?.Application_ID
               : 0
             : 0,
         visibilty_flg: template.SelectedTemplate?.Visibility_Flg === '1',
@@ -75,54 +84,101 @@ export class TemplateUtility {
   public static getPreferences(templateInfo: TemplateForm) {
     return {
       applicationId: templateInfo.applicationId,
-      marketsSelectedValue: templateInfo.industry,
-      aboutUsInstance: templateInfo.preferences.AboutUsInstance,
-      introInstance: templateInfo.preferences.IntroInstance,
-      fpsInstance: templateInfo.preferences.FPSInstanceId,
-      videoInstance: templateInfo.preferences.VideoInstance,
-      editorialInstance: templateInfo.preferences.EditorialFeed,
-      newsletterInstance: templateInfo.preferences.Newsletter,
-      socialNetworkFeedInstance: templateInfo.preferences.SocialNetworkFeed,
-      logoWidth: templateInfo.preferences.LogoWidth,
-      logoHeight: templateInfo.preferences.LogoHeight,
-      customPages: templateInfo.preferences.CustomPages,
-      newsPage: templateInfo.preferences.NewsPage,
-      mainZoneCode: templateInfo.preferences.mainZoneId,
+      marketsSelectedValue: templateInfo.industry ?? '',
+      aboutUsInstance: templateInfo.preferences.AboutUsInstance ?? '',
+      introInstance: templateInfo.preferences.IntroInstance ?? '',
+      fpsInstance: templateInfo.preferences.FPSInstanceId ?? '',
+      videoInstance: templateInfo.preferences.VideoInstance ?? '',
+      editorialInstance: templateInfo.preferences.EditorialFeed ?? '',
+      newsletterInstance: templateInfo.preferences.Newsletter ?? '',
+      socialNetworkFeedInstance:
+        templateInfo.preferences.SocialNetworkFeed ?? '',
+      logoWidth: templateInfo.preferences.LogoWidth ?? '',
+      logoHeight: templateInfo.preferences.LogoHeight ?? '',
+      customPages: templateInfo.preferences.CustomPages ?? '',
+      newsPage: templateInfo.preferences.NewsPage ?? '',
+      mainZoneCode: templateInfo.preferences.mainZoneId ?? '',
       potdSelectedValue: templateInfo.preferences.globalSchedularId
         ? templateInfo.preferences.globalSchedularId
-        : 0,
+        : '',
     };
   }
   //----------------------------------------------------------------------------
   //@Populating Instances
   //----------------------------------------------------------------------------
-  public static isUnique<T>(arr: Array<T>, key: string): boolean {
-    const uniques = new Set(arr.map((item) => item[key]));
+  static isUnique<T>(arr: Array<T>, key: string): boolean {
+    const uniques: Set<T> = new Set(arr.map((item) => item[key]));
     return [...uniques].length === arr.length;
   }
-  public static getDuplicates<T>(arr: Array<T>, key: string): Array<string> {
-    const keys = arr.map((item) => item[key]);
+  static getDuplicates<T>(arr: Array<T>, key: string): Array<string> {
+    const keys: string[] = arr.map((item) => item[key]);
     return keys.filter((k) => keys.indexOf(k) !== keys.lastIndexOf(k));
   }
-  public static duplicateZoneMapper(
-    moduleCode: string,
-    arr: ModuleInstance[]
-  ): Array<ModuleZones> {
-    const zones: Array<ModuleZones> = [];
-    arr.forEach((v, k) => {
-      if (typeof v !== 'undefined') {
-        if (v.ModuleCode === moduleCode)
-          zones.push({
-            ZoneId: v.ZoneId,
-            InstanceId: v.Id,
-            IsPervasive: v.IsPervasive ? 'Y' : 'N',
-          });
+
+  static getDuplicateInstances(
+    moduleInstances: ModuleInstance[]
+  ): InstanceDuplicate {
+    const duplicateInstances: InstanceDuplicate = {
+      instances: [],
+      nonInstances: [],
+    };
+    moduleInstances.map((v) =>
+      v.ModuleCode === _instanceCodes.IntroText
+        ? v.ModuleName.toLowerCase().includes('about')
+          ? (v.ModuleCode = _instanceCodes.AboutUsText)
+          : null
+        : null
+    );
+
+    if (!this.isUnique<ModuleInstance>(moduleInstances, 'ModuleCode')) {
+      const duplicateKeys = [
+        ...this.getDuplicates<ModuleInstance>(moduleInstances, 'ModuleCode'),
+      ];
+
+      for (let i = 0; i <= moduleInstances.length; i++) {
+        for (let j = 0; j <= duplicateKeys.length; j++) {
+          if (
+            moduleInstances?.[i] &&
+            duplicateKeys?.[j] &&
+            moduleInstances[i]?.ModuleCode === duplicateKeys?.[j]
+          ) {
+            let currentCount = this.getCurrentCount(
+              moduleInstances[i]?.ModuleCode,
+              duplicateKeys
+            );
+            const moduleCode = moduleInstances[i]?.ModuleCode;
+            const zones = [];
+            while (currentCount > 0) {
+              if (moduleCode === duplicateKeys[j]) {
+                zones.push({
+                  ZoneId: moduleInstances[i]?.ZoneId,
+                  InstanceId: moduleInstances[i]?.Id,
+                  IsPervasive: moduleInstances[i]?.IsPervasive ? 'Y' : 'N',
+                });
+                currentCount--;
+                i++;
+              }
+            }
+            duplicateInstances.instances.push({
+              ModuleCode: moduleCode,
+              Zones: [...zones],
+            });
+          }
+        }
       }
-    });
-    console.log(zones);
-    return zones;
+      Object.keys(_instanceCodes).forEach((k) => {
+        if (!moduleInstances.some((v) => v.ModuleCode === _instanceCodes[k])) {
+          duplicateInstances.nonInstances.push({
+            ModuleCode: _instanceCodes[k],
+            ModuleName: k,
+          });
+        }
+      });
+    }
+    return duplicateInstances;
   }
-  public static getCurrentCount<T>(moduleCode: T, arr: Array<T>): number {
+
+  static getCurrentCount<T>(moduleCode: T, arr: Array<T>): number {
     const count_instance = new Map(
       [...new Set(arr)].map((x) => [x, arr.filter((y) => y === x).length])
     );
@@ -131,7 +187,7 @@ export class TemplateUtility {
   //----------------------------------------------------
   // Parsing Image with colors Array
   //----------------------------------------------------
-  public static colorSchemeImageParser(
+  static colorSchemeImageParser(
     color_scheme: ColorScheme,
     currentImage: ImageFile
   ): Array<ColorScheme> {
@@ -158,7 +214,7 @@ export class TemplateUtility {
   //--------------------------------------------------------------------------
   // Parsing the design scheme to get the updated colors array
   //--------------------------------------------------------------------------
-  public static designSchemeColorsParser(
+  static designSchemeColorsParser(
     design_scheme: DesignScheme,
     color_scheme: ColorScheme
   ): DesignScheme {
@@ -179,7 +235,7 @@ export class TemplateUtility {
   //--------------------------------------------------------------------------
   // Mapping the default designScheme
   //--------------------------------------------------------------------------
-  public static designSchemeDefaultMapper(
+  static designSchemeDefaultMapper(
     color_scheme: Array<ColorScheme>
   ): DesignScheme {
     const design_scheme: DesignScheme = {
@@ -192,7 +248,7 @@ export class TemplateUtility {
   //-------------------------------------------------------------------------
   // Removing color from the designScheme.Colors Array
   //-------------------------------------------------------------------------
-  public static designSchemeSpliceMapper(
+  static designSchemeSpliceMapper(
     current_row: ColorScheme,
     designScheme: DesignScheme
   ): DesignScheme {
@@ -209,7 +265,7 @@ export class TemplateUtility {
   //----------------------------------------------------------------
   // Saving Design Tag
   //----------------------------------------------------------------
-  public static saveDesignTagParser(designTag: Tag): FormData {
+  static saveDesignTagParser(designTag: Tag): FormData {
     const formData = new FormData();
     formData.set('tagCode', designTag.tagCode);
     formData.append('tagType', designTag.tagType);
@@ -221,7 +277,7 @@ export class TemplateUtility {
   //-------------------------------------------------------------
   // Parsing primary color ColorScheme
   //-------------------------------------------------------------
-  public static parsingColorScheme(
+  static parsingColorScheme(
     current_color: ColorScheme,
     colorScheme: Array<ColorScheme>,
     designName?: string

@@ -4,8 +4,7 @@ import { AUTH_SERVICE_CONFIG, AuthServiceConfig } from './types';
 // importing local-components
 import { EspLoginModule } from './components/esp-login/esp-login.component';
 
-
-@NgModule({  
+@NgModule({
   imports: [EspLoginModule],
   exports: [EspLoginModule],
 })

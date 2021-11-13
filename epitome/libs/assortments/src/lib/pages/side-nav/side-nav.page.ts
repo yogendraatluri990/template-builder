@@ -1,8 +1,13 @@
-import { Component, OnInit, Input, Inject, inject, NgModule } from '@angular/core';
-import {Router} from '@angular/router';
-import {Location, CommonModule} from '@angular/common';
-
-
+import {
+  Component,
+  OnInit,
+  Input,
+  Inject,
+  inject,
+  NgModule,
+} from '@angular/core';
+import { Router } from '@angular/router';
+import { Location, CommonModule } from '@angular/common';
 
 // --------------------------------------------------------------
 // @ importing Angular material modules
@@ -25,19 +30,23 @@ import { GRAVATAR_CONFIG, icons } from '../../types';
         <img [src]="userImage + _gravatarConfig.Url" class="avatar" />
         <h5 class="user-name">{{ userName }}</h5>
       </div>
-      <span class="log-out label-text" (click)="navigate('/dashboard/templates/template-list')" [ngClass]="{'active': _location.path().indexOf('edit') <= -1}">
+      <span
+        class="log-out label-text"
+        (click)="navigate('/dashboard/templates/template-list')"
+        [ngClass]="{ active: _location.path().indexOf('edit') <= -1 }"
+      >
         <mat-icon [color]="'default'" class="view-list">
-          {{icons.view_list}}
+          {{ icons.view_list }}
         </mat-icon>
         T-List
-      </span>      
+      </span>
       <span class="log-out" (click)="logout()">
         <mat-icon
           color="warn"
           aria-hidden="false"
           aria-label="Example power settings new"
         >
-          {{icons.power_settings_new}}
+          {{ icons.power_settings_new }}
         </mat-icon>
       </span>
     </nav>
@@ -47,7 +56,9 @@ import { GRAVATAR_CONFIG, icons } from '../../types';
 export class SideNavPage implements OnInit {
   @Input() userImage: string;
   @Input() userName: string;
-  public get icons():typeof icons { return icons };
+  public get icons(): typeof icons {
+    return icons;
+  }
   /**
    *
    * @param {AuthFacade}_authFacade
@@ -65,10 +76,9 @@ export class SideNavPage implements OnInit {
     this._authFacade.logout();
   }
   navigate(route: string) {
-    this._router.navigate([route]);    
+    this._router.navigate([route]);
   }
 }
-
 
 // ---------------------------------------------------------
 // @NgModule
@@ -76,12 +86,7 @@ export class SideNavPage implements OnInit {
 
 @NgModule({
   declarations: [SideNavPage],
-  imports: [
-    CommonModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatTooltipModule
-  ],
-  exports: [SideNavPage  ]
+  imports: [CommonModule, MatIconModule, MatFormFieldModule, MatTooltipModule],
+  exports: [SideNavPage],
 })
 export class SideNavePageModule {}

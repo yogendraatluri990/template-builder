@@ -6,7 +6,7 @@ export function validateStyle(
   const styleRegExp: RegExp = new RegExp(
     /((?:^\s*)([\w#.@*,:\-.:>,*\s]+)\s*{(?:[\s]*)((?:[A-Za-z\-\s]+[:]\s*['"0-9\w .,\/()\-!%,\/[/\]]+;?)*)*\s*}(?:\s*))/im
   );
-  const squareBrackets: RegExp = new RegExp(/\[\[([A-Z]+)+(?:_[A-Z]+)*\]\]/gmi);
+  const squareBrackets: RegExp = new RegExp(/\[\[([A-Z]+)+(?:_[A-Z]+)*\]\]/gim);
   if (
     control.value !== null &&
     control.value !== '' &&
@@ -22,7 +22,6 @@ export function validateStyle(
       return null;
   }
 }
-
 
 export function validateHex(
   control: AbstractControl

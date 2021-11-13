@@ -186,7 +186,9 @@ export class TemplateTagComponent implements OnInit, OnDestroy {
   private getTagArray(tags: Colors[]): FormArray {
     if (typeof tags !== 'undefined' && tags !== null && tags.length > 0) {
       const tag: FormArray = new FormArray([]);
-      tags.filter((v) => typeof v !== 'undefined' && v && typeof v === 'object').forEach((v, _k) => {
+      tags
+        .filter((v) => typeof v !== 'undefined' && v && typeof v === 'object')
+        .forEach((v, _k) => {
           tag.push(
             new FormGroup({
               Id: new FormControl(v.Id, []),
@@ -197,7 +199,7 @@ export class TemplateTagComponent implements OnInit, OnDestroy {
               ]),
             })
           );
-      });
+        });
       return tag;
     }
   }

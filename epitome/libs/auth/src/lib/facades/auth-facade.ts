@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import {Router} from '@angular/router'
+import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 
 import { Observable } from 'rxjs';
@@ -70,8 +70,7 @@ export class AuthFacade {
       this._store.dispatch(new ClearUserLogin());
       this._router.navigate([redirectUrl]);
     } else {
-    this._store.dispatch(new Auth.Logout(redirectUrl));
+      this._store.dispatch(new Auth.Logout(redirectUrl));
     }
   }
-
 }

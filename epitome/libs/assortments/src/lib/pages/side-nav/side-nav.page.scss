@@ -4,10 +4,10 @@
   @include boxShadow_3($shadows-blue-dark-3);
 }
 .side-nav {
-  @extend .side-nav; 
+  @extend .side-nav;
   @extend .mat-elevation-z8;
   @include back_ground_color($color-darkblue-212433);
-  @include transForm(translateY(-50%));  
+  @include transForm(translateY(-50%));
   div {
     align-items: center;
     margin: 5px;

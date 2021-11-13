@@ -1,8 +1,8 @@
 import { Component, NgModule, OnDestroy, OnInit } from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { tap } from 'rxjs/operators';
 
-import {AssortmentsModule, SideNavePageModule} from '@assortments';
+import { AssortmentsModule, SideNavePageModule } from '@assortments';
 import { DashboardFacade } from '../facades';
 @Component({
   template: `
@@ -16,7 +16,7 @@ import { DashboardFacade } from '../facades';
         </ng-container>
       </div>
       <div class="child-route-container">
-        <router-outlet></router-outlet>       
+        <router-outlet></router-outlet>
       </div>
     </div>
   `,
@@ -56,7 +56,11 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [DashboardPage],
-  imports: [AssortmentsModule, RouterModule.forChild(routes), SideNavePageModule],
-  exports: [DashboardPage, RouterModule]
+  imports: [
+    AssortmentsModule,
+    RouterModule.forChild(routes),
+    SideNavePageModule,
+  ],
+  exports: [DashboardPage, RouterModule],
 })
 export class DashboardPageModule {}

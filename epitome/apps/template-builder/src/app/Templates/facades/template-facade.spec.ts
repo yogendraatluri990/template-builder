@@ -8,7 +8,7 @@ describe('TemplateFacadeService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot()]
+      imports: [NgxsModule.forRoot()],
     });
     service = TestBed.inject(TemplateFacade);
   });

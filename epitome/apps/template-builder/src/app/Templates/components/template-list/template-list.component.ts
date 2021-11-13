@@ -4,7 +4,7 @@ import {
   ViewChild,
   OnDestroy,
   NgModule,
-  AfterViewInit
+  AfterViewInit,
 } from '@angular/core';
 import {
   Router,
@@ -14,13 +14,13 @@ import {
 } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
-import {MatSort} from '@angular/material/sort';
+import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { tap } from 'rxjs/operators';
 import { NgxsModule } from '@ngxs/store';
 import { TemplateState } from '../../store';
-import {Material_Modules, icons } from '@assortments';
+import { Material_Modules, icons } from '@assortments';
 import { TemplateEditComponentModule } from '../template-edit/template-edit.component';
 import { TemplateConvertionComponentModule } from '../template-convertion/template-convertion.component';
 import { TemplateConvertionComponent } from '../template-convertion/template-convertion.component';
@@ -39,8 +39,8 @@ export class TemplateListComponent implements OnInit, OnDestroy, AfterViewInit {
   // @ViewChild
   // ----------------------------------------------------------------
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
-  @ViewChild('appTable', {static: false}) table: MatTable<Template>;
-  @ViewChild(MatSort, {static: false}) sort: MatSort;
+  @ViewChild('appTable', { static: false }) table: MatTable<Template>;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
 
   // ----------------------------------------------------------------
   // @Public Variables
@@ -48,17 +48,19 @@ export class TemplateListComponent implements OnInit, OnDestroy, AfterViewInit {
   public dataSource: MatTableDataSource<Template>;
   public displayColumns = [..._constant.displayColumns];
   public pageSizeOptions = [..._constant.pageSizeOptions];
-  public get icons():typeof icons { return icons};
+  public get icons(): typeof icons {
+    return icons;
+  }
   public dataSourceLength = 0;
   public templateList$ = this._facade.templateList$.pipe(
     tap((response: Array<Template>) => {
       if (response) {
         this.dataSource = new MatTableDataSource<Template>(response);
         this.dataSourceLength = response.length;
-        this.dataSource.paginator = this.paginator; 
+        this.dataSource.paginator = this.paginator;
         setTimeout(() => {
           this.dataSource.sort = this.sort;
-        },2000);       
+        }, 2000);
       }
     })
   );
@@ -88,9 +90,7 @@ export class TemplateListComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy(): void {
     this._matDialog.closeAll();
   }
-  ngAfterViewInit(): void {
-    
-  }
+  ngAfterViewInit(): void {}
 
   // -------------------------------------------------------------------
   // @Public Methods
@@ -102,7 +102,7 @@ export class TemplateListComponent implements OnInit, OnDestroy, AfterViewInit {
       height: 'auto',
       data: {
         relationshipFlag: row.RelationshipFlag,
-        currentApplicationId: row.ApplicationId
+        currentApplicationId: row.ApplicationId,
       },
       disableClose: true,
       position: {
@@ -116,7 +116,7 @@ export class TemplateListComponent implements OnInit, OnDestroy, AfterViewInit {
       queryParams: {
         appCode: row.AppCode.replace(/\s/g, ''),
         templateName: row.TemplateName.replace(/\s/g, ''),
-        templateId: row.TemplateId
+        templateId: row.TemplateId,
       },
     };
     this._facade.storeCurrentTemplate(row);

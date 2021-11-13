@@ -9,7 +9,7 @@ export const SMARTLINK_SERVICE_CONFIG = new InjectionToken<ServiceConfig>(
       new ServiceConfig({
         Url: 'https://api.asicentral.com/v1',
         Uat_Url: 'https://api.uat-asicentral.com/v1',
-        Dev_Url: 'https://api.dev-asicentral.com/v1'
+        Dev_Url: 'https://api.dev-asicentral.com/v1',
       }),
   }
 );

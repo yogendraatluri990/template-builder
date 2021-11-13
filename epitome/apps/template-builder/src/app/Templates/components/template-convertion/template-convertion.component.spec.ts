@@ -4,12 +4,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NgxsModule } from '@ngxs/store';
 
-
 import {
   TemplateConvertionComponent,
   TemplateConvertionComponentModule,
 } from './template-convertion.component';
-
 
 describe('TemplateConvertionComponent', () => {
   let component: TemplateConvertionComponent;
@@ -18,7 +16,7 @@ describe('TemplateConvertionComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TemplateConvertionComponent],
-      imports: [        
+      imports: [
         BrowserAnimationsModule,
         HttpClientTestingModule,
         TemplateConvertionComponentModule,

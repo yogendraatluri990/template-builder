@@ -1,6 +1,6 @@
 import { Directive, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 // importing types
 import { LoginRequest } from '../../types';
@@ -18,7 +18,11 @@ export abstract class BaseLoginComponent implements OnInit {
    * @param {ActivatedRoute} _route
    */
 
-  constructor(private _formBuilder: FormBuilder,private _authFacade: AuthFacade, private _route: ActivatedRoute) {}
+  constructor(
+    private _formBuilder: FormBuilder,
+    private _authFacade: AuthFacade,
+    private _route: ActivatedRoute
+  ) {}
 
   // ---------------------------------------------
   // @ Lifecycle hooks
@@ -35,7 +39,7 @@ export abstract class BaseLoginComponent implements OnInit {
       appVersion: ['3.0.0', []],
       kick: ['1', []],
       invoke: [null, []],
-      rememberMe: [false, []]
+      rememberMe: [false, []],
     });
   }
 
@@ -47,7 +51,7 @@ export abstract class BaseLoginComponent implements OnInit {
    * @param {string}redirectUrl
    */
   loginWithCredentials(redirectUrl?: string): void {
-    const req = this.loginForm.value as LoginRequest;    
+    const req = this.loginForm.value as LoginRequest;
     this._authFacade.loginWithCredentials(req, redirectUrl);
   }
 }

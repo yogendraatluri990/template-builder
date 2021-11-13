@@ -6,7 +6,7 @@
   border-radius: 10px;
   position: fixed;
   top: 50%;
-  @include transForm(translateY(-50%));  
+  @include transForm(translateY(-50%));
 }
 .esp-logo {
   width: 128px;
@@ -31,7 +31,7 @@
 
 .btns {
   text-transform: capitalize;
-  margin: auto 10px;  
+  margin: auto 10px;
 }
 .btns-right {
   @extend .btns;

@@ -36,11 +36,12 @@ export const SAVE_APPLICATION_CONFIG = new InjectionToken(
 export const SAVE_VISIBILITY_CONFIG = new InjectionToken(
   'Save Visibility and active status',
   {
-    factory: () => new ServiceConfig({
-      Url: '/template-builder/application/'
-    })
+    factory: () =>
+      new ServiceConfig({
+        Url: '/template-builder/application/',
+      }),
   }
-)
+);
 
 export const SAVE_PREFERENCES_CONFIG = new InjectionToken('Save Preferences', {
   factory: () =>

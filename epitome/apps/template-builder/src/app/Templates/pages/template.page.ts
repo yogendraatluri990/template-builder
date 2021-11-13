@@ -1,19 +1,17 @@
 import { Component, NgModule, OnInit } from '@angular/core';
 import { async } from '@angular/core/testing';
-import {RouterModule, Routes} from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 @Component({
   selector: 'tb-template',
   template: `
-  <div>
+    <div>
       <router-outlet></router-outlet>
     </div>
   `,
-  styles: [
-  ]
+  styles: [],
 })
 export class TemplatePage {}
-
 
 export const routes: Routes = [
   {
@@ -22,26 +20,31 @@ export const routes: Routes = [
     children: [
       {
         path: 'template-list',
-        loadChildren: async() => (await import('../components/template-list/template-list.component')).TemplateListComponentModule,
+        loadChildren: async () =>
+          (await import('../components/template-list/template-list.component'))
+            .TemplateListComponentModule,
       },
       {
         path: 'template-design',
-        loadChildren: async() => (await import('../components/template-design/template-design.component')).TemplateDesignComponentModule,
+        loadChildren: async () =>
+          (
+            await import(
+              '../components/template-design/template-design.component'
+            )
+          ).TemplateDesignComponentModule,
       },
       {
         path: '',
         redirectTo: 'template-list',
-        pathMatch: 'full'
-      }
+        pathMatch: 'full',
+      },
     ],
   },
 ];
 
 @NgModule({
   declarations: [TemplatePage],
-  imports: [
-    RouterModule.forChild(routes)
-  ],
-  exports: [TemplatePage, RouterModule]
+  imports: [RouterModule.forChild(routes)],
+  exports: [TemplatePage, RouterModule],
 })
 export class TemplatePageModule {}

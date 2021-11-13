@@ -1,40 +1,37 @@
-import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { Inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-// @Importing from Auth
-import { SMARTLINK_SERVICE_CONFIG, ServiceConfig } from '@auth';
-
-// @Importing from Environment
-import { environment } from '../../../environments/environment';
-
 // @ Importing Rest Client
 import { ImageService, Messenger, MessengerPage } from '@assortments';
-
+// @Importing from Auth
+import { ServiceConfig, SMARTLINK_SERVICE_CONFIG } from '@auth';
+import { Observable } from 'rxjs';
+import { catchError, map, mergeMap } from 'rxjs/operators';
+// @Importing from Environment
+import { environment } from '../../../environments/environment';
 import {
-  AppInfo,
-  SAMPLE_APP_PROP,
-  Template,
-  TemplateForm,
-  CONVERT_TO_TEMPLATE,
-  RETRIEVE_APP_INFO,
-  ConvertTemplateMessage,
-  EDIT_TEMPLATE_CONFIG,
-  MODULE_INSTANCE_CONFIG,
-  EditTemplate,
-  ModuleInstance,
-  InstanceDuplicate,
-  IMAGE_UPLOAD,
-  ImageFile,
-  ADD_NEW_TEMPLATE,
-  SavedResponse,
   ADD_NEW_DESIGN_TAG,
-  TEMPLATE_CSS_CONFIG,
+  ADD_NEW_TEMPLATE,
+  AppInfo,
+  ConvertTemplateMessage,
+  CONVERT_TO_TEMPLATE,
+  EditTemplate,
+  EDIT_TEMPLATE_CONFIG,
+  ImageFile,
+  IMAGE_UPLOAD,
+  InstanceDuplicate,
+  ModuleInstance,
+  MODULE_INSTANCE_CONFIG,
+  RETRIEVE_APP_INFO,
+  SAMPLE_APP_PROP,
+  SavedResponse,
   SAVE_APPLICATION_CONFIG,
   SAVE_PREFERENCES_CONFIG,
   SAVE_VISIBILITY_CONFIG,
+  Template,
+  TemplateForm,
+  TEMPLATE_CSS_CONFIG,
 } from '../types';
-import { ModuleInstanceCode as _instanceCodes } from '../constants';
 import { TemplateUtility as _util } from '../utility';
 
 @Injectable({
@@ -80,6 +77,142 @@ export class TemplateService extends ImageService<ImageFile> {
   ) {
     super(_http);
   }
+
+  // -------------------------------------------------------------------------------------------------------------
+  // @ Public Methods
+  // -------------------------------------------------------------------------------------------------------------
+
+  getTemplateLists(): Observable<Array<Template>> {
+    return this._http
+      .get<Template[]>(`${this.getTemplateUri()}`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getTemplateInfo(applicationId: string): Observable<EditTemplate> {
+    return this._http
+      .get<EditTemplate>(`${this.getTemplateInfoUri(applicationId)}`)
+      .pipe(
+        catchError(this.handleError),
+        map((response: EditTemplate) => {
+          if (response) {
+            response['RelationshipRoles'] = ['Undefined', 'Master', 'Slave'];
+            return response;
+          }
+        })
+      );
+  }
+
+  convertToTemplate(appCode: string): Observable<ConvertTemplateMessage> {
+    return this._http
+      .post<ConvertTemplateMessage>(`${this.getConvertTemplateUri()}`, {
+        appCode: appCode,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  retrieveAppInfo(appCode: string): Observable<AppInfo> {
+    return this._http
+      .get<AppInfo>(`${this.getAppInfoUri(appCode)}`)
+      .pipe(catchError(this.handleError));
+  }
+
+  addNewTemplate(templateName: string): Observable<SavedResponse> {
+    return this._http
+      .post<SavedResponse>(`${this.getAddNewTemplateUri(templateName)}`, {})
+      .pipe(
+        catchError(this.handleError),
+        map((response) => {
+          const config: Messenger = {
+            Data: {
+              message: response.Message,
+              icon: 'done',
+            },
+            panelClass: ['success-message'],
+          };
+          this.messenger(config);
+          return response;
+        })
+      );
+  }
+
+  saveDesignTag(tag: FormData): Observable<SavedResponse> {
+    return this._http
+      .post<SavedResponse>(`${this.getAddNewDesignTagUri()}`, tag)
+      .pipe(
+        catchError(this.handleError),
+        map((response) => {
+          const config: Messenger = {
+            Data: {
+              message: response.Message,
+              icon: 'done',
+            },
+            panelClass: ['success-message'],
+          };
+          this.messenger(config);
+          return response;
+        })
+      );
+  }
+
+  populateModuleInstance(
+    applicationId: string,
+    masterAppId: string
+  ): Observable<InstanceDuplicate> {
+    return this._http
+      .get(`${this.getModuleInstanceUri(applicationId, masterAppId)}`)
+      .pipe(
+        catchError(this.handleError),
+        map((res: ModuleInstance[]) => _util.getDuplicateInstances(res))
+      );
+  }
+
+  //----------------------------------------------
+  // Saving Edit Template Screen.
+  //-------------------------------------------------
+  saveTemplateEdit(templateInfo: TemplateForm): Observable<any> {
+    return this._http
+      .post(`${this.getApplicationUri()}`, {
+        ..._util.getApplicationInfo(templateInfo),
+      })
+      .pipe(
+        catchError(this.handleError),
+        mergeMap(() =>
+          this._http
+            .post(
+              `${this.getVisibilityUri(
+                templateInfo.applicationId,
+                templateInfo.designTemplateId,
+                templateInfo.visibilty_flg
+              )}`,
+              {}
+            )
+            .pipe(
+              catchError(this.handleError),
+              mergeMap(() => {
+                console.log(
+                  'get current preferences',
+                  _util.getPreferences(templateInfo)
+                );
+                return this._http
+                  .post(`${this.getPreferencesUri()}`, {
+                    ..._util.getPreferences(templateInfo),
+                  })
+                  .pipe(catchError(this.handleError));
+              })
+            )
+        )
+      );
+  }
+
+  // -----------------------------------------
+  // @image-uploader
+  // ------------------------------------------
+  uploadImage<k>(file: FormData): Observable<k> {
+    return this._http
+      .post<k>(`${this.getImageUploadUri()}`, file)
+      .pipe(catchError(this.handleError));
+  }
+
   // ------------------------------------------------------------------------------------------------------------
   // @ Private Methods
   // -------------------------------------------------------------------------------------------------------------
@@ -164,193 +297,5 @@ export class TemplateService extends ImageService<ImageFile> {
       horizontalPosition: 'start',
     };
     this.openSnackBar(configs);
-  }
-  // -------------------------------------------------------------------------------------------------------------
-  // @ Public Methods
-  // -------------------------------------------------------------------------------------------------------------
-
-  public getTemplateLists(): Promise<Array<Template>> {
-    return this._http
-      .get<Template[]>(`${this.getTemplateUri()}`)
-      .pipe(catchError(this.handleError))
-      .toPromise();
-  }
-  public getTemplateInfo(applicationId: string): Promise<EditTemplate> {
-    return this._http
-      .get<EditTemplate>(`${this.getTemplateInfoUri(applicationId)}`)
-      .pipe(
-        catchError(this.handleError),
-        map((response: EditTemplate) => {
-          if (response) {
-            response['RelationshipRoles'] = ['Undefined', 'Master', 'Slave'];
-            return response;
-          }
-        })
-      )
-      .toPromise();
-  }
-  public convertToTemplate(appCode: string): Promise<ConvertTemplateMessage> {
-    return this._http
-      .post<ConvertTemplateMessage>(`${this.getConvertTemplateUri()}`, {
-        appCode: appCode,
-      })
-      .pipe(catchError(this.handleError))
-      .toPromise();
-  }
-  public retrieveAppInfo(appCode: string): Promise<AppInfo> {
-    return this._http
-      .get<AppInfo>(`${this.getAppInfoUri(appCode)}`)
-      .pipe(catchError(this.handleError))
-      .toPromise();
-  }
-  public addNewTemplate(templateName: string): Promise<SavedResponse> {
-    return this._http
-      .post<SavedResponse>(`${this.getAddNewTemplateUri(templateName)}`, {})
-      .pipe(
-        catchError(this.handleError),
-        map((response) => {
-          const config: Messenger = {
-            Data: {
-              message: response.Message,
-              icon: 'done',
-            },
-            panelClass: ['success-message'],
-          };
-          this.messenger(config);
-          return response;
-        })
-      )
-      .toPromise();
-  }
-  public saveDesignTag(tag: FormData): Promise<SavedResponse> {
-    return this._http
-      .post<SavedResponse>(`${this.getAddNewDesignTagUri()}`, tag)
-      .pipe(
-        catchError(this.handleError),
-        map((response) => {
-          const config: Messenger = {
-            Data: {
-              message: response.Message,
-              icon: 'done',
-            },
-            panelClass: ['success-message'],
-          };
-          this.messenger(config);
-          return response;
-        })
-      )
-      .toPromise();
-  }
-  public populateModuleInstance(
-    applicationId: string,
-    masterAppId: string
-  ): Promise<InstanceDuplicate> {
-    const duplicateInstances: InstanceDuplicate = {
-      instances: [],
-      nonInstances: [],
-    };
-    return this._http
-      .get(`${this.getModuleInstanceUri(applicationId, masterAppId)}`)
-      .pipe(
-        catchError(this.handleError),
-        map((res: ModuleInstance[]) => {
-          res.map((v) => {
-            if (v.ModuleCode === _instanceCodes.IntroText) {
-              if (v.ModuleName.toLowerCase().indexOf('about') > -1) {
-                v.ModuleCode = _instanceCodes.AboutUsText;
-              }
-            }
-            return v;
-          });
-          if (!_util.isUnique<ModuleInstance>(res, 'ModuleCode')) {
-            const duplicateKeys = [
-              ..._util.getDuplicates<ModuleInstance>(res, 'ModuleCode'),
-            ];
-            for (let i = 0; i <= res.length; i++) {
-              for (let j = 0; j <= duplicateKeys.length; j++) {
-                if (
-                  typeof res[i] !== 'undefined' &&
-                  typeof duplicateKeys[j] !== 'undefined'
-                )
-                  if (res[i].ModuleCode === duplicateKeys[j]) {
-                    let currentCount = _util.getCurrentCount(
-                      res[i].ModuleCode,
-                      duplicateKeys
-                    );
-                    const moduleCode = res[i].ModuleCode;
-                    const zones = [];
-                    while (currentCount > 0) {
-                      if (res[i].ZoneId === duplicateKeys[j]) {
-                      zones.push({
-                        ZoneId: res[i].ZoneId,
-                        InstanceId: res[i].Id,
-                        IsPervasive: res[i].IsPervasive ? 'Y' : 'N',
-                      });
-                      currentCount--;
-                      i++;
-                    }
-                    }
-                    duplicateInstances.instances.push({
-                      ModuleCode: moduleCode,
-                      Zones: [...zones],
-                    });
-                  }
-              }
-            }
-            Object.keys(_instanceCodes).forEach((k) => {
-              if (!res.some((v) => v.ModuleCode === _instanceCodes[k])) {
-                duplicateInstances.nonInstances.push({
-                  ModuleCode: _instanceCodes[k],
-                  ModuleName: k,
-                });
-              }
-            });
-          }
-          return duplicateInstances;
-        })
-      )
-      .toPromise();
-  }
-
-  //----------------------------------------------
-  // Saving Edit Template Screen.
-  public saveTemplateEdit(templateInfo: TemplateForm): Promise<any> {   
-    return this._http
-      .post(`${this.getApplicationUri()}`, { ..._util.getApplicationInfo(templateInfo) })
-      .pipe(
-        catchError(this.handleError),
-        mergeMap(() =>
-          this._http
-            .post(
-              `${this.getVisibilityUri(
-                templateInfo.applicationId,
-                templateInfo.designTemplateId,
-                templateInfo.visibilty_flg
-              )}`,
-              {}
-            )
-            .pipe(
-              catchError(this.handleError),
-              mergeMap(() =>
-                this._http
-                  .post(`${this.getPreferencesUri()}`, {
-                    ..._util.getPreferences(templateInfo),
-                  })
-                  .pipe(catchError(this.handleError))
-              )
-            )
-        )
-      )
-      .toPromise();
-  }
-
-  // -----------------------------------------
-  // @image-uploader
-  // ------------------------------------------
-  public uploadImage<k>(file: FormData): Promise<k> {
-    return this._http
-      .post<k>(`${this.getImageUploadUri()}`, file)
-      .pipe(catchError(this.handleError))
-      .toPromise();
   }
 }

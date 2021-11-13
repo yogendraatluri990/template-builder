@@ -2,13 +2,13 @@ import {
   Template,
   ConvertTemplateMessage,
   ColorScheme,
-  EditTemplate,  
+  EditTemplate,
   AppInfo,
   ImageFile,
   DesignScheme,
   SavedResponse,
   StyleSheet,
-  InstanceDuplicate
+  InstanceDuplicate,
 } from '../../../types';
 
 export interface TemplateStateModel {
@@ -17,11 +17,11 @@ export interface TemplateStateModel {
   convertTemplate: ConvertTemplateMessage;
   currentTemplate?: Template;
   templateDesign: DesignScheme | null;
-  editTemplate?: EditTemplate | null;   
+  editTemplate?: EditTemplate | null;
   templateImage?: ImageFile | null;
   currentColorScheme?: ColorScheme | null;
-  savedResponse: SavedResponse
-  styleSheet: StyleSheet,
-  moduleInstances: InstanceDuplicate,
+  savedResponse: SavedResponse;
+  styleSheet: StyleSheet;
+  moduleInstances: InstanceDuplicate;
   saveTemplateEdit?: any;
 }

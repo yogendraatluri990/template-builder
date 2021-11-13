@@ -4,22 +4,22 @@
     (submit)="loginWithCredentials('/dashboard/templates/template-list')"
     novalidate
   >
-  <div class="form-container">
-    <mat-form-field appearance="outline">
-      <mat-label> ASI Number </mat-label>
-      <input
-        type="text"
-        matInput
-        formControlName="asi_number"
-        maxlength="6"
-        class="login-input"
-        required
-      />
-      <mat-error *ngIf="loginForm.get('asi_number').errors?.required">
-        <strong> ASI Number is required </strong>
-      </mat-error>
-    </mat-form-field>
-  </div>
+    <div class="form-container">
+      <mat-form-field appearance="outline">
+        <mat-label> ASI Number </mat-label>
+        <input
+          type="text"
+          matInput
+          formControlName="asi_number"
+          maxlength="6"
+          class="login-input"
+          required
+        />
+        <mat-error *ngIf="loginForm.get('asi_number').errors?.required">
+          <strong> ASI Number is required </strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
     <div class="form-container">
       <mat-form-field appearance="outline">
         <mat-label> UserName </mat-label>
@@ -71,7 +71,7 @@
           color="primary"
           >Remember Me</mat-checkbox
         >
-        </div>
+      </div>
     </div>
     <div class="form-btn-container">
       <button

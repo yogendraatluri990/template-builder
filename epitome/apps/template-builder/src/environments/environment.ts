@@ -9,8 +9,8 @@ export const environment: any = {
     Url: 'https://authentication.uat-asicentral.com',
     TokenPath: '/oauth2/token',
     AuthorizationHeader:
-      'Basic MTgyOjhhZTM3ZDRlMzBkZTQyODRiZjA5NzI1ZDY4ODJjYzE3'
-  }
+      'Basic MTgyOjhhZTM3ZDRlMzBkZTQyODRiZjA5NzI1ZDY4ODJjYzE3',
+  },
 };
 
 /*

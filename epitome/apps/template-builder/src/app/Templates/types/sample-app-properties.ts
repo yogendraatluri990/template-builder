@@ -7,8 +7,7 @@ export const SAMPLE_APP_PROP = new InjectionToken(
   {
     factory: () =>
       new ServiceConfig({
-        Url:
-          '/template-builder/sample-app-properties.json',
+        Url: '/template-builder/sample-app-properties.json',
       }),
   }
 );

@@ -1,30 +1,31 @@
 import { Component, OnInit, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {ReactiveFormsModule, FormsModule} from '@angular/forms'
-import { AssortmentsModule, Material_Modules, LogoPageModule} from '@assortments';
-import {EspLoginModule} from '@auth';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import {
+  AssortmentsModule,
+  Material_Modules,
+  LogoPageModule,
+} from '@assortments';
+import { EspLoginModule } from '@auth';
 
 @Component({
   selector: 'tb-login',
   template: `
-   <div class="column-container-wrapper">
-    <div class="column-container">
-    <div class="">
-    <esp-logo></esp-logo>
-    </div>
-    <esp-login></esp-login>    
-    </div>
+    <div class="column-container-wrapper">
+      <div class="column-container">
+        <div class="">
+          <esp-logo></esp-logo>
+        </div>
+        <esp-login></esp-login>
+      </div>
     </div>
   `,
-  styleUrls: ['./login.page.scss']
+  styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }
 
 // ---------------------------------------------------
@@ -32,9 +33,9 @@ export class LoginPage implements OnInit {
 // ---------------------------------------------------
 const routes: Routes = [
   {
-      path: 'login',
-      component: LoginPage
-  }
+    path: 'login',
+    component: LoginPage,
+  },
 ];
 
 @NgModule({
@@ -47,6 +48,6 @@ const routes: Routes = [
     ...Material_Modules,
     ReactiveFormsModule,
   ],
-  exports: [LoginPage]
+  exports: [LoginPage],
 })
 export class LoginPageModule {}

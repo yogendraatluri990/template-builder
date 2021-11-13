@@ -17,28 +17,49 @@ import { Material_Modules, icons } from '@assortments';
       <h2 mat-dialog-title class="title">
         template preview
         <mat-icon aria-hidden="false" (click)="close()" class="close-btn">
-          {{icons.close}}
+          {{ icons.close }}
         </mat-icon>
       </h2>
       <div mat-dialog-content>
         <div class="form-container">
           <mat-form-field appearance="outline" class="preview-form-field">
             <mat-label> preview </mat-label>
-            <textarea matInput formControlName="templatePreview" class="dashboard-input"></textarea>
+            <textarea
+              matInput
+              formControlName="templatePreview"
+              class="dashboard-input"
+            ></textarea>
           </mat-form-field>
         </div>
       </div>
       <div mat-dialog-actions>
-        <button type="button" mat-raised-button mat-dialog-close class="btns-right" (click)="close()">close </button>
-        <button type="button" mat-raised-button  class="btns-right btn-primary" (click)="save(previewForm.value)"> save </button>
-</div>
+        <button
+          type="button"
+          mat-raised-button
+          mat-dialog-close
+          class="btns-right"
+          (click)="close()"
+        >
+          close
+        </button>
+        <button
+          type="button"
+          mat-raised-button
+          class="btns-right btn-primary"
+          (click)="save(previewForm.value)"
+        >
+          save
+        </button>
+      </div>
     </form>
   `,
   styleUrls: ['./template-preview.component.scss'],
 })
 export class TemplatePreviewComponent implements OnInit {
   public previewForm = this.getPreviewForm();
-  public get icons():typeof icons { return icons };
+  public get icons(): typeof icons {
+    return icons;
+  }
   /**
    * @param {MatDialogRef} _matDialogRef
    * @param {FormBuilder} _formBuilder
@@ -63,8 +84,7 @@ export class TemplatePreviewComponent implements OnInit {
   public close() {
     this._matDiallogRef.close();
   }
-  public save(preview: string){
-    
+  public save(preview: string) {
     this._matDiallogRef.close();
   }
 }

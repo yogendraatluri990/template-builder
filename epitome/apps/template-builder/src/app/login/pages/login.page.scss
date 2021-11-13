@@ -10,7 +10,7 @@
   .column-container {
     background-color: $color-white-00;
     max-width: 384px;
-   @extend .w-100;
+    @extend .w-100;
     height: auto;
     min-height: 30vh;
   }

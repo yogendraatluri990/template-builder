@@ -4,12 +4,11 @@
   margin: 10px auto;
 }
 
-
 .design-actions {
   @include float(right);
 }
 .disabled {
-    @extend .is-disabled;
+  @extend .is-disabled;
 }
 
 ::ng-deep {
@@ -17,7 +16,7 @@
     &.design-mat-form {
       @extend .w-100;
       @extend .white-out-line-form;
-    }    
+    }
   }
   .mat-dialog-container {
     @extend .dialog-dark;

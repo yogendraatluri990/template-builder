@@ -16,14 +16,14 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@material": ["apps/template-builder/src/app/material/*"],
       "@assortments": ["libs/assortments/src/index.ts"],
       "@assortments/assets/*": ["libs/assortments/src/lib/assets/*"],
-      "@router": ["libs/router/src/index.ts"],
-      "@router/*": ["libs/router/src/lib/*"],
       "@auth": ["libs/auth/src/index.ts"],
       "@auth/*": ["libs/auth/src/lib/*"],
-      "@error-handler": ["libs/error-handler/src/index.ts"]
+      "@error-handler": ["libs/error-handler/src/index.ts"],
+      "@material": ["apps/template-builder/src/app/material/*"],
+      "@router": ["libs/router/src/index.ts"],
+      "@router/*": ["libs/router/src/lib/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

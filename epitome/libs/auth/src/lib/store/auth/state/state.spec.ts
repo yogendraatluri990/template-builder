@@ -4,9 +4,11 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgxsModule } from '@ngxs/store';
 
 import { AuthState } from './state';
-import { AuthServiceConfig, AUTH_SERVICE_CONFIG, ENIVORNMENT_CONFIG } from '../../../types';
-
-
+import {
+  AuthServiceConfig,
+  AUTH_SERVICE_CONFIG,
+  ENIVORNMENT_CONFIG,
+} from '../../../types';
 
 describe('AuthState', () => {
   let service: AuthState;
@@ -16,7 +18,7 @@ describe('AuthState', () => {
       imports: [
         HttpClientTestingModule,
         MatSnackBarModule,
-        NgxsModule.forRoot()
+        NgxsModule.forRoot(),
       ],
       providers: [
         MatSnackBar,
@@ -24,7 +26,7 @@ describe('AuthState', () => {
           provide: AUTH_SERVICE_CONFIG,
           useClass: AuthServiceConfig,
         },
-        { provide: ENIVORNMENT_CONFIG, useValue: {} }
+        { provide: ENIVORNMENT_CONFIG, useValue: {} },
       ],
     });
     service = TestBed.inject(AuthState);

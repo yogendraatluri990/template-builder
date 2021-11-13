@@ -22,7 +22,6 @@ export class ErrorSnackService implements ErrorHandler {
       panelClass: [data.className],
       verticalPosition: data.verticalPosition,
       horizontalPosition: data.horizontalPosition,
-      
     });
   }
   // -------------------------------------------------------
@@ -33,8 +32,8 @@ export class ErrorSnackService implements ErrorHandler {
       error: error,
       className: 'error-message',
       horizontalPosition: 'start',
-      verticalPosition: 'top'
-    }
-    this.openSnackBar(snackBar);  
+      verticalPosition: 'top',
+    };
+    this.openSnackBar(snackBar);
   }
 }

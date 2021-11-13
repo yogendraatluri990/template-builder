@@ -1,4 +1,4 @@
 export interface Environment {
-    production: boolean;
-    localDev: boolean;
+  production: boolean;
+  localDev: boolean;
 }

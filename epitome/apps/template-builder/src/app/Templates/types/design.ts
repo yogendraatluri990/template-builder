@@ -32,7 +32,7 @@ export interface DesignScheme {
   Name?: string;
   Id?: number;
   TemplatePreview_Data?: string;
-  Template_Data?: string;  
+  Template_Data?: string;
   ColorScheme?: Array<ColorScheme>;
 }
 

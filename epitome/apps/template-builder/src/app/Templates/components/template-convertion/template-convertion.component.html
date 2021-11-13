@@ -1,7 +1,7 @@
 <h2 mat-dialog-title>
   Convert Into Template
   <mat-icon aria-hidden="false" (click)="onClose()" class="close-btn">
-    {{icons.close}}
+    {{ icons.close }}
   </mat-icon>
 </h2>
 <div mat-dialog-content>
@@ -48,8 +48,12 @@
       </ng-template>
       <div class="form-container">
         <h4 class="dialog-text">
-          <ng-container *ngIf="templateAppInfo$|async as t">
-          {{ t.IsValidToConvertIntoTemplate ? convertionForm.get('appCode').value : 'The appcode provided can not be converted into a template' }}
+          <ng-container *ngIf="templateAppInfo$ | async as t">
+            {{
+              t.IsValidToConvertIntoTemplate
+                ? convertionForm.get('appCode').value
+                : 'The appcode provided can not be converted into a template'
+            }}
           </ng-container>
         </h4>
       </div>
@@ -63,54 +67,54 @@
         >
           Back
         </button>
-        <ng-container *ngIf="templateAppInfo$|async as t">        
-        <button
-          mat-raised-button
-          matStepperNext
-          class="btns btn-primary"
-          [ngClass]= "{disabled: !t.IsValidToConvertIntoTemplate}"
-          (click)="onConvert(convertionForm.get('appCode').value)"
-        >
-          convert
-        </button>
+        <ng-container *ngIf="templateAppInfo$ | async as t">
+          <button
+            mat-raised-button
+            matStepperNext
+            class="btns btn-primary"
+            [ngClass]="{ disabled: !t.IsValidToConvertIntoTemplate }"
+            (click)="onConvert(convertionForm.get('appCode').value)"
+          >
+            convert
+          </button>
         </ng-container>
       </div>
     </mat-step>
-    <ng-container *ngIf="templateAppInfo$| async as t">
-    <ng-container *ngIf="t.IsValidToConvertIntoTemplate">
-    <mat-step>
-      <ng-template matStepLabel>
-        <span class="mat-stepper-label">Converted</span>
-      </ng-template>
-      <div class="form-container">
-        <assort-progress-spinner
-          *ngIf="!templateConvertion$ | async"
-        ></assort-progress-spinner>
-        <h4 *ngIf="templateConvertion$ | async as t">
-          {{ t.Message }}
-        </h4>
-      </div>
-      <div class="form-container">
-        <button
-          type="button"
-          mat-raised-button
-          color="default"
-          matStepperPrevious
-          class="btns"
-        >
-          Back
-        </button>
-        <button
-          mat-raised-button
-          matStepperNext
-          class="btns btn-primary"
-          (click)="onClose()"
-        >
-          Done
-        </button>
-      </div>
-    </mat-step>
-    </ng-container>
+    <ng-container *ngIf="templateAppInfo$ | async as t">
+      <ng-container *ngIf="t.IsValidToConvertIntoTemplate">
+        <mat-step>
+          <ng-template matStepLabel>
+            <span class="mat-stepper-label">Converted</span>
+          </ng-template>
+          <div class="form-container">
+            <assort-progress-spinner
+              *ngIf="!templateConvertion$ | async"
+            ></assort-progress-spinner>
+            <h4 *ngIf="templateConvertion$ | async as t">
+              {{ t.Message }}
+            </h4>
+          </div>
+          <div class="form-container">
+            <button
+              type="button"
+              mat-raised-button
+              color="default"
+              matStepperPrevious
+              class="btns"
+            >
+              Back
+            </button>
+            <button
+              mat-raised-button
+              matStepperNext
+              class="btns btn-primary"
+              (click)="onClose()"
+            >
+              Done
+            </button>
+          </div>
+        </mat-step>
+      </ng-container>
     </ng-container>
   </mat-vertical-stepper>
 </div>

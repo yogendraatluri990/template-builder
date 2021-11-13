@@ -3,6 +3,6 @@ export namespace Dashboard {
     static type = '[DashboardState] Get user Information';
   }
   export class ClearUser {
-      static type = '[DashboardState] Clear User Information';
+    static type = '[DashboardState] Clear User Information';
   }
 }

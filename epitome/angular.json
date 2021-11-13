@@ -1,6 +1,130 @@
 {
   "version": 1,
   "projects": {
+    "assortments": {
+      "projectType": "library",
+      "root": "libs/assortments",
+      "sourceRoot": "libs/assortments/src",
+      "prefix": "assort",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/assortments/tsconfig.lib.json",
+              "libs/assortments/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/assortments/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/assortments/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "tags": []
+    },
+    "auth": {
+      "projectType": "library",
+      "root": "libs/auth",
+      "sourceRoot": "libs/auth/src",
+      "prefix": "epitome",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/auth/tsconfig.lib.json",
+              "libs/auth/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/auth/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/auth/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "tags": []
+    },
+    "error-handler": {
+      "projectType": "library",
+      "root": "libs/error-handler",
+      "sourceRoot": "libs/error-handler/src",
+      "prefix": "epitome",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/error-handler/tsconfig.lib.json",
+              "libs/error-handler/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/error-handler/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/error-handler/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "tags": []
+    },
+    "router": {
+      "projectType": "library",
+      "root": "libs/router",
+      "sourceRoot": "libs/router/src",
+      "prefix": "epitome",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/router/tsconfig.lib.json",
+              "libs/router/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/router/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/router/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "tags": []
+    },
     "template-builder": {
       "projectType": "application",
       "schematics": {
@@ -50,7 +174,7 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": true,
               "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
@@ -68,6 +192,14 @@
                   "maximumError": "1000kb"
                 }
               ]
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             }
           }
         },
@@ -79,8 +211,12 @@
           "configurations": {
             "production": {
               "browserTarget": "template-builder:build:production"
+            },
+            "development": {
+              "browserTarget": "template-builder:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -107,7 +243,8 @@
             "polyfills": "apps/template-builder/src/polyfills.ts"
           }
         }
-      }
+      },
+      "tags": []
     },
     "template-builder-e2e": {
       "root": "apps/template-builder-e2e",
@@ -134,131 +271,10 @@
             "exclude": ["**/node_modules/**", "!apps/template-builder-e2e/**/*"]
           }
         }
-      }
-    },
-    "assortments": {
-      "projectType": "library",
-      "root": "libs/assortments",
-      "sourceRoot": "libs/assortments/src",
-      "prefix": "assort",
-      "architect": {
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/assortments/tsconfig.lib.json",
-              "libs/assortments/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/assortments/**/*"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/assortments/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
       },
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      }
-    },
-    "router": {
-      "projectType": "library",
-      "root": "libs/router",
-      "sourceRoot": "libs/router/src",
-      "prefix": "epitome",
-      "architect": {
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/router/tsconfig.lib.json",
-              "libs/router/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/router/**/*"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/router/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      },
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      }
-    },
-    "auth": {
-      "projectType": "library",
-      "root": "libs/auth",
-      "sourceRoot": "libs/auth/src",
-      "prefix": "epitome",
-      "architect": {
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/auth/tsconfig.lib.json",
-              "libs/auth/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/auth/**/*"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/auth/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      },
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      }
-    },
-    "error-handler": {
-      "projectType": "library",
-      "root": "libs/error-handler",
-      "sourceRoot": "libs/error-handler/src",
-      "prefix": "epitome",
-      "architect": {
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/error-handler/tsconfig.lib.json",
-              "libs/error-handler/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/error-handler/**/*"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/error-handler/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      },
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      }
+      "tags": [],
+      "implicitDependencies": ["template-builder"]
     }
-  },
-  "cli": {
-    "defaultCollection": "@nrwl/angular"
   },
   "schematics": {
     "@nrwl/angular:application": {
@@ -268,6 +284,5 @@
     "@nrwl/angular:library": {
       "unitTestRunner": "jest"
     }
-  },
-  "defaultProject": "template-builder"
+  }
 }

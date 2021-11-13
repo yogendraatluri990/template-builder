@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import {RouterTestingModule} from '@angular/router/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
-import { TemplatePage} from './template.page';
+import { TemplatePage } from './template.page';
 
 describe('TemplatePage', () => {
   let component: TemplatePage;
@@ -9,10 +9,9 @@ describe('TemplatePage', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TemplatePage ],
-      imports: [RouterTestingModule]
-    })
-    .compileComponents();
+      declarations: [TemplatePage],
+      imports: [RouterTestingModule],
+    }).compileComponents();
   });
 
   beforeEach(() => {

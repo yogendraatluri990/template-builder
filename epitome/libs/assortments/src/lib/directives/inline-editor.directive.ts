@@ -16,9 +16,8 @@ import { Inline } from '../types';
 export class InlineEditorDirective {
   @Input() public designName: string;
   @Input() public designId: number;
-  @Output() public updatedValue: EventEmitter<
-    Inline<number, string>
-  > = new EventEmitter<Inline<number, string>>();
+  @Output() public updatedValue: EventEmitter<Inline<number, string>> =
+    new EventEmitter<Inline<number, string>>();
   /**
    * @param {ElementRef} _currentEleRef
    */
@@ -29,11 +28,12 @@ export class InlineEditorDirective {
     if (
       typeof this._currentEleRef.nativeElement.innerText !== 'undefined' &&
       this._currentEleRef.nativeElement.innerText
-    ) {      
+    ) {
       const currentDesignName: Inline<number, string> = {
         key: this.designId,
-        currentValue: this._currentEleRef.nativeElement.innerText || this.designName,
-        previousValue: this.designName
+        currentValue:
+          this._currentEleRef.nativeElement.innerText || this.designName,
+        previousValue: this.designName,
       };
       this.updatedValue.emit(currentDesignName);
     }

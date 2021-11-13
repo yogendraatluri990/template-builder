@@ -25,25 +25,17 @@
       }
     }
   },
-  "projects": {
-    "template-builder": {
-      "tags": []
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "generators": {
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
     },
-    "template-builder-e2e": {
-      "tags": [],
-      "implicitDependencies": ["template-builder"]
-    },
-    "assortments": {
-      "tags": []
-    },
-    "router": {
-      "tags": []
-    },
-    "auth": {
-      "tags": []
-    },
-    "error-handler": {
-      "tags": []
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
     }
-  }
+  },
+  "defaultProject": "template-builder"
 }

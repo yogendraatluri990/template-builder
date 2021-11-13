@@ -69,7 +69,14 @@ export class AuthState implements NgxsOnInit {
     const { credentials } = action;
     try {
       const token = await this.authService.login(credentials);
-      const {asi_number, UserName, Password, appCode, appVersion, rememberMe} = credentials;
+      const {
+        asi_number,
+        UserName,
+        Password,
+        appCode,
+        appVersion,
+        rememberMe,
+      } = credentials;
       const user: User = {
         login: {
           asi_number,
@@ -77,7 +84,7 @@ export class AuthState implements NgxsOnInit {
           Password,
           appCode,
           appVersion,
-          rememberMe
+          rememberMe,
         },
         token: token,
       };

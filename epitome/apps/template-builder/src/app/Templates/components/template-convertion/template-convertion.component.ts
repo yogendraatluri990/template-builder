@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
-import {tap} from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { NgxsModule } from '@ngxs/store';
 
 // @assorments
@@ -17,22 +17,26 @@ import { Material_Modules, icons } from '@assortments';
 import { TemplateFacade } from '../../facades';
 
 // @Importing Store
-import {TemplateState} from '../../store';
+import { TemplateState } from '../../store';
 
 @Component({
   selector: 'tb-template-convertion',
   templateUrl: './template-convertion.component.html',
   styleUrls: ['./template-convertion.component.scss'],
 })
-export class TemplateConvertionComponent{
+export class TemplateConvertionComponent {
   public convertionForm: FormGroup = this.getForm();
-  public get icons(): typeof icons {return icons };
-  public templateAppInfo$ = this._facade.templateAppInfo$.pipe(tap((response) => {
-    if (response)
-    this.convertionForm.patchValue({
-      validTemplate: response.IsValidToConvertIntoTemplate
-    });
-  }));
+  public get icons(): typeof icons {
+    return icons;
+  }
+  public templateAppInfo$ = this._facade.templateAppInfo$.pipe(
+    tap((response) => {
+      if (response)
+        this.convertionForm.patchValue({
+          validTemplate: response.IsValidToConvertIntoTemplate,
+        });
+    })
+  );
   public templateConvertion$ = this._facade.convertToTemplate$;
   /**
    *
@@ -51,17 +55,13 @@ export class TemplateConvertionComponent{
     private _facade: TemplateFacade
   ) {}
 
-
-
-
-
   // ----------------------------------------------------------------
   // @ Public Methods
   // ----------------------------------------------------------------
   getForm(): FormGroup {
     return this._formBuilder.group({
       appCode: ['', [Validators.required]],
-      validTemplate: [false, [Validators.required]]
+      validTemplate: [false, [Validators.required]],
     });
   }
   onClose() {
@@ -74,10 +74,9 @@ export class TemplateConvertionComponent{
     if (appCode) this._facade.convertToTemplate(appCode);
   }
 
-    // ----------------------------------------------------------------
+  // ----------------------------------------------------------------
   // @Private Methods
   // ----------------------------------------------------------------
-
 }
 
 @NgModule({

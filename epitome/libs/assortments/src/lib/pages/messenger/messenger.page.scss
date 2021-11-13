@@ -5,12 +5,12 @@
   color: $color-white-f1;
 }
 ::ng-deep {
-  mat-icon { 
-    &.message-icon {  
+  mat-icon {
+    &.message-icon {
       position: absolute;
       top: 50%;
       transform: translateY(-56%);
       margin: auto 5px;
-    }  
+    }
   }
 }

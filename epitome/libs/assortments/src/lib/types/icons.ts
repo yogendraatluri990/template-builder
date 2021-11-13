@@ -6,5 +6,5 @@ export enum icons {
   visibility_off = 'visibility_off',
   view_list = 'view_list',
   power_settings_new = 'power_settings_new',
-  search = 'search'
+  search = 'search',
 }

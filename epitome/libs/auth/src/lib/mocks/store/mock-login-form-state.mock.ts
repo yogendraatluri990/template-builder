@@ -1,5 +1,5 @@
 import * as faker from 'faker/locale/en_US';
-import {  User } from '@auth/store/login-form/models';
+import { User } from '@auth/store/login-form/models';
 
 export enum MockStateType {
   LoggedIn = 0,

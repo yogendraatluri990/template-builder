@@ -1,8 +1,6 @@
 import { EditTemplate } from './edit-template';
 import { ImageFile } from './image-file';
 
-
-
 export interface ConvertTemplateMessage {
   Message: string;
 }

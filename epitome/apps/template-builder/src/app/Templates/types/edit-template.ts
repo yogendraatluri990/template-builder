@@ -36,8 +36,6 @@ interface Templates {
   TemplateName: string;
 }
 
-
-
 interface SampleAppRecord {
   Indexer: {
     ApplicationId: number;
@@ -149,7 +147,7 @@ interface RelationshipInfo {
   OrderedData: Array<RelationshipInfo>;
   SelectedRlationshipInfo: RelationshipInfoData; // Spelling for this property is wrong in api Object.
 }
-interface Instances{
+interface Instances {
   ModuleCode?: string;
   Zones?: Array<ModuleZones>;
 }
@@ -157,26 +155,28 @@ interface NonInstances {
   ModuleName?: string;
   ModuleCode?: string;
 }
-export interface ModuleZones {  
-    ZoneId: string,
-    IsPervasive: string,
-    InstanceId: number  
+export interface ModuleZones {
+  ZoneId: string;
+  IsPervasive: string;
+  InstanceId: number;
 }
 
 export interface InstanceDuplicate {
-    instances: Array<Instances>;
-    nonInstances: Array<NonInstances>;
-  }
+  instances: Array<Instances>;
+  nonInstances: Array<NonInstances>;
+}
 export interface ModuleInstance {
   Id: number;
   IsPervasive: boolean;
   ModuleCode: string;
   ModuleName: string;
   ZoneId: string;
-  NonInstances?: [{
-    ModuleCode: number;
-    ModuleName: string;
-  }];  
+  NonInstances?: [
+    {
+      ModuleCode: number;
+      ModuleName: string;
+    }
+  ];
 }
 export interface Preferences {
   AppData?: AppData;

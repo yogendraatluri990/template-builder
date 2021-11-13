@@ -1,38 +1,30 @@
 import { Inject, Injectable } from '@angular/core';
-
-import { Action, State, StateContext, Selector } from '@ngxs/store';
-import { patch, append, removeItem, updateItem } from '@ngxs/store/operators';
-import { throwError } from 'rxjs';
-
+import { Media as media } from '@assortments';
+import { ServiceConfig, SMARTLINK_SERVICE_CONFIG } from '@auth';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { lastValueFrom, throwError } from 'rxjs';
 // import services
 import { TemplateService } from '../../../services';
 // types
 import {
-  ConvertTemplateMessage,
-  Template,
-  ColorScheme,
-  EditTemplate,
-  ModuleInstance,
   AppInfo,
-  ImageFile,
+  ColorScheme,
+  ConvertTemplateMessage,
   DesignScheme,
+  EditTemplate,
+  ImageFile,
   IMAGE_UPLOAD,
+  InstanceDuplicate,
   SavedResponse,
   StyleSheet,
-  InstanceDuplicate,
+  Template,
 } from '../../../types';
+// utilites
+import { TemplateUtility as _templateUtil } from '../../../utility';
 // actions
 import { TemplateAction as templateActions } from '../actions/actions';
 // model
 import { TemplateStateModel } from '../models/model';
-// utilites
-import {
-  TemplateUtility,
-  TemplateUtility as _templateUtil,
-} from '../../../utility';
-import { Media as media } from '@assortments';
-
-import { ServiceConfig, SMARTLINK_SERVICE_CONFIG } from '@auth';
 
 const TEMPLATE_LIST_DEFAULT: Array<Template> | null = null,
   CONVERT_TO_TEMPLATE_DEFAULT: ConvertTemplateMessage = {
@@ -138,12 +130,14 @@ export class TemplateState {
   @Action(templateActions.GetTemplates)
   async getTemplates(ctx: StateContext<TemplateStateModel>) {
     try {
-      const templateList = await this._templateService.getTemplateLists();
+      const templateList = await lastValueFrom(
+        this._templateService.getTemplateLists()
+      );
       ctx.patchState({
         templates: templateList,
       });
     } catch (error) {
-      throwError(error);
+      throwError(() => error);
     }
   }
   // POST Conver Into Template
@@ -153,15 +147,15 @@ export class TemplateState {
     event: templateActions.ConvertToTemplate
   ) {
     try {
-      const message: ConvertTemplateMessage = await this._templateService.convertToTemplate(
-        event.appCode
+      const message: ConvertTemplateMessage = await lastValueFrom(
+        this._templateService.convertToTemplate(event.appCode)
       );
       ctx.patchState({
         convertTemplate: { ...message },
       });
       ctx.dispatch(new templateActions.GetTemplates());
     } catch (error) {
-      throwError(error);
+      throwError(() => error);
     }
   }
   @Action(templateActions.GetAppInfo)
@@ -172,11 +166,13 @@ export class TemplateState {
     try {
       ctx.patchState({
         templateAppInfo: {
-          ...(await this._templateService.retrieveAppInfo(event.appCode)),
+          ...(await lastValueFrom(
+            this._templateService.retrieveAppInfo(event.appCode)
+          )),
         },
       });
     } catch (error) {
-      throwError(error);
+      throwError(() => error);
     }
   }
   @Action(templateActions.CurrentTemplate)
@@ -205,7 +201,7 @@ export class TemplateState {
         templateDesign: event.design ? { ...event.design } : null,
       });
     } catch (error) {
-      throwError(error);
+      throwError(() => error);
     }
   }
   @Action(templateActions.ImageUpload)
@@ -215,7 +211,9 @@ export class TemplateState {
   ) {
     try {
       const image: ImageFile = {
-        ...(await this._templateService.uploadImage(event.image)),
+        ...(await lastValueFrom(
+          this._templateService.uploadImage(event.image)
+        )),
       };
       ctx.patchState({
         currentColorScheme: { ...event.current_row },
@@ -226,7 +224,7 @@ export class TemplateState {
       );
     } catch (error) {
       console.log(error);
-      throwError(error);
+      throwError(() => error);
     }
   }
   @Action(templateActions.UpdateColorScheme)
@@ -259,7 +257,7 @@ export class TemplateState {
       });
     } catch (error) {
       console.log(error);
-      throwError(error);
+      throwError(() => error);
     }
   }
   @Action(templateActions.SaveDesignTag)
@@ -270,11 +268,13 @@ export class TemplateState {
     try {
       ctx.patchState({
         savedResponse: {
-          ...(await this._templateService.saveDesignTag(event.tag)),
+          ...(await lastValueFrom(
+            this._templateService.saveDesignTag(event.tag)
+          )),
         },
       });
     } catch (error) {
-      throwError(error);
+      throwError(() => error);
     }
   }
   @Action(templateActions.DeleteColorScheme)
@@ -292,7 +292,7 @@ export class TemplateState {
       });
     } catch (error) {
       console.log(error);
-      throwError(error);
+      throwError(() => error);
     }
   }
 
@@ -306,13 +306,15 @@ export class TemplateState {
   ) {
     try {
       const templateInfo = {
-        ...(await this._templateService.getTemplateInfo(event.applicationId)),
+        ...(await lastValueFrom(
+          this._templateService.getTemplateInfo(event.applicationId)
+        )),
       };
       ctx.patchState({
         editTemplate: templateInfo,
       });
     } catch (error) {
-      throwError(error);
+      throwError(() => error);
     }
   }
   @Action(templateActions.ResetEditTemplate)
@@ -337,12 +339,14 @@ export class TemplateState {
     try {
       ctx.patchState({
         savedResponse: {
-          ...(await this._templateService.addNewTemplate(event.name)),
+          ...(await lastValueFrom(
+            this._templateService.addNewTemplate(event.name)
+          )),
         },
       });
       ctx.dispatch(new templateActions.GetTemplateInfo(event.applicationId));
     } catch (error) {
-      throwError(error);
+      throwError(() => error);
     }
   }
   @Action(templateActions.PopulateModuleInstance)
@@ -354,16 +358,18 @@ export class TemplateState {
       ctx.patchState({
         moduleInstances: !event.reset
           ? {
-              ...(await this._templateService.populateModuleInstance(
-                event.applicationId,
-                event.masterAppId
+              ...(await lastValueFrom(
+                this._templateService.populateModuleInstance(
+                  event.applicationId,
+                  event.masterAppId
+                )
               )),
             }
           : null,
       });
     } catch (error) {
       console.log(error);
-      throwError(error);
+      throwError(() => error);
     }
   }
   @Action(templateActions.SaveTemplateEdit)
@@ -372,14 +378,18 @@ export class TemplateState {
     event: templateActions.SaveTemplateEdit
   ) {
     try {
+      const savedTemplate = await lastValueFrom(
+        this._templateService.saveTemplateEdit(event.templateInfo)
+      );
+      console.log(savedTemplate);
       ctx.patchState({
         saveTemplateEdit: {
-          ...(await this._templateService.saveTemplateEdit(event.templateInfo)),
+          ...savedTemplate,
         },
       });
     } catch (error) {
       console.log(error);
-      throwError(error);
+      throwError(() => error);
     }
   }
 }

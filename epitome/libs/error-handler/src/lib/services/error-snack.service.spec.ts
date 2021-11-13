@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { ErrorSnackService } from './error-snack.service';
 
@@ -9,9 +9,7 @@ describe('ErrorSnackService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [MatSnackBarModule],
-      providers: [
-        MatSnackBar
-      ]
+      providers: [MatSnackBar],
     });
     service = TestBed.inject(ErrorSnackService);
   });

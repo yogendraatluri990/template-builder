@@ -3,7 +3,6 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { TemplatePageModule } from './pages/template.page';
 import { AssortmentsModule } from '@assortments';
 
-
 @NgModule({
   declarations: [],
   imports: [TemplatePageModule, AssortmentsModule],

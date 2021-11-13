@@ -8,8 +8,7 @@ export const ADD_NEW_TEMPLATE = new InjectionToken('Add New Template', {
     }),
 });
 
-
 export interface SavedResponse {
-    Message: string;
-    Success: boolean;
+  Message: string;
+  Success: boolean;
 }

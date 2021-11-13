@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import {RouterTestingModule} from '@angular/router/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 
 import { AuthFacade } from './auth-facade';
@@ -9,7 +9,7 @@ describe('AuthFacadeService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot(), RouterTestingModule]
+      imports: [NgxsModule.forRoot(), RouterTestingModule],
     });
     service = TestBed.inject(AuthFacade);
   });

@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders} from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxsModule } from '@ngxs/store';
@@ -14,9 +14,9 @@ import { ErrorHandlerModule } from '@error-handler';
 import { DashboardState } from './store';
 
 // importing DashboardPageModule
-import { DashboardPageModule} from './pages/dashboard.page';
+import { DashboardPageModule } from './pages/dashboard.page';
 
-@NgModule({  
+@NgModule({
   imports: [
     AssortmentsModule,
     DashboardPageModule,
@@ -27,7 +27,7 @@ import { DashboardPageModule} from './pages/dashboard.page';
     NgxFileDropModule,
     ReactiveFormsModule,
   ],
-  exports: [DashboardPageModule] 
+  exports: [DashboardPageModule],
 })
 export class DashboardModule {
   static forRoot(): ModuleWithProviders<RootDashboardModule> {

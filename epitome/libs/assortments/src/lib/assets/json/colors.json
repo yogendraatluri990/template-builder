@@ -68,23 +68,28 @@
     "name": "error-red- f44336",
     "section": "font-color",
     "color": "#f44336"
-  }, {
+  },
+  {
     "name": "white-hsla",
     "section": "color",
     "color": "hsla(0, 0%, 100%, 0.7)"
-  }, {
+  },
+  {
     "name": "may-green",
-    "section":"Background Colors",
+    "section": "Background Colors",
     "color": "#41A950"
-  }, {
+  },
+  {
     "name": "fiord",
     "section": "Background Colors",
     "color": "#414b62"
-  }, {
+  },
+  {
     "name": "rgb-gray",
     "section": "color",
-    "color":"rgb(255 255 255 / 26%)"
-  }, {
+    "color": "rgb(255 255 255 / 26%)"
+  },
+  {
     "name": "dim-red",
     "section": "Background Color",
     "color": "#a30727"

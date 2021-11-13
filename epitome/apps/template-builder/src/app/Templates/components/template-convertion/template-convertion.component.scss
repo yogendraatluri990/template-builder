@@ -12,7 +12,7 @@
 }
 ::ng-deep {
   .mat-dialog-container {
-   @extend .dialog-dark;
+    @extend .dialog-dark;
   }
   .mat-stepper-horizontal,
   .mat-stepper-vertical {

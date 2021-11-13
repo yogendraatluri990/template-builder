@@ -1,6 +1,12 @@
 import { Component, Inject, NgModule, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
 // @assortments
 import { Material_Modules, validateHex, icons } from '@assortments';
@@ -33,9 +39,9 @@ export class TemplateAddDesignComponent implements OnInit {
     this.designForm.patchValue({
       templateName: this.data.templateName,
       id: this.data.templateId,
-      appCode: this.data.appCode
+      appCode: this.data.appCode,
     });
-    console.log(this.data);    
+    console.log(this.data);
   }
 
   // --------------------------------------------------
@@ -67,25 +73,26 @@ export class TemplateAddDesignComponent implements OnInit {
       DesignColor: color_scheme.DesignColor,
       MediaId: 0,
       MediaPath: '',
-      DesignTags: [{
-        Id: null,
-        Name: 'PrimaryColor',
-        Value: color_scheme.DesignColor
-      }]
-    }
+      DesignTags: [
+        {
+          Id: null,
+          Name: 'PrimaryColor',
+          Value: color_scheme.DesignColor,
+        },
+      ],
+    };
     console.log('temp-color', tempScheme);
   }
 }
 
-
 @NgModule({
   declarations: [TemplateAddDesignComponent],
   imports: [
-      CommonModule,
-      FormsModule,
-      ...Material_Modules,
-      ReactiveFormsModule
+    CommonModule,
+    FormsModule,
+    ...Material_Modules,
+    ReactiveFormsModule,
   ],
-  exports: [TemplateAddDesignComponent]
+  exports: [TemplateAddDesignComponent],
 })
 export class TemplateAddDesignComponentModule {}
