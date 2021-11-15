@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { ExtraOptions, RouterModule, Routes } from '@angular/router';
-import { OptInPreloadStrategyService } from '@router';
-
 // Auth Guards
 import { AuthGuard } from '@auth';
+import { OptInPreloadStrategyService } from '@router';
 
 export const ROUTER_OPTIONS: ExtraOptions = {
   useHash: true,

@@ -31,7 +31,7 @@
 }
 .design-container {
   margin: 10px;
-  max-width: calc(50% - 26px);
+  max-width: calc(50% - 35px);
   @extend .w-100;
   min-height: 735px;
   @include float(left);
@@ -40,14 +40,15 @@
   .container-title {
     @extend .default-font-color;
     text-transform: capitalize;
-    margin: 5px auto;
+    margin: 10px auto;
     text-align: center;
   }
 }
 ::ng-deep {
   mat-form-field {
     &.text-area-form {
-      margin: 0 5%;
+      margin: 0 6%;
+      padding: 0 5px;
       @extend .w-90;
       @extend .white-out-line-form;
       textarea.mat-input-element {

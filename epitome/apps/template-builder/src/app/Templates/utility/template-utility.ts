@@ -100,7 +100,7 @@ export class TemplateUtility {
       mainZoneCode: templateInfo.preferences.mainZoneId ?? '',
       potdSelectedValue: templateInfo.preferences.globalSchedularId
         ? templateInfo.preferences.globalSchedularId
-        : '',
+        : 0,
     };
   }
   //----------------------------------------------------------------------------
