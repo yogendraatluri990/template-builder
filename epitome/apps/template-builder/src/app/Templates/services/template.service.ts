@@ -15,6 +15,7 @@ import {
   AppInfo,
   ConvertTemplateMessage,
   CONVERT_TO_TEMPLATE,
+  DesignScheme,
   EditTemplate,
   EDIT_TEMPLATE_CONFIG,
   ImageFile,
@@ -31,6 +32,7 @@ import {
   Template,
   TemplateForm,
   TEMPLATE_CSS_CONFIG,
+  TEMPLATE_DESIGN_DATA,
 } from '../types';
 import { TemplateUtility as _util } from '../utility';
 
@@ -54,6 +56,7 @@ export class TemplateService extends ImageService<ImageFile> {
    * @param {SAVE_APPLICATION_CONFIG} _saveApplicationConfig
    * @param {SAVE_PREFERENCES_CONFIG} _savePreferencesConfig
    * @param {SAVE_VISIBILITY_CONFIG} _saveVisibilityConfig
+   * @param {TEMPLATE_DESIGN_DATA} _getTemplateConfig
    */
   constructor(
     protected _http: HttpClient,
@@ -73,7 +76,9 @@ export class TemplateService extends ImageService<ImageFile> {
     private _saveApplicationConfig: ServiceConfig,
     @Inject(SAVE_PREFERENCES_CONFIG)
     private _savePreferencesConfig: ServiceConfig,
-    @Inject(SAVE_VISIBILITY_CONFIG) private _saveVisibilityConfig: ServiceConfig
+    @Inject(SAVE_VISIBILITY_CONFIG)
+    private _saveVisibilityConfig: ServiceConfig,
+    @Inject(TEMPLATE_DESIGN_DATA) private _getTemplateConfig: ServiceConfig
   ) {
     super(_http);
   }
@@ -100,6 +105,12 @@ export class TemplateService extends ImageService<ImageFile> {
           }
         })
       );
+  }
+
+  getTemplateDesignData(applicationId: number): Observable<DesignScheme> {
+    return this._http.get<DesignScheme>(
+      `${this.getTemplateDesignDataUri()}/${applicationId}.json`
+    );
   }
 
   convertToTemplate(appCode: string): Observable<ConvertTemplateMessage> {
@@ -225,23 +236,33 @@ export class TemplateService extends ImageService<ImageFile> {
         : this._smartLinkConfig.Uat_Url
     }`;
   }
+
+  private getTemplateDesignDataUri(): string {
+    return `${this.getUri() + this._getTemplateConfig.Url}`;
+  }
+
   private getTemplateUri(): string {
     return `${this.getUri() + this._sampleAppPropConfig.Url}`;
   }
+
   private getConvertTemplateUri(): string {
     return `${this.getUri() + this._convertToTemplate.Url}`;
   }
+
   private getAppInfoUri(appCode: string): string {
     return `${this.getUri() + this._retrieveAppInfo.Url + appCode}`;
   }
+
   private getTemplateInfoUri(applicationId: string): string {
     return `${
       this.getUri() + this._editTemplateConfig.Url + applicationId + '.json'
     }`;
   }
+
   private getImageUploadUri(): string {
     return `${this.getUri() + this._imageUploadConfig.Url}`;
   }
+
   private getAddNewTemplateUri(templateName): string {
     return `${this.getUri() + this._addNewTemplate.Url}${templateName}.json`;
   }
@@ -253,6 +274,7 @@ export class TemplateService extends ImageService<ImageFile> {
   private getTemplateCssUri(): string {
     return `${this.getUri()}${this._templateCssConfig.Url}.json`;
   }
+
   private getApplicationUri(): string {
     return `${this.getUri()}${this._saveApplicationConfig.Url}`;
   }
@@ -265,6 +287,7 @@ export class TemplateService extends ImageService<ImageFile> {
       this._saveVisibilityConfig.Url
     }/${applicationId}/template/${templateId}/visibility/${isVisible}`;
   }
+
   private getPreferencesUri(): string {
     return `${this.getUri()}${this._savePreferencesConfig.Url}`;
   }
@@ -277,6 +300,7 @@ export class TemplateService extends ImageService<ImageFile> {
       this._moduleInstanceConfig.Url
     }appId=${applicationId}&masterAppId=${masterAppId}`;
   }
+
   //------------------------------------------------------------
   // @MAT_SNACKBAR Implementation
   //------------------------------------------------------------
@@ -289,6 +313,7 @@ export class TemplateService extends ImageService<ImageFile> {
       horizontalPosition: config.horizontalPosition,
     });
   }
+
   private messenger(config: Messenger): void {
     const configs: Messenger = {
       ...config,

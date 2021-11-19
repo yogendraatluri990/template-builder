@@ -1,50 +1,64 @@
-import { Component, OnInit, NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, NgModule, OnInit } from '@angular/core';
 import {
-  FormGroup,
   FormBuilder,
+  FormGroup,
   FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router, ActivatedRoute, Routes, RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { NgxsModule } from '@ngxs/store';
-
-import { TemplateState } from '../../store';
+import {
+  ActivatedRoute,
+  Params,
+  Router,
+  RouterModule,
+  Routes,
+} from '@angular/router';
 // @assortments
-import { Material_Modules, validateStyle, icons } from '@assortments';
+import { icons, Material_Modules, validateStyle } from '@assortments';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { NgxsModule } from '@ngxs/store';
+import { delay, filter } from 'rxjs/operators';
+import { TemplateFacade } from '../../facades';
+import { TemplateState } from '../../store';
+import { DesignScheme } from '../../types';
+import {
+  TemplateAddTagComponent,
+  TemplateAddTageComponentModule,
+} from '../template-add-tag/template-add-tag.component';
 // @importing local modules
 import {
-  TemplatePreviewComponentModule,
   TemplatePreviewComponent,
+  TemplatePreviewComponentModule,
 } from '../template-preview/template-preview.component';
-import {
-  TemplateAddTageComponentModule,
-  TemplateAddTagComponent,
-} from '../template-add-tag/template-add-tag.component';
-
 // importing tags-module
 import { TemplateTagComponentModule } from '../template-tag/template-tag.component';
 
+@UntilDestroy()
 @Component({
   selector: 'tb-custom-templates',
   templateUrl: './template-design.component.html',
   styleUrls: ['./template-design.component.scss'],
 })
 export class TemplateDesignComponent implements OnInit {
-  public designForm: FormGroup = this.getDesignForm();
-  public currentTemplate$ = this._activatedRoute.queryParams;
-  public addDesignTagFlg = true;
-  public get icons(): typeof icons {
-    return icons;
-  }
+  //-------------------------------------------------------------------------------------------------------------------
+  // @Public Accessories
+  //-------------------------------------------------------------------------------------------------------------------
+  designForm: FormGroup = this.getDesignForm();
+  currentTemplate$ = this._activatedRoute.queryParams;
+  addDesignTagFlg = true;
+
+  //-----------------------------------------------------------------------------------------------------------------------------
+  //@Constructor
+  //-------------------------------------------------------------------------------------------------------------------------------
   /**
    *
    * @param {FormBuilder} _formBuilder
    * @param {Router} _router
    * @param {ActivatedRoute} _activatedRoute
    * @param {MatDialog} _matDialog
+   * @param {TemplateFacade} _facade
    */
 
   //----------------------------------------------------------------------------------------------------------------------------
@@ -54,16 +68,36 @@ export class TemplateDesignComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
-    private _matDialog: MatDialog
-  ) {}
+    private _matDialog: MatDialog,
+    private _facade: TemplateFacade
+  ) {
+    this._activatedRoute.queryParams.subscribe({
+      next: (params: Params) =>
+        this.getTemplateDesignData(params?.applicationId),
+    });
+
+    const designData$ = this._facade.designScheme$;
+    designData$
+      .pipe(filter(Boolean), delay(1500), untilDestroyed(this))
+      .subscribe({
+        next: (templateData: DesignScheme) =>
+          this.designForm.patchValue({
+            templateCSS: templateData.Template_Data,
+          }),
+      });
+  }
 
   //-----------------------------------------------------------------------------------------------------------------------------
   //@Life Cycle Hooks
   //-------------------------------------------------------------------------------------------------------------------------------
 
-  ngOnInit(): void {
-    // tslint:disable-next-line: deprecation
-    this._activatedRoute.queryParams.subscribe();
+  ngOnInit(): void {}
+
+  //-----------------------------------------------------------------------------------------------------------------------------
+  //@Getters && @Setters
+  //-------------------------------------------------------------------------------------------------------------------------------
+  get icons(): typeof icons {
+    return icons;
   }
 
   // ---------------------------------------------------
@@ -117,6 +151,9 @@ export class TemplateDesignComponent implements OnInit {
 
   private errorHandler(error) {
     console.log(error);
+  }
+  private getTemplateDesignData(applicationId: number) {
+    this._facade.getTemplateDesignData(applicationId);
   }
 }
 

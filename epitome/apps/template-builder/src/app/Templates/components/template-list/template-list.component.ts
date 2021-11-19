@@ -1,33 +1,37 @@
+import { CommonModule } from '@angular/common';
 import {
+  AfterViewInit,
   Component,
+  NgModule,
+  OnDestroy,
   OnInit,
   ViewChild,
-  OnDestroy,
-  NgModule,
-  AfterViewInit,
 } from '@angular/core';
-import {
-  Router,
-  NavigationExtras,
-  Routes,
-  RouterModule,
-} from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { MatTableDataSource, MatTable } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
-import { tap } from 'rxjs/operators';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
+import {
+  NavigationExtras,
+  Router,
+  RouterModule,
+  Routes,
+} from '@angular/router';
+import { icons, Material_Modules } from '@assortments';
 import { NgxsModule } from '@ngxs/store';
-import { TemplateState } from '../../store';
-import { Material_Modules, icons } from '@assortments';
-import { TemplateEditComponentModule } from '../template-edit/template-edit.component';
-import { TemplateConvertionComponentModule } from '../template-convertion/template-convertion.component';
-import { TemplateConvertionComponent } from '../template-convertion/template-convertion.component';
-import { TemplateEditComponent } from '../template-edit/template-edit.component';
-import { TemplateFacade } from '../../facades';
-import { Template } from '../../types';
+import { tap } from 'rxjs/operators';
 import { Constants as _constant } from '../../constants';
+import { TemplateFacade } from '../../facades';
+import { TemplateState } from '../../store';
+import { Template } from '../../types';
+import {
+  TemplateConvertionComponent,
+  TemplateConvertionComponentModule,
+} from '../template-convertion/template-convertion.component';
+import {
+  TemplateEditComponent,
+  TemplateEditComponentModule,
+} from '../template-edit/template-edit.component';
 
 @Component({
   selector: 'tb-templates-list',
@@ -117,6 +121,7 @@ export class TemplateListComponent implements OnInit, OnDestroy, AfterViewInit {
         appCode: row.AppCode.replace(/\s/g, ''),
         templateName: row.TemplateName.replace(/\s/g, ''),
         templateId: row.TemplateId,
+        applicationId: row.ApplicationId,
       },
     };
     this._facade.storeCurrentTemplate(row);

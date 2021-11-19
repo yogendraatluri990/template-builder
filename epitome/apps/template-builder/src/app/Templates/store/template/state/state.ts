@@ -78,16 +78,19 @@ export class TemplateState {
   static getTemplateList(state: TemplateStateModel): Template[] {
     return state.templates;
   }
+
   @Selector()
   static getConvertToTemplate(
     state: TemplateStateModel
   ): ConvertTemplateMessage {
     return state.convertTemplate;
   }
+
   @Selector()
   static getCurrentTemplate(state: TemplateStateModel): Template {
     return state.currentTemplate;
   }
+
   @Selector()
   static getTemplateAppInfo(state: TemplateStateModel): AppInfo {
     return state.templateAppInfo;
@@ -100,6 +103,7 @@ export class TemplateState {
   static getDesignScheme(state: TemplateStateModel): DesignScheme {
     return state.templateDesign;
   }
+
   @Selector()
   static getImageUploadInfo(state: TemplateStateModel): ImageFile {
     return state.templateImage;
@@ -112,10 +116,12 @@ export class TemplateState {
   static getTemplateInfo(state: TemplateStateModel): EditTemplate {
     return state.editTemplate;
   }
+
   @Selector()
   static getAddedTemplateResponse(state: TemplateStateModel): SavedResponse {
     return state.savedResponse;
   }
+
   @Selector()
   static getModuleInstances(state: TemplateStateModel): InstanceDuplicate {
     return state.moduleInstances;
@@ -158,6 +164,7 @@ export class TemplateState {
       throwError(() => error);
     }
   }
+
   @Action(templateActions.GetAppInfo)
   async getAppInfo(
     ctx: StateContext<TemplateStateModel>,
@@ -175,6 +182,7 @@ export class TemplateState {
       throwError(() => error);
     }
   }
+
   @Action(templateActions.CurrentTemplate)
   currentTemplate(
     ctx: StateContext<TemplateStateModel>,
@@ -185,12 +193,27 @@ export class TemplateState {
         currentTemplate: event.currentTemplate,
       });
     } catch (error) {
-      throwError(error);
+      throwError(() => error);
     }
   }
   /**
    * Template Design Page
    **/
+  @Action(templateActions.GetTemplateDesignData)
+  async templateDesignData(
+    ctx: StateContext<TemplateStateModel>,
+    event: templateActions.GetTemplateDesignData
+  ) {
+    try {
+      const templateDesignData = await lastValueFrom(
+        this._templateService.getTemplateDesignData(event.applicationId)
+      );
+      ctx.dispatch(new templateActions.StoreTemplateDesign(templateDesignData));
+    } catch (error) {
+      throwError(() => error);
+    }
+  }
+
   @Action(templateActions.StoreTemplateDesign)
   colorScheme(
     ctx: StateContext<TemplateStateModel>,
@@ -204,6 +227,7 @@ export class TemplateState {
       throwError(() => error);
     }
   }
+
   @Action(templateActions.ImageUpload)
   async uploadImage(
     ctx: StateContext<TemplateStateModel>,
@@ -227,6 +251,7 @@ export class TemplateState {
       throwError(() => error);
     }
   }
+
   @Action(templateActions.UpdateColorScheme)
   updateColorScheme(
     ctx: StateContext<TemplateStateModel>,
@@ -239,7 +264,7 @@ export class TemplateState {
             event.color_scheme,
             event.currentImage
           ),
-          ctx.getState().templateImage.Name,
+          ctx.getState().templateImage?.Name,
           this._imageUrl.Uat_Url,
           this._smartlinkConfig.Uat_Url,
           this._imageUrl.cdn_path,
@@ -260,6 +285,7 @@ export class TemplateState {
       throwError(() => error);
     }
   }
+
   @Action(templateActions.SaveDesignTag)
   async saveDesignTag(
     ctx: StateContext<TemplateStateModel>,
@@ -277,6 +303,7 @@ export class TemplateState {
       throwError(() => error);
     }
   }
+
   @Action(templateActions.DeleteColorScheme)
   deleteColorScheme(
     ctx: StateContext<TemplateStateModel>,
@@ -317,6 +344,7 @@ export class TemplateState {
       throwError(() => error);
     }
   }
+
   @Action(templateActions.ResetEditTemplate)
   resetEditTemplate(
     ctx: StateContext<TemplateStateModel>,
@@ -327,7 +355,7 @@ export class TemplateState {
         editTemplate: null,
       });
     } catch (error) {
-      throwError(error);
+      throwError(() => error);
     }
   }
 
@@ -349,6 +377,7 @@ export class TemplateState {
       throwError(() => error);
     }
   }
+
   @Action(templateActions.PopulateModuleInstance)
   async populateInstances(
     ctx: StateContext<TemplateStateModel>,
@@ -372,6 +401,7 @@ export class TemplateState {
       throwError(() => error);
     }
   }
+
   @Action(templateActions.SaveTemplateEdit)
   async saveTemplateEdit(
     ctx: StateContext<TemplateStateModel>,

@@ -40,6 +40,7 @@
     "@angular/platform-browser": "^13.0.1",
     "@angular/platform-browser-dynamic": "^13.0.1",
     "@angular/router": "^13.0.1",
+    "@ngneat/until-destroy": "^8.1.4",
     "@ngxs-labs/dispatch-decorator": "^3.1.0",
     "@ngxs/devtools-plugin": "^3.7.2",
     "@ngxs/form-plugin": "^3.7.2",

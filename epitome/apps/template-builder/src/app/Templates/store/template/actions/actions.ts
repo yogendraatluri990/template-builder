@@ -1,8 +1,8 @@
 import {
-  Template,
-  DesignScheme,
   ColorScheme,
+  DesignScheme,
   ImageFile,
+  Template,
   TemplateForm,
 } from '../../../types';
 
@@ -29,6 +29,10 @@ export namespace TemplateAction {
   /**
    * Template Design Page
    **/
+  export class GetTemplateDesignData {
+    static readonly type = '[template-design] Template Data';
+    constructor(public applicationId: number) {}
+  }
   export class StoreTemplateDesign {
     static readonly type = '[template-design] Color-Schemes';
     constructor(public design: DesignScheme | null) {}

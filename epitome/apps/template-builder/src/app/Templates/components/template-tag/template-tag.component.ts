@@ -1,4 +1,3 @@
-import { Component, OnInit, Input, OnDestroy, NgModule } from '@angular/core';
 import {
   animate,
   state,
@@ -6,47 +5,47 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import { CommonModule } from '@angular/common';
+import { Component, Input, NgModule, OnDestroy, OnInit } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
-  Validators,
   FormsModule,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { tap, delay } from 'rxjs/operators';
 import {
-  NgxFileDropModule,
-  NgxFileDropEntry,
-  FileSystemFileEntry,
-} from 'ngx-file-drop';
-import { NgxsModule } from '@ngxs/store';
-import { Material_Modules, AssortmentsModule, Inline } from '@assortments';
-
-// @assortments
-import { validateHex, Media, icons } from '@assortments';
-// utility
-import { TemplateUtility as _util } from '../../utility';
-
-// @types
-import { DesignScheme, ColorScheme, Colors } from '../../types';
-
+  AssortmentsModule,
+  icons,
+  Inline,
+  Material_Modules,
+  Media,
+  validateHex,
+} from '@assortments';
 // @error-handler
 import { ErrorSnackService } from '@error-handler';
-
+import { NgxsModule } from '@ngxs/store';
+import {
+  FileSystemFileEntry,
+  NgxFileDropEntry,
+  NgxFileDropModule,
+} from 'ngx-file-drop';
+import { delay, filter, tap } from 'rxjs/operators';
 // facades
 import { TemplateFacade } from '../../facades';
-
+import { TemplateState } from '../../store';
+// @types
+import { Colors, ColorScheme, DesignScheme } from '../../types';
+// utility
+import { TemplateUtility as _util } from '../../utility';
 // components & components
 import {
   TemplateAddDesignComponent,
   TemplateAddDesignComponentModule,
 } from '../template-add-design/template-add-design.component';
-
-import { TemplateState } from '../../store';
 
 @Component({
   selector: 'tb-tags',
@@ -69,28 +68,32 @@ import { TemplateState } from '../../store';
   ],
 })
 export class TemplateTagComponent implements OnInit, OnDestroy {
+  //-------------------------------------------------------------
+  // @PUBLIC ACCESSORIES
+  //--------------------------------------------------------------
+  columnsToDisplay = ['designName', 'tags', 'css', 'image', 'actions'];
+  color_scheme: ColorScheme | null;
+  isExecuted = false;
+  inlineObj: Inline<number, string>;
+  tagForm: FormGroup = this.getTagForm();
+  designSchemes$ = this._facade.designScheme$.pipe(
+    filter(Boolean),
+    delay(1500),
+    tap((response: DesignScheme) => this.massageTagForm(response.ColorScheme))
+  );
+
+  //-------------------------------------------------------------
+  // @INPUT() & @OUTPUT()
+  //--------------------------------------------------------------
   @Input() public isStyle = false;
   @Input() public templateName: string;
   @Input() public templateId: number;
   @Input() public appCode: string;
   @Input() public parentForm: FormGroup;
-  public tagForm: FormGroup = this.getTagForm();
-  public get icons(): typeof icons {
-    return icons;
-  }
-  public designSchemes$ = this._facade.designScheme$.pipe(
-    delay(1500),
-    tap((response: DesignScheme) => {
-      if (response) {
-        console.log(response);
-        this.massageTagForm(response.ColorScheme);
-      }
-    })
-  );
-  public columnsToDisplay = ['designName', 'tags', 'css', 'image', 'actions'];
-  public color_scheme: ColorScheme | null;
-  private isExecuted = false;
-  private inlineObj: Inline<number, string>;
+
+  //-------------------------------------------------------------
+  // @CONSTRUCTOR
+  //--------------------------------------------------------------
   /**
    *
    * @param {ErrorSnackService} _errorHandler
@@ -106,11 +109,100 @@ export class TemplateTagComponent implements OnInit, OnDestroy {
     private _formBuilder: FormBuilder
   ) {}
 
+  //-------------------------------------------------------------
+  // @LIFE CYCLE HOOKS
+  //--------------------------------------------------------------
+
   ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.isExecuted = false;
     this._facade.storeDesignScheme(null);
+  }
+
+  //-------------------------------------------------------------
+  // @GETTERS & @SETTERS
+  //--------------------------------------------------------------
+
+  get icons(): typeof icons {
+    return icons;
+  }
+
+  // ----------------------------------------------------------
+  // @Public Methods
+  // ----------------------------------------------------------
+  designNameChange($event: Inline<number, string>) {
+    if ($event) this.inlineObj = { ...$event };
+  }
+  save(color_scheme: ColorScheme, tagForm: DesignScheme): void {
+    this._facade.saveDesignRow(
+      _util.parsingColorScheme(
+        color_scheme,
+        tagForm.ColorScheme,
+        parseInt(color_scheme.Id, 0) === this.inlineObj?.key
+          ? this.inlineObj?.currentValue
+          : null
+      )
+    );
+    this.isExecuted = false;
+  }
+  delete(current_row: ColorScheme, tagForm: DesignScheme): void {
+    // stop further $event.bubbling
+
+    this._facade.deleteDesignRow(
+      _util.parsingColorScheme(current_row, tagForm.ColorScheme)
+    );
+  }
+  onColorSchemeDrop($event: NgxFileDropEntry[]): void {
+    if ($event) {
+      for (const file of $event) {
+        if (file.fileEntry.isFile) {
+          const fileUploadEntry = file.fileEntry as FileSystemFileEntry;
+          fileUploadEntry.file((f: File) => {
+            this.fileReader(f);
+          });
+        }
+      }
+    }
+  }
+  onFileImport(files: FileList, $event: Event): void {
+    if (files) {
+      const file: File = files[0];
+      this.fileReader(file);
+      if ($event) $event.target['value'] = '';
+    }
+  }
+  onImageDropped($event: NgxFileDropEntry[], color_scheme: ColorScheme): void {
+    let fileEntry: FileSystemFileEntry;
+    if ($event) {
+      for (const file of $event) {
+        if (file.fileEntry.isFile)
+          fileEntry = file.fileEntry as FileSystemFileEntry;
+        if (fileEntry)
+          fileEntry.file((f: File) => {
+            this.imageUploadDispatcher(f, color_scheme);
+          });
+      }
+    }
+  }
+  onImageImport(files: FileList, color_scheme: ColorScheme): void {
+    if (files) {
+      this.imageUploadDispatcher(files[0], color_scheme);
+    }
+  }
+  addDesign(): void {
+    const modalRef = this._matDialog.open(TemplateAddDesignComponent, {
+      width: '400px',
+      data: {
+        appCode: this.appCode,
+        templateName: this.templateName,
+        templateId: this.templateId,
+      },
+      disableClose: true,
+      position: {
+        top: '10%',
+      },
+    });
   }
   // ---------------------------------------------------------
   // @Private Methods
@@ -143,8 +235,9 @@ export class TemplateTagComponent implements OnInit, OnDestroy {
     if (
       typeof colors !== 'undefined' &&
       colors !== null &&
-      colors.length > 0 &&
-      !this.isExecuted
+      colors?.length > 0
+      // &&
+      // !this.isExecuted
     ) {
       this.deletFormArrays();
       this.tagForm.reset();
@@ -244,85 +337,6 @@ export class TemplateTagComponent implements OnInit, OnDestroy {
   }
   private throwErrorMessage(error: Error): void {
     this._errorHandler.handleError(error);
-  }
-  // ----------------------------------------------------------
-  // @Public Methods
-  // ----------------------------------------------------------
-  public designNameChange($event: Inline<number, string>) {
-    if ($event) this.inlineObj = { ...$event };
-  }
-  public save(color_scheme: ColorScheme, tagForm: DesignScheme): void {
-    this._facade.saveDesignRow(
-      _util.parsingColorScheme(
-        color_scheme,
-        tagForm.ColorScheme,
-        parseInt(color_scheme.Id, 0) === this.inlineObj?.key
-          ? this.inlineObj?.currentValue
-          : null
-      )
-    );
-    this.isExecuted = false;
-  }
-  public delete(current_row: ColorScheme, tagForm: DesignScheme): void {
-    // stop further $event.bubbling
-
-    this._facade.deleteDesignRow(
-      _util.parsingColorScheme(current_row, tagForm.ColorScheme)
-    );
-  }
-  public onColorSchemeDrop($event: NgxFileDropEntry[]): void {
-    if ($event) {
-      for (const file of $event) {
-        if (file.fileEntry.isFile) {
-          const fileUploadEntry = file.fileEntry as FileSystemFileEntry;
-          fileUploadEntry.file((f: File) => {
-            this.fileReader(f);
-          });
-        }
-      }
-    }
-  }
-  public onFileImport(files: FileList, $event: Event): void {
-    if (files) {
-      const file: File = files[0];
-      this.fileReader(file);
-      if ($event) $event.target['value'] = '';
-    }
-  }
-  public onImageDropped(
-    $event: NgxFileDropEntry[],
-    color_scheme: ColorScheme
-  ): void {
-    let fileEntry: FileSystemFileEntry;
-    if ($event) {
-      for (const file of $event) {
-        if (file.fileEntry.isFile)
-          fileEntry = file.fileEntry as FileSystemFileEntry;
-        if (fileEntry)
-          fileEntry.file((f: File) => {
-            this.imageUploadDispatcher(f, color_scheme);
-          });
-      }
-    }
-  }
-  public onImageImport(files: FileList, color_scheme: ColorScheme): void {
-    if (files) {
-      this.imageUploadDispatcher(files[0], color_scheme);
-    }
-  }
-  public addDesign(): void {
-    const modalRef = this._matDialog.open(TemplateAddDesignComponent, {
-      width: '400px',
-      data: {
-        appCode: this.appCode,
-        templateName: this.templateName,
-        templateId: this.templateId,
-      },
-      disableClose: true,
-      position: {
-        top: '10%',
-      },
-    });
   }
 }
 // ---------------------------------------------------------------------------------------------------
