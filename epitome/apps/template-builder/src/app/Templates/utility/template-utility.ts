@@ -11,6 +11,7 @@ import {
   ModuleInstance,
   Tag,
   TemplateForm,
+  TemplatePreference,
 } from '../types';
 
 export class TemplateUtility {
@@ -81,26 +82,25 @@ export class TemplateUtility {
         templateInfo.relationShipRole === 'Master' ? 0 : templateInfo.masterId,
     };
   }
-  public static getPreferences(templateInfo: TemplateForm) {
+  public static getPreferences(templateInfo: TemplateForm): TemplatePreference {
     return {
       applicationId: templateInfo.applicationId,
-      marketsSelectedValue: templateInfo.industry ?? '',
-      aboutUsInstance: templateInfo.preferences.AboutUsInstance ?? '',
-      introInstance: templateInfo.preferences.IntroInstance ?? '',
-      fpsInstance: templateInfo.preferences.FPSInstanceId ?? '',
-      videoInstance: templateInfo.preferences.VideoInstance ?? '',
-      editorialInstance: templateInfo.preferences.EditorialFeed ?? '',
-      newsletterInstance: templateInfo.preferences.Newsletter ?? '',
-      socialNetworkFeedInstance:
-        templateInfo.preferences.SocialNetworkFeed ?? '',
-      logoWidth: templateInfo.preferences.LogoWidth ?? '',
-      logoHeight: templateInfo.preferences.LogoHeight ?? '',
-      customPages: templateInfo.preferences.CustomPages ?? '',
-      newsPage: templateInfo.preferences.NewsPage ?? '',
-      mainZoneCode: templateInfo.preferences.mainZoneId ?? '',
-      potdSelectedValue: templateInfo.preferences.globalSchedularId
-        ? templateInfo.preferences.globalSchedularId
-        : 0,
+      preference_list: {
+        about_inst_id: templateInfo.preferences.AboutUsInstance,
+        intro_inst_id: templateInfo.preferences.IntroInstance,
+        fps_inst_id: templateInfo.preferences.FPSInstanceId,
+        featured_video_inst_id: templateInfo.preferences.VideoInstance,
+        editorial_feed_inst_id: templateInfo.preferences.EditorialFeed,
+        newsletter_inst_id: templateInfo.preferences.Newsletter,
+        social_network_feed_inst_id: templateInfo.preferences.SocialNetworkFeed,
+        width: templateInfo.preferences.LogoWidth,
+        height: templateInfo.preferences.LogoHeight,
+        news_page_name: templateInfo.preferences.NewsPage,
+        main_zone_id: templateInfo.preferences.mainZoneId,
+        POTDGlobalSchedule:
+          templateInfo.preferences.globalSchedularId.toString(),
+        designer_pages: templateInfo.preferences.CustomPages,
+      },
     };
   }
   //----------------------------------------------------------------------------

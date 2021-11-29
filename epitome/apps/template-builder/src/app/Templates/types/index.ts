@@ -7,4 +7,5 @@ export * from './edit-template-config';
 export * from './image-file';
 export * from './sample-app-properties';
 export * from './template-design.config';
+export * from './template-preference';
 export * from './templates';
