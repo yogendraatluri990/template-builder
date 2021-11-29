@@ -73,13 +73,15 @@
               <th mat-header-cell *matHeaderCellDef class="w-10">
                 <h5 class="column-headers">tag</h5>
               </th>
-              <td
-                mat-cell
-                *matCellDef="let row"
-                [style.color]="row.DesignColor"
-                style="font-weight: bold"
-              >
-                {{ row.DesignColor }}
+              <td mat-cell *matCellDef="let row" style="margin: 0 5px">
+                <div
+                  [style.backgroundColor]="row.DesignColor"
+                  style="font-weight: bold; text-align: center; width: 95%"
+                >
+                  <span>
+                    {{ row.DesignColor }}
+                  </span>
+                </div>
               </td>
             </ng-container>
             <ng-container matColumnDef="css">
@@ -113,13 +115,11 @@
                     [contentClassName]="'drop__content'"
                   >
                     <ng-template ngx-file-drop-content-tmp>
-                      <div *ngIf="row.MediaPath && row.MediaPath.length > 0">
-                        <img
-                          [src]="row.MediaPath"
-                          class=""
-                          width="85"
-                          height="85"
-                        />
+                      <div
+                        *ngIf="row.MediaPath && row.MediaPath.length > 0"
+                        class="tag-img-container"
+                      >
+                        <img [src]="row.MediaPath" class="tag-img" />
                       </div>
                       <div
                         class="file-drop-space"
@@ -236,6 +236,7 @@
                                   <mat-label>
                                     {{ t.get('Name').value }}
                                   </mat-label>
+
                                   <input
                                     matInput
                                     type="text"

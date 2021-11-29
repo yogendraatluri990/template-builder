@@ -31,7 +31,7 @@ export namespace TemplateAction {
    **/
   export class GetTemplateDesignData {
     static readonly type = '[template-design] Template Data';
-    constructor(public applicationId: number) {}
+    constructor(public applicationId: number, public title: string) {}
   }
   export class StoreTemplateDesign {
     static readonly type = '[template-design] Color-Schemes';

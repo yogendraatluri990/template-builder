@@ -1,5 +1,6 @@
 import { InjectionToken } from '@angular/core';
 import { ServiceConfig } from '@auth';
+import { environment } from '../../../environments/environment';
 
 export interface ImageFile {
   Id: number;
@@ -13,6 +14,8 @@ export const IMAGE_UPLOAD = new InjectionToken('Image Upload URL', {
     new ServiceConfig({
       Url: '/media/upload.json',
       noImagePath: 'images/ImageNotInCatalog110.png',
-      cdn_path: 'https://commonmedia.uat-asicentral.com/',
+      cdn_path: `https://commonmedia.${
+        environment.production ? 'asicentral.com' : 'uat-asicentral.com'
+      }/`,
     }),
 });

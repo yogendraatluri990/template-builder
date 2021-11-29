@@ -73,7 +73,7 @@ export class TemplateDesignComponent implements OnInit {
   ) {
     this._activatedRoute.queryParams.subscribe({
       next: (params: Params) =>
-        this.getTemplateDesignData(params?.applicationId),
+        this.getTemplateDesignData(params?.applicationId, params?.title),
     });
 
     const designData$ = this._facade.designScheme$;
@@ -152,8 +152,8 @@ export class TemplateDesignComponent implements OnInit {
   private errorHandler(error) {
     console.log(error);
   }
-  private getTemplateDesignData(applicationId: number) {
-    this._facade.getTemplateDesignData(applicationId);
+  private getTemplateDesignData(applicationId: number, title: string) {
+    this._facade.getTemplateDesignData(applicationId, title);
   }
 }
 

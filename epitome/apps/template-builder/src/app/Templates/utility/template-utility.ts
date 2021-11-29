@@ -22,11 +22,6 @@ export class TemplateUtility {
   public static mapper(template: EditTemplate): TemplateForm {
     /** Edit Template Mapper */
     if (template) {
-      console.log(
-        template?.Templates?.find(
-          (v) => v.TemplateId === template?.SelectedTemplate?.Template_ID
-        )?.TemplateId
-      );
       return {
         name: template.FormattedName,
         description: template.Description,
@@ -189,7 +184,7 @@ export class TemplateUtility {
   //----------------------------------------------------
   static colorSchemeImageParser(
     color_scheme: ColorScheme,
-    currentImage: ImageFile
+    currentImage?: ImageFile
   ): Array<ColorScheme> {
     console.log('current Image File', currentImage);
     console.log('current row', color_scheme);

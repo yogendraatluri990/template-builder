@@ -16,7 +16,7 @@ import {
 import { icons, Material_Modules } from '@assortments';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgxsModule } from '@ngxs/store';
-import { tap } from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
 import { instanceControllerNames, instanceNames } from '../../constants';
 // @importing facades
 import { TemplateFacade } from '../../facades';
@@ -48,18 +48,15 @@ export class TemplateEditComponent implements OnInit, OnDestroy {
   public editForm: FormGroup = this.getEditForm();
   public codes = { ...instanceNames };
   public template$ = this._facade.template$.pipe(
+    filter(Boolean),
     tap((response: EditTemplate) => {
-      if (response) {
-        console.log('current edit template', response);
-        console.log();
-        this.editForm.reset({
-          ..._util.mapper(response),
-          applicationId: this.data.currentApplicationId,
-        });
-        response.hasOwnProperty('MarketGroupDetails')
-          ? this.editForm.get('industry').enable()
-          : this.editForm.get('industry').disable();
-      }
+      this.editForm.reset({
+        ..._util.mapper(response),
+        applicationId: this.data.currentApplicationId,
+      });
+      response.hasOwnProperty('MarketGroupDetails')
+        ? this.editForm.get('industry').enable()
+        : this.editForm.get('industry').disable();
     })
   );
   public moduleInstance$ = this._facade.moduleInstance$.pipe(
@@ -140,7 +137,6 @@ export class TemplateEditComponent implements OnInit, OnDestroy {
     this._facade.populateInstances(this.data.currentApplicationId, masterId);
   }
   public save(formData: TemplateForm): void {
-    console.log(formData);
     this._facade.saveTemplateEdit(formData);
   }
   public addNewTemplate() {

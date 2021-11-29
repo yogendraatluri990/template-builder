@@ -122,6 +122,7 @@ export class TemplateListComponent implements OnInit, OnDestroy, AfterViewInit {
         templateName: row.TemplateName.replace(/\s/g, ''),
         templateId: row.TemplateId,
         applicationId: row.ApplicationId,
+        title: row.Title.replace(/[^A-Za-z]/g, '').toLowerCase(),
       },
     };
     this._facade.storeCurrentTemplate(row);

@@ -3,6 +3,7 @@ import { Media as media } from '@assortments';
 import { ServiceConfig, SMARTLINK_SERVICE_CONFIG } from '@auth';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { lastValueFrom, throwError } from 'rxjs';
+import { environment } from '../../../../../environments/environment';
 // import services
 import { TemplateService } from '../../../services';
 // types
@@ -208,6 +209,16 @@ export class TemplateState {
       const templateDesignData = await lastValueFrom(
         this._templateService.getTemplateDesignData(event.applicationId)
       );
+      console.log(
+        templateDesignData.ColorScheme?.map((colorScheme, k) =>
+          media.getMediaPath<ColorScheme>(
+            [colorScheme],
+            true,
+            this._imageUrl.cdn_path,
+            this.getUri(this._smartlinkConfig)
+          )
+        )
+      );
       ctx.dispatch(new templateActions.StoreTemplateDesign(templateDesignData));
     } catch (error) {
       throwError(() => error);
@@ -264,11 +275,11 @@ export class TemplateState {
             event.color_scheme,
             event.currentImage
           ),
-          ctx.getState().templateImage?.Name,
-          this._imageUrl.Uat_Url,
-          this._smartlinkConfig.Uat_Url,
+          event.mediaPathFlg,
           this._imageUrl.cdn_path,
-          event.mediaPathFlg
+          this._smartlinkConfig.Uat_Url,
+          this._imageUrl.Uat_Url,
+          ctx.getState().templateImage?.Name
         )[0],
       };
       console.log(current_row);
@@ -421,5 +432,16 @@ export class TemplateState {
       console.log(error);
       throwError(() => error);
     }
+  }
+
+  //---------------------------------------------------------------------------------------------
+  // @Private Methods
+  //----------------------------------------------------------------------------------------------
+  private getUri(currentServiceConfig: ServiceConfig): string {
+    return environment.production
+      ? currentServiceConfig.Url
+      : environment.localDev
+      ? currentServiceConfig.Dev_Url
+      : currentServiceConfig.Uat_Url;
   }
 }

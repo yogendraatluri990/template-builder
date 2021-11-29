@@ -265,7 +265,6 @@ export class TemplateTagComponent implements OnInit, OnDestroy {
               })
             );
       });
-      console.log(this.tagForm.value);
       this.isExecuted = true;
     }
   }

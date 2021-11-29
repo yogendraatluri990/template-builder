@@ -32,11 +32,11 @@ export class Media {
   }
   public static getMediaPath<T>(
     mediaObject: Array<T>,
-    mediaName: string,
-    MediaPath: string,
-    smartLinkUrl: string,
+    MediaPathFlg: boolean,
     cdn_Path: string,
-    MediaPathFlg: boolean
+    smartLinkUrl?: string,
+    MediaPath?: string,
+    mediaName?: string
   ): Array<T> {
     const mediaCollection: Array<T> = [];
     if (MediaPathFlg) {
@@ -55,11 +55,12 @@ export class Media {
               mediaResponsePath.length - 4
             );
             media_path = media_path + '0000';
-            if (!(v['MediaId'].toString().indexOf('12345') > -1))
-              v[
-                'MediaPath'
-              ] = `${cdn_Path}${media_path}/${mediaResponsePath}/${mediaName}`;
-            mediaCollection.push(v);
+            if (!(v['MediaId'].toString().indexOf('12345') > -1)) {
+              v['MediaPath'] = `${cdn_Path}${media_path}/${mediaResponsePath}/${
+                v['MediaFileName'] ?? mediaName
+              }`;
+              mediaCollection.push(v);
+            }
           } else {
             if (mediaResponsePath.length > 0 && mediaResponsePath.length < 4) {
               media_path = '10000';

@@ -62,9 +62,9 @@ export class TemplateFacade {
   /**
    * Template Design Page
    **/
-  getTemplateDesignData(applicationId: number): void {
+  getTemplateDesignData(applicationId: number, title: string): void {
     this._store.dispatch(
-      new templateActions.GetTemplateDesignData(applicationId)
+      new templateActions.GetTemplateDesignData(applicationId, title)
     );
   }
 

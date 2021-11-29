@@ -1,16 +1,15 @@
+import { CommonModule } from '@angular/common';
 import { Component, Inject, NgModule, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {
-  FormGroup,
   FormBuilder,
-  Validators,
+  FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
-
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 // @assortments
-import { Material_Modules, validateHex, icons } from '@assortments';
-import { CommonModule } from '@angular/common';
+import { icons, Material_Modules, validateHex } from '@assortments';
 import { ColorScheme } from '../../types';
 
 @Component({
@@ -41,7 +40,6 @@ export class TemplateAddDesignComponent implements OnInit {
       id: this.data.templateId,
       appCode: this.data.appCode,
     });
-    console.log(this.data);
   }
 
   // --------------------------------------------------
@@ -64,7 +62,6 @@ export class TemplateAddDesignComponent implements OnInit {
     this._matDialogRef.close();
   }
   save(color_scheme: ColorScheme) {
-    console.log(color_scheme);
     const tempScheme: ColorScheme = {
       Id: null,
       Name: color_scheme.Name,
@@ -81,7 +78,6 @@ export class TemplateAddDesignComponent implements OnInit {
         },
       ],
     };
-    console.log('temp-color', tempScheme);
   }
 }
 
