@@ -209,16 +209,15 @@ export class TemplateState {
       const templateDesignData = await lastValueFrom(
         this._templateService.getTemplateDesignData(event.applicationId)
       );
-      console.log(
-        templateDesignData.ColorScheme?.map((colorScheme, k) =>
-          media.getMediaPath<ColorScheme>(
-            [colorScheme],
-            true,
-            this._imageUrl.cdn_path,
-            this.getUri(this._smartlinkConfig)
-          )
+      templateDesignData.ColorScheme?.map((colorScheme, k) =>
+        media.getMediaPath<ColorScheme>(
+          [colorScheme],
+          true,
+          this._imageUrl.cdn_path,
+          this.getUri(this._smartlinkConfig)
         )
       );
+
       ctx.dispatch(new templateActions.StoreTemplateDesign(templateDesignData));
     } catch (error) {
       throwError(() => error);
