@@ -30,7 +30,7 @@ export class TemplateUtility {
           (v) => v.TemplateId === template?.SelectedTemplate?.Template_ID
         )?.TemplateId,
 
-        industry: 'Default',
+        industry: 'DFLT',
         preferences: {
           IntroInstance: template.Preferences.IntroInstance,
           AboutUsInstance: template.Preferences.AboutUsInstance,
@@ -81,6 +81,7 @@ export class TemplateUtility {
     return {
       applicationId: templateInfo.applicationId,
       preference_list: {
+        SiteMarketGroupCD: templateInfo.industry,
         about_inst_id: templateInfo.preferences.AboutUsInstance,
         intro_inst_id: templateInfo.preferences.IntroInstance,
         fps_inst_id: templateInfo.preferences.FPSInstanceId,
