@@ -110,6 +110,11 @@ export class TemplateState {
     return state.templateImage;
   }
 
+  @Selector()
+  static getTemplateEditStatus(state: TemplateStateModel): boolean {
+    return state.templateEditStatus;
+  }
+
   /**
    * Template Edit Page
    **/
@@ -421,11 +426,10 @@ export class TemplateState {
       const savedTemplate = await lastValueFrom(
         this._templateService.saveTemplateEdit(event.templateInfo)
       );
-      console.log(savedTemplate);
+      console.log('saved Template', savedTemplate);
       ctx.patchState({
-        saveTemplateEdit: {
-          ...savedTemplate,
-        },
+        templateEditStatus:
+          typeof savedTemplate !== 'object' && savedTemplate === true,
       });
     } catch (error) {
       console.log(error);

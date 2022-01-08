@@ -35,6 +35,7 @@ export class TemplateFacade {
     TemplateState.getAddedTemplateResponse
   );
   moduleInstance$ = this._store.select(TemplateState.getModuleInstances);
+  templateEditStatus$ = this._store.select(TemplateState.getTemplateEditStatus);
 
   constructor(private _store: Store) {}
 

@@ -1,14 +1,14 @@
 import {
-  Template,
-  ConvertTemplateMessage,
-  ColorScheme,
-  EditTemplate,
   AppInfo,
-  ImageFile,
+  ColorScheme,
+  ConvertTemplateMessage,
   DesignScheme,
+  EditTemplate,
+  ImageFile,
+  InstanceDuplicate,
   SavedResponse,
   StyleSheet,
-  InstanceDuplicate,
+  Template,
 } from '../../../types';
 
 export interface TemplateStateModel {
@@ -23,5 +23,5 @@ export interface TemplateStateModel {
   savedResponse: SavedResponse;
   styleSheet: StyleSheet;
   moduleInstances: InstanceDuplicate;
-  saveTemplateEdit?: any;
+  templateEditStatus?: boolean;
 }

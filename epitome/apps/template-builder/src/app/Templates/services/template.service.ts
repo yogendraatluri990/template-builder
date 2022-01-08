@@ -5,8 +5,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ImageService, Messenger, MessengerPage } from '@assortments';
 // @Importing from Auth
 import { ServiceConfig, SMARTLINK_SERVICE_CONFIG } from '@auth';
-import { Observable } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { concatMap, Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 // @Importing from Environment
 import { environment } from '../../../environments/environment';
 import {
@@ -180,39 +180,30 @@ export class TemplateService extends ImageService<ImageFile> {
   //----------------------------------------------
   // Saving Edit Template Screen.
   //-------------------------------------------------
-  saveTemplateEdit(templateInfo: TemplateForm): Observable<any> {
-    return this._http
+  saveTemplateEdit(templateInfo: TemplateForm): Observable<Object> {
+    const sampleApplication = this._http
       .post(`${this.getApplicationUri()}`, {
         ..._util.getApplicationInfo(templateInfo),
       })
-      .pipe(
-        catchError(this.handleError),
-        mergeMap(() =>
-          this._http
-            .post(
-              `${this.getVisibilityUri(
-                templateInfo.applicationId,
-                templateInfo.designTemplateId,
-                templateInfo.visibilty_flg
-              )}`,
-              {}
-            )
-            .pipe(
-              catchError(this.handleError),
-              mergeMap(() => {
-                console.log(
-                  'get current preferences',
-                  _util.getPreferences(templateInfo)
-                );
-                return this._http
-                  .post(`${this.getPreferencesUri()}`, {
-                    ..._util.getPreferences(templateInfo),
-                  })
-                  .pipe(catchError(this.handleError));
-              })
-            )
-        )
-      );
+      .pipe(catchError(this.handleError));
+    const visibility = this._http
+      .post(
+        `${this.getVisibilityUri(
+          templateInfo.applicationId,
+          templateInfo.designTemplateId,
+          templateInfo.visibilty_flg
+        )}`,
+        {}
+      )
+      .pipe(catchError(this.handleError));
+    const preferences = this._http
+      .post(`${this.getPreferencesUri()}`, {
+        ..._util.getPreferences(templateInfo),
+      })
+      .pipe(catchError(this.handleError));
+    return sampleApplication.pipe(
+      concatMap(() => visibility.pipe(concatMap(() => preferences)))
+    );
   }
 
   // -----------------------------------------
@@ -255,7 +246,11 @@ export class TemplateService extends ImageService<ImageFile> {
 
   private getTemplateInfoUri(applicationId: string): string {
     return `${
-      this.getUri() + this._editTemplateConfig.Url + applicationId + '.json'
+      this.getUri() +
+      this._editTemplateConfig.Url +
+      applicationId +
+      '.json' +
+      '?RefreshCache=1'
     }`;
   }
 

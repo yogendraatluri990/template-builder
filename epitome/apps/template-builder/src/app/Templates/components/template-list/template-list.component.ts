@@ -18,6 +18,7 @@ import {
   Routes,
 } from '@angular/router';
 import { icons, Material_Modules } from '@assortments';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NgxsModule } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { Constants as _constant } from '../../constants';
@@ -33,6 +34,7 @@ import {
   TemplateEditComponentModule,
 } from '../template-edit/template-edit.component';
 
+@UntilDestroy()
 @Component({
   selector: 'tb-templates-list',
   templateUrl: './template-list.component.html',
@@ -113,6 +115,12 @@ export class TemplateListComponent implements OnInit, OnDestroy, AfterViewInit {
         top: '1%',
       },
     });
+    dialogRef
+      .afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe(() => {
+        console.log(' I am close');
+      });
   }
 
   public onDesign(row: Template) {

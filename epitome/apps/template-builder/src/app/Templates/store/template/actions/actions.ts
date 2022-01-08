@@ -89,4 +89,8 @@ export namespace TemplateAction {
     static readonly type = '[template-edit] Save Template Edit Screen';
     constructor(public templateInfo: TemplateForm) {}
   }
+  export class SaveTemplateEditSuccess {
+    static readonly type = '[template-edit-success] Save Template Edit Success';
+    constructor(public status: boolean) {}
+  }
 }

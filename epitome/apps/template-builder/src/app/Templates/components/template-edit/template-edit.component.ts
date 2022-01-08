@@ -14,6 +14,7 @@ import {
 } from '@angular/material/dialog';
 // importing material modules
 import { icons, Material_Modules } from '@assortments';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgxsModule } from '@ngxs/store';
 import { filter, tap } from 'rxjs/operators';
@@ -31,23 +32,19 @@ import {
 // @importing utility class
 import { TemplateUtility as _util } from '../../utility';
 
+@UntilDestroy()
 @Component({
   selector: 'tb-edit',
   templateUrl: './template-edit.component.html',
   styleUrls: ['./template-edit.component.scss'],
 })
 export class TemplateEditComponent implements OnInit, OnDestroy {
-  /**
-   *
-   * @param {MatDialogRef} _matDialogRef
-   * @param {MatDialog} _matDialog
-   * @param {MAT_DIALOG_DATA} data
-   * @param {TemplateFacade} _formBuilder
-   * @param {DashboardFacade} _facade
-   */
-  public editForm: FormGroup = this.getEditForm();
-  public codes = { ...instanceNames };
-  public template$ = this._facade.template$.pipe(
+  // --------------------------------------------------------------------
+  // @PUBLIC ACCESSORIES
+  // --------------------------------------------------------------------
+  editForm: FormGroup = this.getEditForm();
+  codes = { ...instanceNames };
+  template$ = this._facade.template$.pipe(
     filter(Boolean),
     tap((response: EditTemplate) => {
       this.editForm.reset({
@@ -59,7 +56,7 @@ export class TemplateEditComponent implements OnInit, OnDestroy {
         : this.editForm.get('industry').disable();
     })
   );
-  public moduleInstance$ = this._facade.moduleInstance$.pipe(
+  moduleInstance$ = this._facade.moduleInstance$.pipe(
     tap((response: InstanceDuplicate) => {
       if (response) {
         response.instances.forEach((v) =>
@@ -71,9 +68,19 @@ export class TemplateEditComponent implements OnInit, OnDestroy {
       }
     })
   );
-  public get icons(): typeof icons {
-    return icons;
-  }
+
+  // --------------------------------------------------------------------
+  // @CONSTRUCTOR
+  // --------------------------------------------------------------------
+  /**
+   *
+   * @param {MatDialogRef} _matDialogRef
+   * @param {MatDialog} _matDialog
+   * @param {MAT_DIALOG_DATA} data
+   * @param {TemplateFacade} _formBuilder
+   * @param {DashboardFacade} _facade
+   */
+
   constructor(
     private _matDialogRef: MatDialogRef<TemplateEditComponent>,
     private _matDialog: MatDialog,
@@ -82,14 +89,55 @@ export class TemplateEditComponent implements OnInit, OnDestroy {
     private _facade: TemplateFacade
   ) {}
 
+  // --------------------------------------------------------------------
+  // @LIFE CYCLE HOOKS
+  // --------------------------------------------------------------------
   ngOnInit(): void {}
   ngOnDestroy(): void {
     this.resetPopulate();
     this._matDialogRef.close();
     this._facade.resetEditTemplate();
   }
+
   // --------------------------------------------------------------------
-  // Private Methods
+  // @GETTERS & @SETTERS
+  // --------------------------------------------------------------------
+  get icons(): typeof icons {
+    return icons;
+  }
+
+  // --------------------------------------------------------------------
+  // PUBLIC METHODS
+  // --------------------------------------------------------------------
+  resetPopulate($event?: MouseEvent) {
+    if ($event) $event.stopPropagation();
+    this._facade.resetPopulate();
+  }
+  close(): void {
+    this._matDialogRef.close();
+  }
+  populate(current_preference: Preferences, masterId: number): void {
+    this._facade.populateInstances(this.data.currentApplicationId, masterId);
+  }
+  save(formData: TemplateForm): void {
+    this._facade.saveTemplateEdit(formData);
+    this.close();
+  }
+  addNewTemplate() {
+    const _dialogRef = this._matDialog.open(AddNewTemplate, {
+      width: '400px',
+      disableClose: true,
+      data: {
+        applicationId: this.data.currentApplicationId,
+      },
+      position: {
+        top: '10%',
+      },
+    });
+  }
+
+  // --------------------------------------------------------------------
+  // PRIVATE METHODS
   // --------------------------------------------------------------------
   private getEditForm(): FormGroup {
     return this._formBuilder.group({
@@ -122,34 +170,6 @@ export class TemplateEditComponent implements OnInit, OnDestroy {
   }
   private populateMapper(controllerName: string): void {
     this.editForm.get('preferences').get(controllerName?.trim())?.reset('');
-  }
-  // --------------------------------------------------------------------
-  // Public Methods
-  // --------------------------------------------------------------------
-  public resetPopulate($event?: MouseEvent) {
-    if ($event) $event.stopPropagation();
-    this._facade.resetPopulate();
-  }
-  public close(): void {
-    this._matDialogRef.close();
-  }
-  public populate(current_preference: Preferences, masterId: number): void {
-    this._facade.populateInstances(this.data.currentApplicationId, masterId);
-  }
-  public save(formData: TemplateForm): void {
-    this._facade.saveTemplateEdit(formData);
-  }
-  public addNewTemplate() {
-    const _dialogRef = this._matDialog.open(AddNewTemplate, {
-      width: '400px',
-      disableClose: true,
-      data: {
-        applicationId: this.data.currentApplicationId,
-      },
-      position: {
-        top: '10%',
-      },
-    });
   }
 }
 
@@ -203,10 +223,14 @@ export class TemplateEditComponent implements OnInit, OnDestroy {
   styleUrls: ['./template-edit.component.scss'],
 })
 export class AddNewTemplate implements OnDestroy {
-  public templateForm = this.getAddTemplateForm();
-  public get icons(): typeof icons {
-    return icons;
-  }
+  // -------------------------------------------------------------
+  // @PUBLIC ACCESSORIES
+  // -------------------------------------------------------------
+  templateForm = this.getAddTemplateForm();
+
+  // -------------------------------------------------------------
+  // @CONSTRUCTOR
+  // -------------------------------------------------------------
   /**
    * @param {MatDialogRef} _matDialogRef
    * @param {FormBuilder} _formBuilder
@@ -220,26 +244,38 @@ export class AddNewTemplate implements OnDestroy {
     private _facade: TemplateFacade
   ) {}
 
+  // -------------------------------------------------------------
+  // @LIFE CYCLE HOOKS
+  // -------------------------------------------------------------
   ngOnDestroy(): void {
     this._matDialogRef.close();
   }
+
   // -------------------------------------------------------------
-  // @Private-Methods
+  // @GETTERS & @SETTERS
+  // -------------------------------------------------------------
+  get icons(): typeof icons {
+    return icons;
+  }
+
+  // -------------------------------------------------------------
+  // @PUBLIC METHODS
+  // -------------------------------------------------------------
+  close() {
+    this._matDialogRef.close();
+  }
+  add(templateName: string) {
+    this._facade.addNewTemplate(templateName, this.data.applicationId);
+    this._matDialogRef.close();
+  }
+
+  // -------------------------------------------------------------
+  // @PRIVATE METHODS
   // -------------------------------------------------------------
   private getAddTemplateForm(): FormGroup {
     return this._formBuilder.group({
       name: ['', []],
     });
-  }
-  // -------------------------------------------------------------
-  // @Public-Methods
-  // -------------------------------------------------------------
-  public close() {
-    this._matDialogRef.close();
-  }
-  public add(templateName: string) {
-    this._facade.addNewTemplate(templateName, this.data.applicationId);
-    this._matDialogRef.close();
   }
 }
 
