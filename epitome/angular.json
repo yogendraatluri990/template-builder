@@ -139,7 +139,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/apps/template-builder",
+            "outputPath": "../app/public/templateBuilder/en",
             "index": "apps/template-builder/src/index.html",
             "main": "apps/template-builder/src/main.ts",
             "polyfills": "apps/template-builder/src/polyfills.ts",

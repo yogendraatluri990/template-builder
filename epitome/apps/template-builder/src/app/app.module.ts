@@ -1,25 +1,21 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgxsModule } from '@ngxs/store';
-import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
-import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// importing assortments
+import { AssortmentsModule, Material_Modules } from '@assortments';
+// importing auth
+import { AuthInterceptor, AuthModule, ENVIRONMENT_CONFIG } from '@auth';
 import { NgxsDispatchPluginModule } from '@ngxs-labs/dispatch-decorator';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
+import { NgxsModule } from '@ngxs/store';
 import { environment } from '../environments/environment';
-
 // importing route module
 import { AppRoutingModule } from './app-routing.module';
-
-// importing assortments
-import { AssortmentsModule, Material_Modules } from '@assortments';
-
-// importing auth
-import { AuthModule, ENIVORNMENT_CONFIG, AuthInterceptor } from '@auth';
-
 // importing local components
 import { AppComponent } from './app.component';
 
@@ -45,7 +41,7 @@ import { AppComponent } from './app.component';
     AppRoutingModule,
   ],
   providers: [
-    { provide: ENIVORNMENT_CONFIG, useValue: environment },
+    { provide: ENVIRONMENT_CONFIG, useValue: environment },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

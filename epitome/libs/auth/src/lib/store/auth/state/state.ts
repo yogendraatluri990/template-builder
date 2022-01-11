@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Action, State, StateContext, NgxsOnInit, Selector } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
-
-import { Auth } from '../actions';
-
-import { AuthStateModel } from '../models';
-
+import { Action, NgxsOnInit, Selector, State, StateContext } from '@ngxs/store';
+import { lastValueFrom } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
 import {
   ClearUserLogin,
@@ -13,6 +9,8 @@ import {
   StoreUser,
   User,
 } from '../../login-form';
+import { Auth } from '../actions';
+import { AuthStateModel } from '../models';
 
 @State<AuthStateModel>({
   name: 'Auth',
@@ -68,7 +66,7 @@ export class AuthState implements NgxsOnInit {
     ctx.patchState({ error: null, pending: true });
     const { credentials } = action;
     try {
-      const token = await this.authService.login(credentials);
+      const token = await lastValueFrom(this.authService.login(credentials));
       const {
         asi_number,
         UserName,
@@ -96,7 +94,7 @@ export class AuthState implements NgxsOnInit {
   }
   @Action(Auth.Logout)
   logout(ctx: StateContext<AuthStateModel>, event: Auth.Logout) {
-    return this.authService.logout().then(() => {
+    return lastValueFrom(this.authService.logout()).then(() => {
       this.setStateOnLogoutOrFailure(ctx);
     });
   }

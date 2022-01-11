@@ -1,4 +1,4 @@
-import { EnvironmentConfig } from '../app/core';
+import { EnvironmentConfig } from '@auth';
 
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.

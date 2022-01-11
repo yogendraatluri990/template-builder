@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Media as media } from '@assortments';
 import { ServiceConfig, SMARTLINK_SERVICE_CONFIG } from '@auth';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { lastValueFrom, throwError } from 'rxjs';
+import { lastValueFrom, tap, throwError } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 // import services
 import { TemplateService } from '../../../services';
@@ -17,8 +17,8 @@ import {
   IMAGE_UPLOAD,
   InstanceDuplicate,
   SavedResponse,
-  StyleSheet,
   Template,
+  TemplateStyleSheet,
 } from '../../../types';
 // utilites
 import { TemplateUtility as _templateUtil } from '../../../utility';
@@ -31,8 +31,8 @@ const TEMPLATE_LIST_DEFAULT: Array<Template> | null = null,
   CONVERT_TO_TEMPLATE_DEFAULT: ConvertTemplateMessage = {
     Message: '',
   },
-  STYLE_SHEET_DEFAULT: StyleSheet = {
-    templateId: '',
+  STYLE_SHEET_DEFAULT: TemplateStyleSheet = {
+    templateId: null,
     templateName: '',
     templateCSS: '',
     templatePreview: '',
@@ -52,7 +52,7 @@ const TEMPLATE_LIST_DEFAULT: Array<Template> | null = null,
       Message: null,
       Success: null,
     },
-    styleSheet: STYLE_SHEET_DEFAULT,
+    templateStyleSheet: STYLE_SHEET_DEFAULT,
     moduleInstances: null,
   },
 })
@@ -205,6 +205,45 @@ export class TemplateState {
   /**
    * Template Design Page
    **/
+  @Action(templateActions.UpdateStyleSheet)
+  async updateTemplateStyleSheet(
+    ctx: StateContext<TemplateStateModel>,
+    event: templateActions.UpdateStyleSheet
+  ) {
+    try {
+      const updateStyleSheet = await lastValueFrom(
+        this._templateService
+          .updateTemplateCss(event.styleSheet)
+          .pipe(
+            tap(() =>
+              ctx.dispatch(
+                new templateActions.RegenerateAllStyleSheets(
+                  event.styleSheet.templateId
+                )
+              )
+            )
+          )
+      );
+      console.log(updateStyleSheet);
+    } catch (error) {
+      throwError(() => error);
+    }
+  }
+
+  @Action(templateActions.RegenerateAllStyleSheets)
+  async RegenerateAllStyleSheets(
+    ctx: StateContext<TemplateStateModel>,
+    event: templateActions.RegenerateAllStyleSheets
+  ) {
+    try {
+      const regenerate = await lastValueFrom(
+        this._templateService.regenerateStyleSheets(event.templateId)
+      );
+    } catch (error) {
+      throwError(() => error);
+    }
+  }
+
   @Action(templateActions.GetTemplateDesignData)
   async templateDesignData(
     ctx: StateContext<TemplateStateModel>,

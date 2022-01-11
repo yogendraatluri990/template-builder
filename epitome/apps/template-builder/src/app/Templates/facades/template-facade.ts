@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { TemplateAction as templateActions, TemplateState } from '../store';
-import { ColorScheme, DesignScheme, Template, TemplateForm } from '../types';
+import {
+  ColorScheme,
+  DesignScheme,
+  Template,
+  TemplateForm,
+  TemplateStyleSheet,
+} from '../types';
 
 @Injectable({
   providedIn: 'root',
@@ -125,5 +131,9 @@ export class TemplateFacade {
 
   saveTemplateEdit(templateInfo: TemplateForm): void {
     this._store.dispatch(new templateActions.SaveTemplateEdit(templateInfo));
+  }
+
+  updateTemplateStyleSheet(templateStyle: TemplateStyleSheet): void {
+    this._store.dispatch(new templateActions.UpdateStyleSheet(templateStyle));
   }
 }

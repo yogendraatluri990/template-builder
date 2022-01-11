@@ -22,7 +22,7 @@ import { NgxsModule } from '@ngxs/store';
 import { delay, filter } from 'rxjs/operators';
 import { TemplateFacade } from '../../facades';
 import { TemplateState } from '../../store';
-import { DesignScheme } from '../../types';
+import { DesignScheme, TemplateStyleSheet } from '../../types';
 import {
   TemplateAddTagComponent,
   TemplateAddTageComponentModule,
@@ -42,6 +42,11 @@ import { TemplateTagComponentModule } from '../template-tag/template-tag.compone
   styleUrls: ['./template-design.component.scss'],
 })
 export class TemplateDesignComponent implements OnInit {
+  // ------------------------------------------------------------------------------------------------------------------
+  // @Private Accessories
+  // ------------------------------------------------------------------------------------------------------------------
+  private templateId?: string;
+  private templateName?: string;
   //-------------------------------------------------------------------------------------------------------------------
   // @Public Accessories
   //-------------------------------------------------------------------------------------------------------------------
@@ -72,8 +77,11 @@ export class TemplateDesignComponent implements OnInit {
     private _facade: TemplateFacade
   ) {
     this._activatedRoute.queryParams.subscribe({
-      next: (params: Params) =>
-        this.getTemplateDesignData(params?.applicationId, params?.title),
+      next: (params: Params) => {
+        this.getTemplateDesignData(params?.applicationId, params?.title);
+        this.templateId = params?.templateId;
+        this.templateName = params?.templateName;
+      },
     });
 
     const designData$ = this._facade.designScheme$;
@@ -83,6 +91,9 @@ export class TemplateDesignComponent implements OnInit {
         next: (templateData: DesignScheme) =>
           this.designForm.patchValue({
             templateCSS: templateData.Template_Data,
+            templateId: this.templateId,
+            templateName: this.templateName,
+            templatePreview: 'New Template Preview',
           }),
       });
   }
@@ -133,10 +144,11 @@ export class TemplateDesignComponent implements OnInit {
       templateId: ['', []],
       templateName: ['', []],
       templateCSS: ['', [validateStyle.bind(this), Validators.required]],
+      templatePreview: ['', []],
     });
   }
-  save() {
-    console.log('I am still clicking');
+  saveTemplateCss(currentDesign: TemplateStyleSheet) {
+    this._facade.updateTemplateStyleSheet(currentDesign);
   }
   cancel() {
     this._router.navigate(['/dashboard/templates/template-list']);

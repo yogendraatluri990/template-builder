@@ -1,4 +1,4 @@
-import { EnvironmentConfig } from '../app/core';
+import { EnvironmentConfig } from '@auth';
 
 export const environment: EnvironmentConfig = {
   production: true,

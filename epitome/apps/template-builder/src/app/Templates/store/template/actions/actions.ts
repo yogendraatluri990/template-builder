@@ -4,6 +4,7 @@ import {
   ImageFile,
   Template,
   TemplateForm,
+  TemplateStyleSheet,
 } from '../../../types';
 
 export namespace TemplateAction {
@@ -57,9 +58,14 @@ export namespace TemplateAction {
     static readonly type = '[template-design] Save Design Tag';
     constructor(public tag: FormData) {}
   }
-  export class SaveStyleSheet {
+  export class UpdateStyleSheet {
     static type = '[template-design] Save Template Style Sheet';
-    constructor(public styleSheet: StyleSheet) {}
+    constructor(public styleSheet: TemplateStyleSheet) {}
+  }
+
+  export class RegenerateAllStyleSheets {
+    static type = '[template-design] Renegerating all style sheets';
+    constructor(public templateId: number) {}
   }
 
   /**

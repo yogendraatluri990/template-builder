@@ -1,4 +1,3 @@
-import { Inject, Injectable } from '@angular/core';
 import {
   HttpErrorResponse,
   HttpEvent,
@@ -6,21 +5,18 @@ import {
   HttpInterceptor,
   HttpRequest,
 } from '@angular/common/http';
-
+import { Inject, Injectable } from '@angular/core';
 import { ErrorSnackService } from '@error-handler';
-
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-
-import {
-  SERVICE_CONFIG,
-  ServiceConfig,
-  SMARTLINK_SERVICE_CONFIG,
-  ENIVORNMENT_CONFIG,
-  Environment,
-} from '../types';
-
 import { AuthFacade } from '../facades';
+import {
+  EnvironmentConfig,
+  ENVIRONMENT_CONFIG,
+  ServiceConfig,
+  SERVICE_CONFIG,
+  SMARTLINK_SERVICE_CONFIG,
+} from '../types';
 
 // Ref: https://github.com/melcor76/interceptors/blob/master/src/app/interceptors/auth.interceptor.ts
 
@@ -34,15 +30,17 @@ export class AuthInterceptor implements HttpInterceptor {
    * @param {ServiceConfig} _smartLinkConfig
    * @param {AuthFacade} _authFacade
    * @param  {ErrorSnackService} _errorHandler;
-   * @param {ENIVORMENT_CONFIG} _environmentConfig;
+   * @param {ENVIRONMENT_CONFIG} _environmentConfig;
    */
   constructor(
     @Inject(SERVICE_CONFIG) private _serviceConfig: ServiceConfig,
     @Inject(SMARTLINK_SERVICE_CONFIG) private _smartLinkConfig: ServiceConfig,
-    @Inject(ENIVORNMENT_CONFIG) private _environmentConfig: Environment,
+    @Inject(ENVIRONMENT_CONFIG) private _environmentConfig: EnvironmentConfig,
     private _authFacade: AuthFacade,
     private _errorHandler: ErrorSnackService
-  ) {}
+  ) {
+    console.log('current Environment values', this._environmentConfig);
+  }
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler

@@ -7,8 +7,8 @@ import {
   ImageFile,
   InstanceDuplicate,
   SavedResponse,
-  StyleSheet,
   Template,
+  TemplateStyleSheet,
 } from '../../../types';
 
 export interface TemplateStateModel {
@@ -21,7 +21,7 @@ export interface TemplateStateModel {
   templateImage?: ImageFile | null;
   currentColorScheme?: ColorScheme | null;
   savedResponse: SavedResponse;
-  styleSheet: StyleSheet;
+  templateStyleSheet: TemplateStyleSheet;
   moduleInstances: InstanceDuplicate;
   templateEditStatus?: boolean;
 }

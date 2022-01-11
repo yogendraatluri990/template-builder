@@ -6,7 +6,7 @@ import { ImageService, Messenger, MessengerPage } from '@assortments';
 // @Importing from Auth
 import { ServiceConfig, SMARTLINK_SERVICE_CONFIG } from '@auth';
 import { concatMap, Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 // @Importing from Environment
 import { environment } from '../../../environments/environment';
 import {
@@ -31,6 +31,7 @@ import {
   SAVE_VISIBILITY_CONFIG,
   Template,
   TemplateForm,
+  TemplateStyleSheet,
   TEMPLATE_CSS_CONFIG,
   TEMPLATE_DESIGN_DATA,
 } from '../types';
@@ -215,6 +216,37 @@ export class TemplateService extends ImageService<ImageFile> {
       .pipe(catchError(this.handleError));
   }
 
+  //-----------------------------------------------------------------------
+  // @Update Template CSS
+  //------------------------------------------------------------------------
+  updateTemplateCss(template: TemplateStyleSheet): Observable<any> {
+    return this._http
+      .put(`${this.getTemplateCssUri()}`, template, {
+        responseType: 'json',
+      })
+      .pipe(catchError(this.handleError));
+  }
+  regenerateStyleSheets(templateId: number): Observable<Array<string>> {
+    return this._http
+      .put<Array<string>>(
+        `${this.getRegenerateStyleSheetUri(templateId)}`,
+        templateId
+      )
+      .pipe(
+        catchError(this.handleError),
+        tap((response) => {
+          const config: Messenger = {
+            Data: {
+              message: `Successfully Generated the following style sheets, ${response}`,
+              icon: 'done',
+            },
+            panelClass: ['success-message'],
+          };
+          this.messenger(config);
+        })
+      );
+  }
+
   // ------------------------------------------------------------------------------------------------------------
   // @ Private Methods
   // -------------------------------------------------------------------------------------------------------------
@@ -252,6 +284,12 @@ export class TemplateService extends ImageService<ImageFile> {
       '.json' +
       '?RefreshCache=1'
     }`;
+  }
+
+  private getRegenerateStyleSheetUri(templateId: number): string {
+    return `${this.getUri()}${
+      this._templateCssConfig.Url
+    }/${templateId}/regenerate-styles`;
   }
 
   private getImageUploadUri(): string {
@@ -312,7 +350,7 @@ export class TemplateService extends ImageService<ImageFile> {
   private messenger(config: Messenger): void {
     const configs: Messenger = {
       ...config,
-      Duration: 500000,
+      Duration: 5000,
       verticalPosition: 'top',
       horizontalPosition: 'start',
     };

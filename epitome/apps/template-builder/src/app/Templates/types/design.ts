@@ -1,5 +1,4 @@
 import { InjectionToken } from '@angular/core';
-
 import { ServiceConfig } from '@auth';
 
 export const TEMPLATE_CSS_CONFIG = new InjectionToken('Template CSS URL', {
@@ -36,8 +35,8 @@ export interface DesignScheme {
   ColorScheme?: Array<ColorScheme>;
 }
 
-export interface StyleSheet {
-  templateId?: string;
+export interface TemplateStyleSheet {
+  templateId?: number;
   templateName?: string;
   templateCSS?: string;
   templatePreview?: string;

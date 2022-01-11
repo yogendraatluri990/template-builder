@@ -1,26 +1,19 @@
+import { HttpBackend, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpBackend,
-  HttpParams,
-} from '@angular/common/http';
-import { catchError, map } from 'rxjs/operators';
-import { of, throwError } from 'rxjs';
-
 // @error-handler
 import { ErrorSnackService } from '@error-handler';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { User } from '../store';
 // @local configurations
 import {
   AuthServiceConfig,
   AUTH_SERVICE_CONFIG,
-  ENIVORNMENT_CONFIG,
-  Environment,
+  EnvironmentConfig,
+  ENVIRONMENT_CONFIG,
+  LoginRequest,
+  LoginResponse,
 } from '../types';
-
-// @types
-import { LoginRequest, LoginResponse } from '../types';
-import { User } from '../store';
 
 @Injectable({
   providedIn: 'root',
@@ -33,11 +26,11 @@ export class AuthService {
    * @param {AUTH_SERVICE_CONFIG} _config
    * @param {HttpBackend} handler
    * @param {ErrorSnackService} _errorHandler
-   * @param {ENIVORMENT_CONFIG} _environmentConfig
+   * @param {ENVIRONMENT_CONFIG} _environmentConfig
    */
   constructor(
     @Inject(AUTH_SERVICE_CONFIG) public _config: AuthServiceConfig,
-    @Inject(ENIVORNMENT_CONFIG) private _environmentConfig: Environment,
+    @Inject(ENVIRONMENT_CONFIG) private _environmentConfig: EnvironmentConfig,
     private _errorHandler: ErrorSnackService,
     handler: HttpBackend
   ) {
@@ -71,37 +64,34 @@ export class AuthService {
   // --------------------------------------------------------------
   // @ Public Methods
   // --------------------------------------------------------------
-  login(credentials: LoginRequest): Promise<LoginResponse> {
+  login(credentials: LoginRequest): Observable<LoginResponse> {
     return this.http
       .post<LoginResponse>(this.getUri(), this.massageFormData(credentials))
       .pipe(
         catchError((response) => {
           this._errorHandler.handleError(response);
-          return throwError(response);
+          return throwError(() => response);
         })
-      )
-      .toPromise();
+      );
   }
-  logout(): Promise<boolean> {
+  logout(): Observable<boolean> {
     const user: User = JSON.parse(window.sessionStorage.getItem('user'));
     if (user && user.hasOwnProperty('token')) {
       const header = new HttpHeaders({
         Authorization: `AsiMemberAuth guid="${user.token.Token}"`,
       });
-      return this.http
-        .get<boolean>(
-          this._environmentConfig.production
-            ? this._config.logoutUrl
-            : this._environmentConfig.localDev
-            ? this._config.logout_dev_url
-            : this._config.logout_uat_url,
-          {
-            headers: header,
-          }
-        )
-        .toPromise();
+      return this.http.get<boolean>(
+        this._environmentConfig.production
+          ? this._config.logoutUrl
+          : this._environmentConfig.localDev
+          ? this._config.logout_dev_url
+          : this._config.logout_uat_url,
+        {
+          headers: header,
+        }
+      );
     } else {
-      return of(true).toPromise();
+      return of(true);
     }
   }
 }
