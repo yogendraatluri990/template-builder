@@ -157,13 +157,9 @@ export class TemplateDesignComponent implements OnInit {
   // ---------------------------------------------------
   // @Private Methods
   // ---------------------------------------------------
-  private afterDialogClosed(result) {
-    console.log(result);
-  }
+  private afterDialogClosed(result) {}
 
-  private errorHandler(error) {
-    console.log(error);
-  }
+  private errorHandler(error) {}
   private getTemplateDesignData(applicationId: number, title: string) {
     this._facade.getTemplateDesignData(applicationId, title);
   }

@@ -187,8 +187,6 @@ export class TemplateUtility {
     color_scheme: ColorScheme,
     currentImage?: ImageFile
   ): Array<ColorScheme> {
-    console.log('current Image File', currentImage);
-    console.log('current row', color_scheme);
     if (currentImage)
       return [
         {

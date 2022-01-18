@@ -38,9 +38,7 @@ export class AuthInterceptor implements HttpInterceptor {
     @Inject(ENVIRONMENT_CONFIG) private _environmentConfig: EnvironmentConfig,
     private _authFacade: AuthFacade,
     private _errorHandler: ErrorSnackService
-  ) {
-    console.log('current Environment values', this._environmentConfig);
-  }
+  ) {}
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler

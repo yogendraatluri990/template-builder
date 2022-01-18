@@ -1,8 +1,7 @@
-import { Component, Inject, NgModule, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, Inject, NgModule } from '@angular/core';
 import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
-
-import { MessengerData, Material_Modules } from '../../types';
+import { Material_Modules, MessengerData } from '../../types';
 
 @Component({
   template: `
@@ -23,9 +22,7 @@ export class MessengerPage {
    *
    * @param {MAT_SNACK_BAR_DATA} _data
    */
-  constructor(@Inject(MAT_SNACK_BAR_DATA) public _data: MessengerData) {
-    console.log(this._data);
-  }
+  constructor(@Inject(MAT_SNACK_BAR_DATA) public _data: MessengerData) {}
 }
 
 // ----------------------------------

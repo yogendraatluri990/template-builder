@@ -115,12 +115,7 @@ export class TemplateListComponent implements OnInit, OnDestroy, AfterViewInit {
         top: '1%',
       },
     });
-    dialogRef
-      .afterClosed()
-      .pipe(untilDestroyed(this))
-      .subscribe(() => {
-        console.log(' I am close');
-      });
+    dialogRef.afterClosed().pipe(untilDestroyed(this)).subscribe();
   }
 
   public onDesign(row: Template) {

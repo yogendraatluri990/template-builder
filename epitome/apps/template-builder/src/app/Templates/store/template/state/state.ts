@@ -224,7 +224,6 @@ export class TemplateState {
             )
           )
       );
-      console.log(updateStyleSheet);
     } catch (error) {
       throwError(() => error);
     }
@@ -301,7 +300,6 @@ export class TemplateState {
         new templateActions.UpdateColorScheme(event.current_row, image, true)
       );
     } catch (error) {
-      console.log(error);
       throwError(() => error);
     }
   }
@@ -325,7 +323,6 @@ export class TemplateState {
           ctx.getState().templateImage?.Name
         )[0],
       };
-      console.log(current_row);
       ctx.patchState({
         templateDesign: {
           ..._templateUtil.designSchemeColorsParser(
@@ -335,7 +332,6 @@ export class TemplateState {
         },
       });
     } catch (error) {
-      console.log(error);
       throwError(() => error);
     }
   }
@@ -372,7 +368,6 @@ export class TemplateState {
         },
       });
     } catch (error) {
-      console.log(error);
       throwError(() => error);
     }
   }
@@ -451,7 +446,6 @@ export class TemplateState {
           : null,
       });
     } catch (error) {
-      console.log(error);
       throwError(() => error);
     }
   }
@@ -465,13 +459,12 @@ export class TemplateState {
       const savedTemplate = await lastValueFrom(
         this._templateService.saveTemplateEdit(event.templateInfo)
       );
-      console.log('saved Template', savedTemplate);
+
       ctx.patchState({
         templateEditStatus:
           typeof savedTemplate !== 'object' && savedTemplate === true,
       });
     } catch (error) {
-      console.log(error);
       throwError(() => error);
     }
   }

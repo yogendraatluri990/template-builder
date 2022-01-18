@@ -238,7 +238,7 @@ export class TemplateService extends ImageService<ImageFile> {
           const config: Messenger = {
             Data: {
               message: `Successfully Generated the following style sheets, ${response}`,
-              icon: 'done',
+              icon: 'done_all',
             },
             panelClass: ['success-message'],
           };
